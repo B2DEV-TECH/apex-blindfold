@@ -362,7 +362,8 @@ after its first use, which is the [live session](#live-session) above.
 
 ## Article
 
-The write-up of this lab will be linked here when it is published.
+[A Tally the Database Cannot Read: Homomorphic Voting in Oracle APEX](https://b2dev.tech/blog/apex-blindfold-a-tally-the-database-cannot-read),
+published on b2dev.tech on 23 November 2026, is the write-up of this lab.
 
 ## Repository layout
 
