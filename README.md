@@ -248,9 +248,14 @@ before letting go of the key. The browser words that question itself, and its te
 information, not a key. Since then the links of the Tally page open in a new tab once it holds a key,
 and the automated run reproduces the loss as part of H5.
 
+<p align="center">
+  <img src="assets/readme/live-leave-page-question.gif" width="880" alt="Screen recording of the Tally page that holds the private key. The Vote link is clicked, the browser shows a dialog in Portuguese asking whether to leave the page, with the buttons Leave page and Stay on page. Leave page is clicked and the Vote page loads.">
+</p>
+<p align="center"><sub>The moment the second key is lost. The dialog is the browser's own and reads: "This page asks you to confirm that you want to leave. Information you entered may not be saved." Its heading, which names the host, is painted over. The full segment is <a href="evidence/live-session/video/04-leave-page-question.mp4">04-leave-page-question.mp4</a>.</sub></p>
+
 Screenshots, eight segments of his screen recordings and the state of the database after every step
 are in [`evidence/live-session`](evidence/live-session/README.md), together with everything that went
-wrong.
+wrong. GitHub does not play an MP4 in the page: open a segment and choose *View raw* to download it.
 
 ## What it costs
 

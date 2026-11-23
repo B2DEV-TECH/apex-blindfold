@@ -15,6 +15,7 @@ const FFMPEG = process.env.FFMPEG || 'ffmpeg';
 const GIFS = [
   // segment of the live session                                          width, frames per second, result
   { from: 'evidence/live-session/video/07-election-b-stuffed-tally.mp4', width: 880, fps: 10, to: 'assets/readme/live-stuffed-tally.gif' },
+  { from: 'evidence/live-session/video/04-leave-page-question.mp4',   width: 880, fps: 10, to: 'assets/readme/live-leave-page-question.gif' },
 ];
 
 for (const gif of GIFS) {

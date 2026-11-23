@@ -107,7 +107,7 @@ What changed in the lab because of this:
 | [`challenge-summary.txt`](challenge-summary.txt) | the two rounds in one table, added up |
 | [`console`](console) | the exact snippets he pasted into the browser console |
 | [`screenshots`](screenshots) | his screenshots, cropped and masked |
-| [`video`](video) | eight segments of his screen recordings, cut to the page, without sound; [`video/clips.txt`](video/clips.txt) says which seconds of which recording each one is, and what was painted over |
+| [`video`](video) | eight segments of his screen recordings, cut to the page, without sound; [`video/clips.txt`](video/clips.txt) says which seconds of which recording each one is, and what was painted over. GitHub does not play an MP4 in the page: open a segment and choose *View raw* to download it |
 
 Snapshot 34 reads "no change in the election tables". The recorder of that day did not describe a
 change in the number of registered voters: it is the two voter codes of snapshot 35, taken a moment
