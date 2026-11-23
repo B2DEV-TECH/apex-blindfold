@@ -1,0 +1,31 @@
+# H5 extra: the private key lives in one browser tab, and is lost with it
+# generated: 2026-11-23T15:45:18.497Z
+# NOT one of the three limits in the original hypothesis. Added after the live session, where it
+# happened twice: the tab that held the key was taken to another page (first a new load of the Tally
+# page, later the Vote link of the page itself), and neither election could be counted afterwards
+# (evidence/live-session). The design keeps the private key in memory only, so that is all it takes:
+# there is no copy to restore.
+
+election: 6 registered, 3 ballots, true tally A=1  B=2  C=0; browser: msedge, driven by Playwright
+
+Step 1. In the tab that holds the key, the authority follows the "Vote" link of the page
+  the link opened:                  /vote, in a second tab
+  the first tab stayed on:          /tally
+  title of the first tab:           Key holder · Tally | APEX Blindfold
+  tally decrypted there afterwards: A=1  B=2  C=0     correct: the key is still in memory
+  Since the live session, the links of the page open beside the tab once it holds a key. During the
+  live session they replaced it.
+
+Step 2. The same tab is reloaded
+  questions the browser raised:     beforeunload     (the test answers "leave", as the authority did)
+  the page after the reload says:   An election is open with public key 93a46d609fd5…0cd1381d, but this tab does not hold its private key. Totals can be fetched here. They cannot be decrypted.
+  encrypted totals fetched again:   3 of 3
+  Decrypt button:                   disabled
+  the page says:                    This tab holds no private key, so these totals stay encrypted.
+
+The ballots are intact and the database can still multiply them. Nobody can read the result, and
+nobody ever will: H2 shows that the private key is in no page item, session state, browser storage,
+request or log. The question a browser asks before a reload is worded by the browser: it mentions
+unsaved information, not a key, and the page cannot change that text.
+What prevents it in a real system: the key is generated in a ceremony, split among several trustees
+(threshold decryption) and kept on hardware, so that no single tab, person or machine is the only copy.

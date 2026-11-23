@@ -1,5 +1,5 @@
 # H5 (b): a single key holder can decrypt individual ballots
-# generated: 2026-11-23T12:49:20.397Z
+# generated: 2026-11-23T15:44:47.275Z
 # election: 30 registered, 24 ballots, 2048-bit key
 # The design asks the authority to decrypt three totals and nothing else. Nothing enforces it:
 # the same private key opens every row of BLIND_BALLOTS, which the application itself displays.

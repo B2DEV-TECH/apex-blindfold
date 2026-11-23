@@ -1,5 +1,5 @@
 # Screenshots
-# generated: 2026-11-23T12:51:58.813Z
+# generated: 2026-11-23T15:47:40.578Z
 # browser: msedge 158.0.4370.33 (headless), taken by tests/screenshots.mjs
 # tour election: 20 registered voters, 12 ballots cast in the browser, decrypted tally A=6 B=2 C=4
 # builder pages: workspace, schema and account names, host and session ids are masked in the page before the shot

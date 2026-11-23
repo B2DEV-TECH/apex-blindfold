@@ -1,5 +1,5 @@
 # H2: can this search find anything?
-# generated: 2026-11-23T12:48:19.669Z
+# generated: 2026-11-23T15:43:39.770Z
 # election: 12 registered voters, 9 ballots cast in the browser, 2048-bit key, debug LEVEL9
 # A search that finds nothing proves nothing unless it finds what is planted.
 
@@ -37,7 +37,7 @@ Control 2. Canary: a decoy secret sent through the real application
   APEX debug trace, LEVEL9             no           978 messages
   APEX activity log                    no           4 rows
   SQL area (V$SQL)                     no           115 statements
-  captured binds (V$SQL_BIND_CAPTURE)  no           24 values
+  captured binds (V$SQL_BIND_CAPTURE)  no           10 values
 
   7 rows selected
 

@@ -1,5 +1,5 @@
 # H3 (a): identical votes produce different ciphertexts
-# generated: 2026-11-23T12:48:36.375Z
+# generated: 2026-11-23T15:43:59.718Z
 # election of 2000 voters, 2048-bit key, queries run as the DBA account
 
 SQL> select count(*) as ciphertexts, count(distinct vote_enc) as distinct_values, count(distinct length(vote_enc)) as lengths from blindfold.blind_ballots;
@@ -19,12 +19,12 @@ Their six ciphertexts, side by side:
 
 BALLOT_ID  CANDIDATE_ID  VOTE_ENC
 ---------  ------------  ---------------------------------------
-8          1             3519dac90cc8ac21a006ef48...a360c9b1675c
-10         1             0d87670f68ec82c1406a1b7f...32f85c8f0b42
-8          2             578bd95556cec0740c219ba1...fad0b73f87ac
-10         2             2604171830afa2c097f568fa...50db17589f2c
-8          3             afa3b8e9dbf5eda43d906dbd...7fc709a1d8b2
-10         3             daa2e16d351fb173bb2b5c41...397f59029cc9
+8          1             1d2a9e957644e78d0de34c75...f91cf9f3a171
+10         1             6f5cf6b290d1b7fc2dba7a3f...364d9f9e7bb8
+8          2             2d18c12b38124b0bb35bc945...e2154e163bd8
+10         2             229d0ee4e7b7c8bac726d5eb...cd82fcd31cd5
+8          3             39c587c4867af28a322b39e5...3a612e82ca1d
+10         3             023398480fe9f00f5df788b0...e786f59da046
 
 6 rows selected
 

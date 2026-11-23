@@ -1,5 +1,5 @@
 # H5 extra: a DBA who writes can swap the public key
-# generated: 2026-11-23T12:49:43.516Z
+# generated: 2026-11-23T15:45:10.256Z
 # NOT one of the three limits in the original hypothesis. Added because it bounds the main claim:
 # the database is blind to votes only as long as it is honest about the public key it hands out.
 # Voters in this lab receive n from the server and have no independent copy to compare it with.

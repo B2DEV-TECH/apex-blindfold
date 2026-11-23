@@ -1,5 +1,5 @@
 # H3 (b): can a DBA tell Enc(0) from Enc(1)?
-# generated: 2026-11-23T12:48:38.719Z
+# generated: 2026-11-23T15:44:02.069Z
 # seed 20261123
 # The harness labels each stored ciphertext with the plaintext only it knows, then plays the DBA.
 # Each test asks: is this quantity distributed differently for Enc(0) and for Enc(1)?
@@ -15,19 +15,19 @@ distinguisher                                          statistic      p-value   
 ------------------------------------------------------------------------------------------------
 length in hex characters                                      1          -      constant (1024): carries no information
 repeated ciphertexts                                          0          -      4000 distinct values among 4000
-highest hex digit                                        8.5033    8.61e-1   no signal
-lowest hex digit                                        10.9282    7.58e-1   no signal
-lowest byte                                            261.4660    3.77e-1   no signal
-number of 1 bits (mean)                                 -0.0730    9.42e-1   no signal   Enc(0) 2047.43, Enc(1) 2047.51
-position in [0, n^2) (Kolmogorov-Smirnov)                0.0155    9.69e-1   no signal
-c mod n, position in [0, n) (Kolmogorov-Smirnov)         0.0175    9.17e-1   no signal
-c mod 3                                                  1.3723    5.04e-1   no signal
-c mod 5                                                 10.4856    3.30e-2   no signal
-c mod 7                                                  3.6050    7.30e-1   no signal
-c mod 11                                                11.9701    2.87e-1   no signal
-c mod 13                                                 6.3234    8.99e-1   no signal
-Jacobi symbol (c | n), 400 per class                     0.3201    5.72e-1   no signal
-logistic regression on 256 bits, held-out accuracy       0.5155    1.66e-1   no signal   1031/2000 correct, 95% interval 49.4% to 53.7%
+highest hex digit                                        3.6672    8.17e-1   no signal
+lowest hex digit                                        36.9975    1.27e-3   no signal
+lowest byte                                            292.3324    5.39e-2   no signal
+number of 1 bits (mean)                                 -0.8755    3.81e-1   no signal   Enc(0) 2046.80, Enc(1) 2047.68
+position in [0, n^2) (Kolmogorov-Smirnov)                0.0225    6.87e-1   no signal
+c mod n, position in [0, n) (Kolmogorov-Smirnov)         0.0235    6.34e-1   no signal
+c mod 3                                                  0.1441    9.30e-1   no signal
+c mod 5                                                  5.2996    2.58e-1   no signal
+c mod 7                                                  2.7886    8.35e-1   no signal
+c mod 11                                                18.8841    4.18e-2   no signal
+c mod 13                                                 2.7012    9.97e-1   no signal
+Jacobi symbol (c | n), 400 per class                     0.9801    3.22e-1   no signal
+logistic regression on 256 bits, held-out accuracy       0.5140    2.10e-1   no signal   1028/2000 correct, 95% interval 49.2% to 53.6%
 
 Positive control 1: c = (1 + m n) * r mod n^2   (the randomizer is not raised to the power n)
 
@@ -35,19 +35,19 @@ distinguisher                                          statistic      p-value   
 ------------------------------------------------------------------------------------------------
 length in hex characters                                      1          -      constant (1024): carries no information
 repeated ciphertexts                                          0          -      1200 distinct values among 1200
-highest hex digit                                     1029.1022  8.90e-211   DISTINGUISHES
-lowest hex digit                                       382.8043   2.82e-72   DISTINGUISHES
-lowest byte                                            507.4726   2.66e-20   DISTINGUISHES
-number of 1 bits (mean)                               -630.2902    0.00e+0   DISTINGUISHES   Enc(0) 1023.38, Enc(1) 2045.69
+highest hex digit                                      936.4985  6.29e-198   DISTINGUISHES
+lowest hex digit                                       415.2468   4.31e-79   DISTINGUISHES
+lowest byte                                            534.2937   1.24e-24   DISTINGUISHES
+number of 1 bits (mean)                               -624.6300    0.00e+0   DISTINGUISHES   Enc(0) 1023.94, Enc(1) 2045.90
 position in [0, n^2) (Kolmogorov-Smirnov)                     1  8.10e-265   DISTINGUISHES
-c mod n, position in [0, n) (Kolmogorov-Smirnov)         0.0450    5.69e-1   no signal
-c mod 3                                                  0.2439    8.85e-1   no signal
-c mod 5                                                  0.8132    9.37e-1   no signal
-c mod 7                                                874.9280  9.88e-186   DISTINGUISHES
-c mod 11                                                 6.0351    8.12e-1   no signal
-c mod 13                                                14.6483    2.61e-1   no signal
-Jacobi symbol (c | n), 100 per class                     0.5061    4.77e-1   no signal
-logistic regression on 256 bits, held-out accuracy       0.9933  4.80e-129   DISTINGUISHES   596/600 correct, 95% interval 98.3% to 99.7%
+c mod n, position in [0, n) (Kolmogorov-Smirnov)         0.0533    3.52e-1   no signal
+c mod 3                                                  1.1155    5.72e-1   no signal
+c mod 5                                                  1.3849    8.47e-1   no signal
+c mod 7                                                  4.2255    6.46e-1   no signal
+c mod 11                                                16.8051    7.88e-2   no signal
+c mod 13                                              1001.8349  7.56e-207   DISTINGUISHES
+Jacobi symbol (c | n), 100 per class                     0.5041    4.78e-1   no signal
+logistic regression on 256 bits, held-out accuracy       0.9967  9.08e-131   DISTINGUISHES   598/600 correct, 95% interval 98.8% to 99.9%
 
 Positive control 2: c = (1 + m n) mod n^2   (no randomizer at all)
 
@@ -58,7 +58,7 @@ repeated ciphertexts                                       1198          -      
 highest hex digit                                             0    1.00e+0   no signal
 lowest hex digit                                           1200  6.10e-263   DISTINGUISHES
 lowest byte                                                1200  6.10e-263   DISTINGUISHES
-number of 1 bits (mean)                              -1000000000    0.00e+0   DISTINGUISHES   Enc(0) 1.00, Enc(1) 1001.00
+number of 1 bits (mean)                              -1000000000    0.00e+0   DISTINGUISHES   Enc(0) 1.00, Enc(1) 1035.00
 position in [0, n^2) (Kolmogorov-Smirnov)                     1  8.10e-265   DISTINGUISHES
 c mod n, position in [0, n) (Kolmogorov-Smirnov)              1  8.10e-265   DISTINGUISHES
 c mod 3                                                    1200  6.10e-263   DISTINGUISHES

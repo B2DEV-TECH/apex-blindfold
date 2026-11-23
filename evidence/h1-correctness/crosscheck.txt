@@ -1,14 +1,14 @@
 # H1: cross-check against an independent implementation
-# generated: 2026-11-23T12:47:44.641Z
+# generated: 2026-11-23T15:43:03.639Z
 # reference: tests/crosscheck/paillier_ref.py, Python 3.13.15, standard library only
 # the reference shares no code with the JavaScript library: other language, other big-number arithmetic, other random source
 
 Part 1. JavaScript (BigInt) against Python (built-in int), 2048-bit key
-  public key n = c553a5078ce027f0522a742dff108591...0e53e603b7790637 (2048 bits)
+  public key n = ad652396d7e79f3e1c3e8ab918a41029...247bee979902dafb (2048 bits)
   ok   key derivation agrees (n, lambda, mu): Python derives the same n, lambda and mu from p and q
   ok   JavaScript encrypts, Python decrypts: 60 messages, including 0, 1, n-1 and random values
   ok   Python encrypts, JavaScript decrypts: 60 messages
-  ok   homomorphic sum agrees bit for bit: product of 60 ciphertexts: same 1024-digit number in both languages, decrypts to the sum modulo n
+  ok   homomorphic sum agrees bit for bit: product of 60 ciphertexts: same 1022-digit number in both languages, decrypts to the sum modulo n
   ok   scalar multiplication agrees bit for bit: Enc(1000)^888824 decrypts to 888824000
 
 Part 2. The database (Java BigInteger) against Python, on real elections

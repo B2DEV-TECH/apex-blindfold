@@ -1,5 +1,5 @@
 # H2: APEX session state
-# generated: 2026-11-23T12:48:19.592Z
+# generated: 2026-11-23T15:43:39.689Z
 # election: 12 registered voters, 9 ballots cast in the browser, 2048-bit key, debug LEVEL9
 # APEX_260200.WWV_FLOW_DATA holds the value of every page and application item of every session.
 # The application has no page item and no application item: the voter code and the options are plain HTML,
@@ -25,8 +25,8 @@ Sessions of the two browsers (APEX_260200.WWV_FLOW_SESSIONS$, cookie and salt co
 
   ID    USERNAME  CREATED_ON           REMOTE_ADDR        DEBUG_LEVEL  ON_NEW_INSTANCE_FIRED_FOR
   ----  --------  -------------------  -----------------  -----------  -------------------------
-  <id>  nobody    2026-11-23 12:47:45  [0:0:0:0:0:0:0:1]               2620i
-  <id>  nobody    2026-11-23 12:47:48  [0:0:0:0:0:0:0:1]               2620i
+  <id>  nobody    2026-11-23 15:43:05  [0:0:0:0:0:0:0:1]               2620i
+  <id>  nobody    2026-11-23 15:43:07  [0:0:0:0:0:0:0:1]               2620i
 
   2 rows selected
 

@@ -7,9 +7,9 @@
     "ballots": 9,
     "ciphertexts": 27,
     "secrets": 35,
-    "search_windows": 90902,
+    "search_windows": 89358,
     "sources": 21,
-    "characters_searched": 17369123,
+    "characters_searched": 17368663,
     "long_numbers_tested": 80,
     "findings": 0,
     "requests": 231,
@@ -19,8 +19,8 @@
     "debug_messages": 4423,
     "activity_rows": 19,
     "sql_statements": 172,
-    "captured_binds": 496,
-    "keygen_draws": 625,
+    "captured_binds": 481,
+    "keygen_draws": 818,
     "canary": {
       "table": true,
       "network": true,
@@ -45,7 +45,7 @@
     {
       "name": "the test knows the private key: key generation replayed from the bytes the tab drew",
       "pass": true,
-      "detail": "625 draws replayed, modulus equals ELECTION_KEY.n_hex: true"
+      "detail": "818 draws replayed, modulus equals ELECTION_KEY.n_hex: true"
     },
     {
       "name": "the test knows the randomizer of every ciphertext: each one recomputed bit for bit",
@@ -70,7 +70,7 @@
     {
       "name": "ballot requests differ only in the voter code and in three ciphertexts of fixed length",
       "pass": true,
-      "detail": "9 CAST_BALLOT requests, fields \"f01 p_debug p_flow_id p_flow_step_id p_instance p_json p_request x01\", 3290 bytes each whatever the choice"
+      "detail": "9 CAST_BALLOT requests, fields \"f01 p_debug p_flow_id p_flow_step_id p_instance p_json p_request x01\", 3289 bytes each whatever the choice"
     },
     {
       "name": "the JavaScript the browsers ran is the JavaScript of this repository",
@@ -95,7 +95,7 @@
     {
       "name": "APEX logs, SQL area, captured binds, audit trail and alert log hold no secret",
       "pass": true,
-      "detail": "19 activity rows, 0 logins, 172 statements, 496 captured binds, audit 0, alert 0"
+      "detail": "19 activity rows, 0 logins, 172 statements, 481 captured binds, audit 0, alert 0"
     },
     {
       "name": "storage, cookies, form fields and HTML of the tabs hold no secret",
@@ -124,6 +124,6 @@
     "h2-blindness/client-side.txt",
     "h2-blindness/controls.txt"
   ],
-  "started": "2026-11-23T12:47:45.353Z",
-  "finished": "2026-11-23T12:48:19.671Z"
+  "started": "2026-11-23T15:43:04.406Z",
+  "finished": "2026-11-23T15:43:39.772Z"
 }

@@ -2,16 +2,16 @@
   "id": "H5",
   "hypothesis": "Other limits: a DBA can add votes, a key holder can read ballots, voters can be re-linked",
   "verdict": "CONFIRMED",
-  "statement": "All three limits hold: a DBA with the public key moved 5 votes with two UPDATEs and the totals still matched the turnout; the key holder read 24/24 individual ballots; ordering by voted_at and ballot_id re-linked 24/24 voters arriving one at a time (44/200 exactly, 200/200 within 7 positions, when 8 sessions vote at once).",
+  "statement": "All three limits hold: a DBA with the public key moved 5 votes with two UPDATEs and the totals still matched the turnout; the key holder read 24/24 individual ballots; ordering by voted_at and ballot_id re-linked 24/24 voters arriving one at a time (59/200 exactly, 199/200 within 7 positions, when 8 sessions vote at once).",
   "numbers": {
     "ballots_read": 24,
     "ballots": 24,
     "relinked_sequential": 24,
-    "relinked_concurrent": 44,
+    "relinked_concurrent": 59,
     "concurrent_voters": 200,
     "concurrent_sessions": 8,
-    "concurrent_within_window": 200,
-    "concurrent_farthest_miss": 7,
+    "concurrent_within_window": 199,
+    "concurrent_farthest_miss": 8,
     "tally_honest": [
       6,
       7,
@@ -27,6 +27,23 @@
       "worked": true,
       "ballots_read": 4,
       "ballots_exposed": 4
+    },
+    "extra_key_loss": {
+      "link_kept_the_tab": true,
+      "lost_by_reload": true,
+      "questions": [
+        "beforeunload"
+      ],
+      "tally_before_reload": [
+        1,
+        2,
+        0
+      ],
+      "true_tally": [
+        1,
+        2,
+        0
+      ]
     }
   },
   "mode": {
@@ -66,15 +83,17 @@
     }
   ],
   "notes": [
-    "(c) with 8 database sessions casting at the same time: 44/200 voters paired with their own ballot (22.0%), 200/200 within 7 positions, farthest miss 7",
-    "extra (not in the original list): a DBA who swaps the public key read 4/4 ballots cast meanwhile, and the final tally was still correct (A=2  B=3  C=5)"
+    "(c) with 8 database sessions casting at the same time: 59/200 voters paired with their own ballot (29.5%), 199/200 within 7 positions, farthest miss 8",
+    "extra (not in the original list): a DBA who swaps the public key read 4/4 ballots cast meanwhile, and the final tally was still correct (A=2  B=3  C=5)",
+    "extra (not in the original list, found in the live session): the private key lives in one browser tab. A link of the Tally page opened beside the tab, which then decrypted the right totals (A=1  B=2  C=0); after a reload of the tab the 3 encrypted totals could still be fetched and could not be decrypted"
   ],
   "evidence": [
     "h5-limits/b-key-holder-reads-ballots.txt",
     "h5-limits/c-relinking.txt",
     "h5-limits/a-dba-adds-votes.txt",
-    "h5-limits/extra-key-substitution.txt"
+    "h5-limits/extra-key-substitution.txt",
+    "h5-limits/extra-key-loss.txt"
   ],
-  "started": "2026-11-23T12:48:55.973Z",
-  "finished": "2026-11-23T12:49:43.518Z"
+  "started": "2026-11-23T15:44:22.201Z",
+  "finished": "2026-11-23T15:45:18.499Z"
 }

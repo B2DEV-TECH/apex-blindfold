@@ -1,5 +1,5 @@
 # H2: what the browsers sent
-# generated: 2026-11-23T12:48:19.598Z
+# generated: 2026-11-23T15:43:39.696Z
 # election: 12 registered voters, 9 ballots cast in the browser, 2048-bit key, debug LEVEL9
 # source: HAR recorded by Playwright in both browser contexts (authority.har and voter.har in this folder)
 
@@ -7,19 +7,19 @@ requests: 76 by the authority browser, 155 by the voter browser, all to one orig
 static files (scripts, styles, fonts, images): 212 GET requests
 distinct query strings of static files (searched like everything else):
   ?v=26.2.0
-  ?p_app_id=2620&p_lang=en&p_version=26.2.0-69648050&p_nls_settings=eyJudW1lcmljQ2hhcmFjdGVycyI6Ii4sIiwiY3VycmVu… (178 characters)
-  ?p_app_id=2620&p_version=26.2.0-69648050
+  ?p_app_id=2620&p_lang=en&p_version=26.2.0-69790869&p_nls_settings=eyJudW1lcmljQ2hhcmFjdGVycyI6Ii4sIiwiY3VycmVu… (178 characters)
+  ?p_app_id=2620&p_version=26.2.0-69790869
 
 Pages and Ajax calls of the authority browser:
 
   METHOD  PATH                                                PROCESS          STATUS  TYPE              SENT_BYTES
   ------  --------------------------------------------------  ---------------  ------  ----------------  ----------
   GET     /ords/r/blindfold/blindfold/tally?debug=LEVEL9                       200     text/html         0
-  POST    /ords/wwv_flow.ajax?p_context=blindfold/tally/<id>  ELECTION_INFO    200     application/json  190
-  POST    /ords/wwv_flow.ajax?p_context=blindfold/tally/<id>  OPEN_ELECTION    200     application/json  714
-  POST    /ords/wwv_flow.ajax?p_context=blindfold/tally/<id>  ELECTION_INFO    200     application/json  190
-  POST    /ords/wwv_flow.ajax?p_context=blindfold/tally/<id>  ENCRYPTED_TALLY  200     application/json  192
-  POST    /ords/wwv_flow.ajax?p_context=blindfold/tally/<id>  ELECTION_INFO    200     application/json  190
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/tally/<id>  ELECTION_INFO    200     application/json  189
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/tally/<id>  OPEN_ELECTION    200     application/json  713
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/tally/<id>  ELECTION_INFO    200     application/json  189
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/tally/<id>  ENCRYPTED_TALLY  200     application/json  191
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/tally/<id>  ELECTION_INFO    200     application/json  189
 
   6 rows selected
 
@@ -28,18 +28,18 @@ Pages and Ajax calls of the voter browser:
   METHOD  PATH                                                 PROCESS        STATUS  TYPE              SENT_BYTES
   ------  ---------------------------------------------------  -------------  ------  ----------------  ----------
   GET     /ords/r/blindfold/blindfold/vote?debug=LEVEL9                       200     text/html         0
-  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    ELECTION_INFO  200     application/json  190
-  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3290
-  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3290
-  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3290
-  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3290
-  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3290
-  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3290
-  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3290
-  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3290
-  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3290
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    ELECTION_INFO  200     application/json  189
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3289
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3289
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3289
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3289
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3289
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3289
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3289
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3289
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3289
   GET     /ords/r/blindfold/blindfold/ledger?debug=LEVEL9                     200     text/html         0
-  POST    /ords/wwv_flow.ajax?p_context=blindfold/ledger/<id>  ELECTION_INFO  200     application/json  190
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/ledger/<id>  ELECTION_INFO  200     application/json  189
 
   13 rows selected
 
@@ -47,15 +47,15 @@ The ballot requests, field by field. "choice" is known to the test only: it is n
 
   BALLOT  CHOICE  X01         F01_VALUES  F01_CHARS  BODY_BYTES  OTHER_FIELDS_AS_BALLOT_1  HEADERS_AS_BALLOT_1  RESPONSE
   ------  ------  ----------  ----------  ---------  ----------  ------------------------  -------------------  -------------------------
-  1       C       VOTER-0001  3           1024       3290        identical                 identical            {"ok":true,"ballot_id":1}
-  2       C       VOTER-0002  3           1024       3290        identical                 identical            {"ok":true,"ballot_id":2}
-  3       B       VOTER-0003  3           1024       3290        identical                 identical            {"ok":true,"ballot_id":3}
-  4       B       VOTER-0004  3           1024       3290        identical                 identical            {"ok":true,"ballot_id":4}
-  5       B       VOTER-0005  3           1024       3290        identical                 identical            {"ok":true,"ballot_id":5}
-  6       B       VOTER-0006  3           1024       3290        identical                 identical            {"ok":true,"ballot_id":6}
-  7       B       VOTER-0007  3           1024       3290        identical                 identical            {"ok":true,"ballot_id":7}
-  8       A       VOTER-0008  3           1024       3290        identical                 identical            {"ok":true,"ballot_id":8}
-  9       B       VOTER-0009  3           1024       3290        identical                 identical            {"ok":true,"ballot_id":9}
+  1       C       VOTER-0001  3           1024       3289        identical                 identical            {"ok":true,"ballot_id":1}
+  2       C       VOTER-0002  3           1024       3289        identical                 identical            {"ok":true,"ballot_id":2}
+  3       B       VOTER-0003  3           1024       3289        identical                 identical            {"ok":true,"ballot_id":3}
+  4       B       VOTER-0004  3           1024       3289        identical                 identical            {"ok":true,"ballot_id":4}
+  5       B       VOTER-0005  3           1024       3289        identical                 identical            {"ok":true,"ballot_id":5}
+  6       B       VOTER-0006  3           1024       3289        identical                 identical            {"ok":true,"ballot_id":6}
+  7       B       VOTER-0007  3           1024       3289        identical                 identical            {"ok":true,"ballot_id":7}
+  8       A       VOTER-0008  3           1024       3289        identical                 identical            {"ok":true,"ballot_id":8}
+  9       B       VOTER-0009  3           1024       3289        identical                 identical            {"ok":true,"ballot_id":9}
 
   9 rows selected
 
@@ -68,7 +68,7 @@ One complete ballot request, as sent (ciphertexts wrapped for display, cookie va
   Accept-Encoding: gzip, deflate, br, zstd
   Accept-Language: en-US,en;q=0.9
   Connection: keep-alive
-  Content-Length: 3290
+  Content-Length: 3289
   Content-Type: application/x-www-form-urlencoded; charset=UTF-8
   Cookie: ORA_WWV_APP_2620=<masked>
   Host: <host>
@@ -89,46 +89,46 @@ One complete ballot request, as sent (ciphertexts wrapped for display, cookie va
   p_debug        = LEVEL9
   p_request      = APPLICATION_PROCESS=CAST_BALLOT
   x01            = VOTER-0001
-  f01            = 70150ff08ac6bdba5f0bf07661f6961026072863ace00e6370dd2b693f6d59039d43cd1069da310e4dc1c7cbf3d749ba
-                   571402529b0b7f437dd4ce1272d200da6e8e505c4ad266d3bc8af0091d5a2ba2114d74aa57d3dde7f40d5fcf20162855
-                   df591b2c49acd709a722bccaa2171fd835391fc7d2b902bde941749667e56bfbafc9dd29de1e1e68e1fd84e333924218
-                   86dcd414e42d1ed089331f8e3564cf4952a32e06c4acb4f0162f4e4c0e024d71d1c12a65986a97057367f2311c456327
-                   64c20175292582b893eb2477bcfc16e3561f35321fd3d648c4e98593cca74c41d61d48e18ed0012084da07930c19b0c3
-                   08be1dc3c16879646801cd7e574c175a990a5bebe02bede462c1b881dbeee7a556aa06c7c21a1cf474cd5ed7a9d11de3
-                   af1919c87888b771f5a6a41ee210edc185e67641871f52d7f18a06dd7b88892ae2323b4d1c6dfbc8b88e0acac68818ad
-                   ca7e1a391e18c2d360ce763c30039e21db101360a5ef1fc92da53a2947963ef5c867d1586e1555e64e110136f942da0c
-                   38ac8ffd8596b083121b274e95f42f135bfa488b58bdd83ad1f564dfcab1efae568361c65f7af41c35a83173e119e772
-                   ceab3069cbebba6916690119739c8722086310fdabca0beebf4e2a9b6a7d8f350287b6d8ac74424fafee063f4edaea2e
-                   97621df1664884b199fbd68e1fbf4929f757dfb88f1554b8d51c0ddced58d546
-  f01            = 9784b58729d3d4aef5e22f78ecd216d5b19ea1240a1ffa1f00da589f627bec77fb1870124ffc1569e4699a4de0a11c60
-                   50ff5cc928d1220118e35eeeb66cb157924b380b8bab2e1a04ed5ffbc68f9eacbe880ead0ce2a1d3f6e6dc81aff095db
-                   ce81862885dfe8ef890401c1159a690981b38d5836918122835288b20fda7a2cdb5c657fcc2e963f4e58b390865498da
-                   7930d492a5bf020cc42529c9fc4431d157c70f3636b377edb0d188d57243bc18dd74d776d7ff0a92d397f74ce236911e
-                   9be40b58c0cc77d89fe21b30c17d1780623512f6a891bd8231309f89227d10332a0a264d35485481cb4a0d03e46c3024
-                   39cc57e9c2bfd2d221228953073e8837e331b678dd5d433ebb9264e454aae6410bee1891aba0935a4d14f0a0bfacc1b0
-                   0c9afb4a8432dc02eef0c0f52dab7a34ae2004644d164f514b16514b61b42b9b9d082856f40a63ce000a2cd15bf6be63
-                   aa53b371c96b178984bd9229a7beec5a45246061a751dc3fa38f83a1774555b22c5cd58a1816a5fe9fc2514ef5461190
-                   6ef1ae5a0ac963f050768e14a816e89b4d3d3dd93ce23ed6d7f4ec6c75b2dbcef61000087e2ec049e4d0d34573fa15aa
-                   294a78484db24d77108fdbc55c7db9ed7ef71b665ea915a89aa1c6c299162b825d57247162af2b228e7fee69bb73cc37
-                   11586ebf7b61ecf706f28e863d5f433ecc2647e6a12ebac4758fac892a4fe061
-  f01            = 203f04c3fdc474c7f903779a6a4e352e11d3804a13cf71ece68472345e75bce437696b547c482cefc5e2e08038bdc3cb
-                   f140ce58aa445d0fbd1779328e4b9ed90699483c35488b1f8b14daa2aaf72a51ddf6a8137e3a25160a5140dc0fe9b8ec
-                   0d6732344ade9e5d3312ba905623c976edc17cdd8735dabe90b081bf4ae2af235f1fe4ff7c5bd1e395e64af0a1d08e29
-                   cea7ee2ae973a5a5d3aa1366a9b161d6a37b67ab33b4df1a4347d1df425d9259495218f3fbea947144e4b971d13e9bbd
-                   18a5aeb97a4a142d9f4b050f55e2f1d66edf285e06e72c018dadede7e1b72551338f14ecc5e86141a003cb41a0b69fc8
-                   e36accd0764977c871dd049eb6d5301ea146c7e114f3a6cbbe6160e4f7f836abdd432acc6a87839e5893bd087f2a9e93
-                   a30fa951052a293368de78d1095e7a876b2df08ff508319db03e354f8f97fa500831bab1c0cfa6d8230055b7e6a2a711
-                   aa91bceffd121bb7631a367b4d48a2fb1ed0829f8ad57bb2d4d96f24ee724dcbb8dde49cf3d763a178bd73b9548fefd9
-                   8da6ca6468557bc42be79ddb227b7b4bbd5dce8625eaae011c3a4a8d7ccc8c2d6c3324958e8f60da1d6296abadb46a21
-                   2f867dd85744c3c1a9f5b4984cff7fedea82f73e6e137b08a78059d99934ac7c035bc8415fb4cf727c6203449ed32b1e
-                   1ae69a7b14676499d2622dcda1bb249f5fb3e9c3dcda25bda68f658aa40c87a3
+  f01            = 196387dd65b9937958f0ddcff1ebc2e28de1ecfdffd85f39b379a1e40985ad1cae7e76c48686bbe13b95964b662a98d7
+                   4511eb8aaae30ddc89279cd053de52955dd74ad9e979c14fc7f0a33bc4d0ac99239fb4e5b3643a2e98a38da508582694
+                   bfec2300f9bea3b99c456fb3e9c506a2f53a152c03c6be8e0d7907bbc2f55003b98ba1b830d3fcb43fb709b409f70b83
+                   9137eb22ef94722daeb37175c6e03059ddd376d8b69d2a4f5ea2e7da18f9df333738093fed87b23680d1fa6ae377bbac
+                   24d288622a96b632f56d693ac25c50162700ea3dea05ebc0646a599b2a32233937393374eae652fbec587c1a890109fb
+                   9f41aabae4ab4fcbb35a44a6c56b62a879ca4d7435ab2a72fb6ac3f95a5c606b6d95ad2829763d2a897fb1658e883556
+                   d9f2851004ee0541e1487ac9019d90f98a9d495175867a46071c3ceceeb658e7855aeaafc24826a39414e8b9dad2f5a0
+                   4a4f762b66494021bdb2af2cc470ee87bbed67bb6a55d3f18f5a1514c82de4f42223ad83a4602959a5f885176d60509d
+                   adae2b2c06aaa8fd9881f9559f0332d648a9ca5c2f721c2789fa8bae9e7a8e07d5dd79b9442ab8e71b5b6d22143b2f7a
+                   27ada0de8021adba753cd5878cac9197730aba947ae08405773a32561eb98dddedfc62cae3bc083a1121519e617672a4
+                   71570266e287b9cdae8432dc4a1670740f7e0c4127e56e782176240e6503d511
+  f01            = 3b271eb59cf84e796ad578e75dcfaf952bda42f674b046afc986db1fc1946cbb046adc86a63e58c393c6789c434e3ac4
+                   0c4b02d29feb877f7d140aaa92ff41364ff0bbdb9488e08ac12497a4d04c1c83f147037d7f2bcfbd35a26b0eda107e83
+                   20cc2c3b0a66ba2f45a9ab084caccdcd70f79189f07ccd6300d5d4a1d258c6dc670ee350fc48256ef9d01a67db5a9243
+                   59cb66e24ba7516f165fb631f06d8d286624e3dea656643d834f30693ee60fffdeeec3d06f0bbc9e14f0bdba8afb8f7e
+                   f5eb1144a573ec296a6b9ed7d9bb8525120cab2068b38a8cbf588114790dca14c72970b3e6d24100a66481b525fd7c02
+                   7398a0427dbaa59eb9fce2a9553428cd146492a2d3e2899e9d3d6859dd56947cef72dccab9d0ea4860c1bda63ad1f7e1
+                   ad175bee79fadf9618f90b41ce378935964b8374b771b1619e197b8261d287177c598e750baa8edcd0e9f9c24513fa27
+                   44754bd0f3ddbf330b919e328b7c780b60821d9b4e32595fb44214021f330da18ad614a9b621c4370e90b72a72c56f8e
+                   58cd96ab59caac54bbabbe84062487298d2c451d712291cb2fa907d3b1c7720c3a1bcb38191f8850dfd070c63b34dfbe
+                   f0faea8db5c50f0cd2325c5e7399778463f186d65bd47355b4643d9dc04e83ecab4b3623a979045108dbb9afbd3a5af3
+                   6aa5881c83a08407af3bd8a2ce7a4b20e8b9edd635f52e3da4cc03e6b38b3ecc
+  f01            = a4872ac1d504f814f12b683d84fda409a0198a80b64261c8f7cbb0bdfbf4b3e8b6cfe73a7f7e8e62a42689c9382f5bf2
+                   c582cbffaf7d16427d82cdca73d0fba0b888d7d6a10f20d0f8c01e7b66c5c49f2ab8483f9dc3d48f3b5d0eab088624ce
+                   9868260ec66b539b49412b147b1327b4ef8953d6f9f31ba30f7633c306df530b62876a1ff7f309b0affdf446a78ef183
+                   aed007c1f2794414e38b7b0f992b911b388a2be0cc200483a3e8be350036872b038c1a9c2f9e6f88e8cf26befb3da024
+                   c6b3cc9d2a2ad8510e8ce4cc3541814e7448827ef4cd960b10ab86f6832ce2686837c6a48155faf007f078f00d4f3356
+                   7512813d424f1be6a038480c3d91dcd17b9dec48c435ecfda4132781abbe537394abfe8831f8b65c621fa8d7a00d7e6c
+                   3df10e5bee4cae5e2fe1bb611bf924675172c84a217d6744ef9547240d314ac3c3f349da4ff49182ec40fc8d82dba769
+                   51ac1affc776845b6023c29434a8b34dc1b8a1695ad6bd57d4f804a03fbee88b89388ee20f7028f8929dc6d66a0dff3b
+                   e6cc36a503af78ef30b70da8bb4b031d8d77e16623dceb98c62355c39be9b72c7cf81d4d23301441467b30c378cdb2f1
+                   2c7740311fa4186326131df7ec5b48b97a6c5d444afe4890521272c861a6b7a1516236f54224e29293d018d292efa739
+                   b9a6b4aac44d140405f4450c6f8d7e4644eb10b67edb0a269fe3ad049da539ff
   p_json         = {"salt":"<id>"}
 
 The JavaScript the browsers ran, against the files of this repository (SHA-256, first 16 characters, line endings normalized):
 
   FILE          SHA256_SERVED     SHA256_REPOSITORY  SAME
   ------------  ----------------  -----------------  ----
-  authority.js  f60194c2e0f75bc7  f60194c2e0f75bc7   yes
+  authority.js  e491ce214db8dfc3  e491ce214db8dfc3   yes
   boot.js       db5d06e2e9401be8  db5d06e2e9401be8   yes
   ledger.js     189f893685a19706  189f893685a19706   yes
   paillier.js   7607af449d31c034  7607af449d31c034   yes

@@ -1,5 +1,5 @@
 # H2: where the private key is not, inside the browser
-# generated: 2026-11-23T12:48:19.668Z
+# generated: 2026-11-23T15:43:39.769Z
 # election: 12 registered voters, 9 ballots cast in the browser, 2048-bit key, debug LEVEL9
 # The key pair is a variable of one JavaScript module in the authority tab. This file shows the places
 # it must never reach: storage, cookies, form fields (APEX page items are form fields) and the page itself.
@@ -24,7 +24,7 @@ authority tab
     pPageFormRegionChecksums   name=(none)                 type=hidden  value="[]"
     pPageItemsRowVersion       name=(none)                 type=hidden  value=""
     pPageItemsProtected        name=(none)                 type=hidden  value=<87 characters, searched>
-  page HTML searched: 17051 characters
+  page HTML searched: 17415 characters
 
 voter tab
   localStorage:   {}
@@ -35,7 +35,7 @@ voter tab
     pFlowId                    name=p_flow_id              type=hidden  value="2620"
     pFlowStepId                name=p_flow_step_id         type=hidden  value="1"
     pInstance                  name=p_instance             type=hidden  value="<id>"
-    pPageSubmissionId          name=p_page_submission_id   type=hidden  value=<139 characters, searched>
+    pPageSubmissionId          name=p_page_submission_id   type=hidden  value=<138 characters, searched>
     pRequest                   name=p_request              type=hidden  value=""
     pReloadOnSubmit            name=p_reload_on_submit     type=hidden  value="S"
     pContext                   name=(none)                 type=hidden  value="blindfold/vote/<id>"
@@ -45,6 +45,6 @@ voter tab
     pPageFormRegionChecksums   name=(none)                 type=hidden  value="[]"
     pPageItemsRowVersion       name=(none)                 type=hidden  value=""
     pPageItemsProtected        name=(none)                 type=hidden  value=<87 characters, searched>
-  page HTML searched: 15971 characters
+  page HTML searched: 15969 characters
 
 stores in use (localStorage + sessionStorage + IndexedDB + Cache Storage): authority 0, voter 0

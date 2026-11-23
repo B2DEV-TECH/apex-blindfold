@@ -1,5 +1,5 @@
 # H4: ballot stuffing
-# generated: 2026-11-23T12:48:55.582Z
+# generated: 2026-11-23T15:44:21.233Z
 # The attacker is an ordinary registered voter with a browser console. No database access.
 # Server-side validation in bf_election.cast_ballot: fixed width, lower-case hexadecimal, 0 < c < n^2.
 # A ciphertext of 1000 passes all three, exactly like a ciphertext of 1.
@@ -11,18 +11,18 @@ Election X: one ballot worth a thousand votes
   database answer: {"ok":true,"ballot_id":10}
   tally after the attack:                                 A=1004  B=3  C=2
   turnout in VOTER_ROLL: 10    sum of totals: 1009
-  Tally page message: Decrypted in 190 ms. 1,009 votes from 10 voters: these totals cannot come from honest ballots. Some ciphertext did not encrypt 0 or 1, and the tally accepted it.
+  Tally page message: Decrypted in 97 ms. 1,009 votes from 10 voters: these totals cannot come from honest ballots. Some ciphertext did not encrypt 0 or 1, and the tally accepted it.
 
   The last honest ballot (9) and the stuffed ballot (10), as the DBA sees them:
 
   BALLOT_ID  CANDIDATE_ID  HEX_CHARS  VOTE_ENC
   ---------  ------------  ---------  ---------------------------------
-  9          1             1024       2301df3609c86f859376...b4d135270f
-  9          2             1024       551aef73949a11d8ff58...87da347fae
-  9          3             1024       912dfa95f019a80481e6...22cfd07d38
-  10         1             1024       14d923b9a84d0edd1ffc...b8aacb001c
-  10         2             1024       330dc6c1a8311e33cab7...81fd01424e
-  10         3             1024       70893c913d37bca97fac...de502f83c6
+  9          1             1024       3451e3dd8d514d316bfc...021538422e
+  9          2             1024       004e733703e1bbf11c50...e0feed6980
+  9          3             1024       2c86d17f602a308bb63e...10dd25c6af
+  10         1             1024       51d50efb8aee5f6a3751...181decbe91
+  10         2             1024       3e882cc56e949af8d10d...971bf19dc6
+  10         3             1024       59a2baba657b20056561...aab1a514e1
   
   6 rows selected
   
@@ -33,18 +33,18 @@ Election Y: a ballot that keeps the totals plausible
   database answer: {"ok":true,"ballot_id":10}
   tally after the attack:                                 A=7  B=1  C=2
   turnout in VOTER_ROLL: 10    sum of totals: 10
-  Tally page message: Decrypted in 95 ms. 10 votes from 10 voters.
+  Tally page message: Decrypted in 94 ms. 10 votes from 10 voters.
 
   The last honest ballot (9) and the stuffed ballot (10), as the DBA sees them:
 
   BALLOT_ID  CANDIDATE_ID  HEX_CHARS  VOTE_ENC
   ---------  ------------  ---------  ---------------------------------
-  9          1             1024       0ba25399c3a7144434d5...c28ca5b6fb
-  9          2             1024       10e2b831b2db63682695...427e56b409
-  9          3             1024       322b6d629158778bed40...44d5357974
-  10         1             1024       02585b90a293bfe9b66c...fcfbe668bf
-  10         2             1024       66c339610143a0f86cc8...944732ac04
-  10         3             1024       31a0cb00e0db593a3e2d...5d9a002bf4
+  9          1             1024       6ffb8850184f17d2842d...4cee285efc
+  9          2             1024       09255d77da7dda4cec20...996865155e
+  9          3             1024       797a79ea3c96a69d9c4f...a7b11a4870
+  10         1             1024       65295be0862ce9842d18...952e4f57d6
+  10         2             1024       0a9b2d674776e606c3f5...cf16b778ca
+  10         3             1024       09b778c5b8df4484fd78...741efec113
   
   6 rows selected
   

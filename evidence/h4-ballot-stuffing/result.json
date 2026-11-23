@@ -60,7 +60,7 @@
     {
       "name": "this time nothing is flagged: the totals add up to the turnout",
       "pass": true,
-      "detail": "10 votes from 10 voters; page says \"Decrypted in 95 ms. 10 votes from 10 voters.\""
+      "detail": "10 votes from 10 voters; page says \"Decrypted in 94 ms. 10 votes from 10 voters.\""
     }
   ],
   "notes": [],
@@ -69,6 +69,6 @@
     "h4-ballot-stuffing/02-balanced-stuffing-undetected.png",
     "h4-ballot-stuffing/stuffing.txt"
   ],
-  "started": "2026-11-23T12:48:39.424Z",
-  "finished": "2026-11-23T12:48:55.585Z"
+  "started": "2026-11-23T15:44:02.799Z",
+  "finished": "2026-11-23T15:44:21.235Z"
 }

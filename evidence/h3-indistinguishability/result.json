@@ -2,7 +2,7 @@
   "id": "H3",
   "hypothesis": "Indistinguishability: identical votes differ, and a DBA cannot tell Enc(0) from Enc(1)",
   "verdict": "CONFIRMED",
-  "statement": "All 6000 stored ciphertexts are distinct, and none of 13 distinguishers separates Enc(0) from Enc(1) on 4000 labelled ciphertexts (classifier accuracy 51.5%). Indistinguishability itself rests on the DCR assumption, which a test cannot prove.",
+  "statement": "All 6000 stored ciphertexts are distinct, and none of 13 distinguishers separates Enc(0) from Enc(1) on 4000 labelled ciphertexts (classifier accuracy 51.4%). Indistinguishability itself rests on the DCR assumption, which a test cannot prove.",
   "numbers": {
     "voters": 2000,
     "ciphertexts": 6000,
@@ -10,8 +10,8 @@
     "labelled_sample": 4000,
     "tests": 13,
     "alpha_per_test": 0.0007692307692307692,
-    "lowest_p": 0.03299614598745912,
-    "classifier_accuracy": 0.5155
+    "lowest_p": 0.001266594168329759,
+    "classifier_accuracy": 0.514
   },
   "mode": {
     "quick": false,
@@ -36,12 +36,12 @@
     {
       "name": "no distinguisher in the battery separates Enc(0) from Enc(1)",
       "pass": true,
-      "detail": "13 statistical tests, family-wise error rate 0.01, lowest p-value 3.30e-2"
+      "detail": "13 statistical tests, family-wise error rate 0.01, lowest p-value 1.27e-3"
     },
     {
       "name": "a trained classifier guesses no better than a coin",
       "pass": true,
-      "detail": "1031/2000 correct, 95% interval 49.4% to 53.7%"
+      "detail": "1028/2000 correct, 95% interval 49.2% to 53.6%"
     },
     {
       "name": "positive control: the battery catches c = (1 + m n) r, the randomizer not raised to n",
@@ -61,6 +61,6 @@
     "h3-indistinguishability/distinct-ciphertexts.txt",
     "h3-indistinguishability/distinguishers.txt"
   ],
-  "started": "2026-11-23T12:48:20.031Z",
-  "finished": "2026-11-23T12:48:38.721Z"
+  "started": "2026-11-23T15:43:40.193Z",
+  "finished": "2026-11-23T15:44:02.070Z"
 }

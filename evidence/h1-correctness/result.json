@@ -36,7 +36,7 @@
     {
       "name": "homomorphic sum agrees bit for bit",
       "pass": true,
-      "detail": "product of 60 ciphertexts: same 1024-digit number in both languages, decrypts to the sum modulo n"
+      "detail": "product of 60 ciphertexts: same 1022-digit number in both languages, decrypts to the sum modulo n"
     },
     {
       "name": "scalar multiplication agrees bit for bit",
@@ -69,6 +69,6 @@
     "h1-correctness/elections.txt",
     "h1-correctness/crosscheck.txt"
   ],
-  "started": "2026-11-23T12:35:57.816Z",
-  "finished": "2026-11-23T12:47:44.642Z"
+  "started": "2026-11-23T15:29:35.393Z",
+  "finished": "2026-11-23T15:43:03.640Z"
 }

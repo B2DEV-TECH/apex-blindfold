@@ -1,5 +1,5 @@
 # H5 (a): a DBA can add votes to any candidate, undetected
-# generated: 2026-11-23T12:49:33.926Z
+# generated: 2026-11-23T15:45:00.204Z
 # The DBA has no private key. Paillier ciphertexts are malleable: multiplying a stored ciphertext
 # by Enc(k) adds k to its plaintext. Enc(k) needs the public key only.
 
@@ -8,14 +8,14 @@ tally before, decrypted by the authority:  A=6  B=7  C=7
 
 Step 1. Add 5 votes to option B, inside an existing ballot
 SQL> update blindfold.blind_ballots set vote_enc = :forged where ballot_id = 5 and candidate_id = 2;
-     old vote_enc  653094ce9c370c2e4355...b1fb903a24
-     new vote_enc  67ad016cf81d2ebade4e...eec1db52bd     (old * Enc(5) mod n^2, 1 row updated)
+     old vote_enc  d0f58d403350565329ab...936c811448
+     new vote_enc  d4c6ad61e6baab7ad722...ce303e239a     (old * Enc(5) mod n^2, 1 row updated)
 tally after step 1:  A=6  B=12  C=7     sum 25, turnout 20: the totals no longer add up
 
 Step 2. Take 5 votes from option A in another ballot, so that the totals add up again
 SQL> update blindfold.blind_ballots set vote_enc = :forged where ballot_id = 12 and candidate_id = 1;
-     old vote_enc  055d8e65aeb0d8852fa1...e161a73e9f
-     new vote_enc  0f0a8a2bed043243decd...62a1a2d4f4     (old * Enc(-5) mod n^2, 1 row updated)
+     old vote_enc  363684f93ccc731dd004...5800ee1083
+     new vote_enc  0303b669ce5698f4f80d...daa5db6cd2     (old * Enc(-5) mod n^2, 1 row updated)
 tally after step 2:  A=1  B=12  C=7     sum 20, turnout 20: plausible, and wrong
 
 Row counts before and after:
@@ -32,9 +32,9 @@ Everything the schema has to protect BLIND_BALLOTS:
 KIND          NAME
 ------------  --------------------------
 constraint R  BLIND_BALLOTS_CANDIDATE_FK
-constraint C  SYS_C0023524
-constraint C  SYS_C0023525
-constraint C  SYS_C0023526
+constraint C  SYS_C0023575
+constraint C  SYS_C0023576
+constraint C  SYS_C0023577
 constraint P  BLIND_BALLOTS_PK
 
 5 rows selected

@@ -1,5 +1,5 @@
 # H2: APEX debug trace at LEVEL9
-# generated: 2026-11-23T12:48:19.594Z
+# generated: 2026-11-23T15:43:39.691Z
 # election: 12 registered voters, 9 ballots cast in the browser, 2048-bit key, debug LEVEL9
 # both pages were opened with ?debug=LEVEL9; rows read as DBA from APEX_260200.WWV_FLOW_DEBUG_MESSAGES and ..._MESSAGES2
 
@@ -21,7 +21,7 @@ Complete trace of one CAST_BALLOT request (149 messages):
   [9] APEX Version=26.2.0
       SID=220
       USER=APEX_PUBLIC_USER
-      ECID=9Y6lHOb7myBZw5m7I_iMCw
+      ECID=RfXnEpIMDKXJmWAyI7StOQ
       PROXY_USER=ORDS_PUBLIC_USER
       INSTANCE=1
       
@@ -140,7 +140,7 @@ Complete trace of one CAST_BALLOT request (149 messages):
   [8] execute p_code=>bf_web.cast_ballot;,p_language=>PLSQL,p_auto_bind_items=>true,p_names.count=>0,p_values.count=>0,p_binds.count=>0,p_parse_as_schema=>BLINDFOLD,p_is_user_schema=>null,p_mle_env=>,p_commit_session_state=>true,p_plugin_cache_key=>
   [8] prepare_array_statement
   [9] statement empty or no bind variables found. exiting.
-  [8] parse_as_user p_cursor=>1058597395,p_username=>BLINDFOLD,p_use_roles=>false
+  [8] parse_as_user p_cursor=>354524977,p_username=>BLINDFOLD,p_use_roles=>false
   [4] begin bf_web.cast_ballot;
       end;
   [8] reset p_keep_sticky_headers=>false
@@ -168,33 +168,33 @@ Complete trace of one CAST_BALLOT request (149 messages):
   [8] clear_context
   [8] retrofit_headers
   [9] body detected in read_htp_headers
-  [8] apex_debug_id p_debug=>38007,level=3
-  [8] add_header p_key=>APEX-Debug-ID,l_name=>Apex-Debug-Id,p_value=>38007,level=3,p_overwrite=>true,p_is_sticky=>true
+  [8] apex_debug_id p_debug=>39057,level=3
+  [8] add_header p_key=>APEX-Debug-ID,l_name=>Apex-Debug-Id,p_value=>39057,level=3,p_overwrite=>true,p_is_sticky=>true
   [4] Log + final commit
   [8] do_commit
   [1] Cursor leak: difference in "opened cursors current" is 2:
   [1] - user=APEX_260200, type=OPEN-RECURSIVE, sql_id=4z6jfdhm5uxr7, sql_text=select longname from javasnm$ where short = :1
   [1] - user=APEX_260200, type=OPEN-RECURSIVE, sql_id=b3h2tykc2588b, sql_text=select longdbcs from javasnm$ where short = :1
   [9] Session Statistics
-      consistent gets               :         285
-      execute count                 :         229
+      consistent gets               :          51
+      execute count                 :         186
       opened cursors current        :           2
-      parse count (total)           :          48
-      physical reads                :           5
-      redo size                     :     313,128
+      parse count (total)           :          20
+      physical reads                :           6
+      redo size                     :     276,912
       sorts (disk)                  :           0
-      sorts (memory)                :          25
-  [9] Memory Usage (total + top 20) :   1,480,320
-      WWV_FLOW                      :     187,496
+      sorts (memory)                :           8
+  [9] Memory Usage (total + top 20) :   1,483,664
+      WWV_FLOW                      :     187,464
       WWV_FLOW_THEME                :     120,032
       WWV_FLOW_WORKFLOW             :     103,680
       WWV_FLOW_PLUGIN               :     101,544
       WWV_FLOW_META_DATA            :     101,288
-      WWV_FLOW_SECURITY             :      94,168
+      WWV_FLOW_SECURITY             :      94,328
       WWV_FLOW_UTILITIES            :      88,680
       WWV_FLOW_EXEC_API             :      69,440
       SYS.WPG_DOCLOAD               :      68,744
-      WWV_FLOW_LANG                 :      65,144
+      WWV_FLOW_LANG                 :      65,128
       WWV_FLOW_SESSION_STATE        :      62,000
       WWV_FLOW_SESSION              :      57,120
       WWV_FLOW_META_DATA            :      50,672
@@ -202,7 +202,7 @@ Complete trace of one CAST_BALLOT request (149 messages):
       WWV_FLOW_PWA                  :      46,912
       WWV_FLOW_AI                   :      46,040
       WWV_FLOW_PLATFORM             :      45,576
+      WWV_FLOW_PAGE                 :      44,264
       WWV_FLOW_UTILITIES            :      41,312
-      WWV_FLOW_PAGE                 :      41,032
       WWV_FLOW_AUTHENTICATION       :      39,120
   [8] reset_globals
