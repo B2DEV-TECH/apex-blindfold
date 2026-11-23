@@ -1,0 +1,12 @@
+{
+  "connect": "localhost:1521/FREEPDB1",
+  "schema": "BLINDFOLD",
+  "schema_password": "choose-a-password",
+  "dba": "BLINDFOLD_DBA",
+  "dba_password": "choose-another-password",
+  "workspace": "BLINDFOLD",
+  "ws_admin": "BF_ADMIN",
+  "ws_admin_password": "choose-a-third-password",
+  "ords_base": "http://localhost:8080/ords",
+  "app_id": 2620
+}
