@@ -97,6 +97,45 @@ What changed in the lab because of this:
   votes. It also corrects its step 5.4, which promised that the warning would disappear after the
   second dishonest ballot. With the ballot of a thousand still in the sum, it does not.
 
+## In his words
+
+Portuguese as he typed it during the session, with typing slips corrected and nothing else changed.
+The English is a translation.
+
+| When | What he was answering | Portuguese | English |
+|---|---|---|---|
+| after commitment 1 | The request to reveal his eleven votes | "Ish, eu não anotei." | "Oops, I did not write them down." |
+| 14:50 | Whether he could find his own vote in the rows he had selected, knowing how he had voted | "Resposta honesta: eu não saberia meu voto." | "Honest answer: I would not know my vote." |
+| 14:53 | Whether pressing Back had brought the key back | "Não volta. Acho que precisaremos refazer." | "It does not come back. I think we will have to do it again." |
+
+His closing statement, after the explanation that the lab hides the votes and does not protect the
+count:
+
+> "Minha intenção com esse lab é exatamente simular e estudar os casos de uso para homomorfismo aditivo
+> e iniciar um lab com que eu consiga atingir um nível de estado da arte da criptografia e segurança de
+> banco de dados Oracle, onde o banco de dados e a aplicação Oracle APEX consigam de fato ser avaliados
+> e interpretados sem a necessidade de descriptografar nada. A validade do lab se dá em que o Oracle
+> conseguiu realizar a operação, porém ainda preciso testar e estudar uma forma de validar a
+> autenticidade dos votos de maneira que não exista a possibilidade de fraude, e é nesse caminho que
+> irei seguir. A intenção não é substituir nenhum sistema de votação oficial, e sim estudar a fundo a
+> tecnologia para propor e sugerir estudos e melhorias nessa área, para garantir segurança e
+> confiabilidade em sistemas de votação e eleitorais, sejam para órgãos governamentais ou privados.
+> Irei continuar esse lab e em breve irei seguir a sequência, e também irei criar um episódio do APEX
+> X-Ray explicando detalhadamente o funcionamento da tecnologia. Resumindo: ainda não sinto confiança,
+> mas sinto esperança de que irá funcionar."
+
+> "My intention with this lab is exactly to simulate and study the use cases for additive homomorphism,
+> and to start a lab with which I can reach the state of the art in cryptography and Oracle Database
+> security, where the database and the Oracle APEX application can really be evaluated and interpreted
+> without the need to decrypt anything. The lab is valid in that Oracle was able to carry out the
+> operation. I still need to test and study a way to validate the authenticity of the votes so that
+> fraud is not possible, and that is the path I will follow. The intention is not to replace any
+> official voting system. It is to study the technology in depth, in order to propose and suggest
+> studies and improvements in this area, for the security and reliability of voting and electoral
+> systems, whether for government bodies or private ones. I will continue this lab, the next part will
+> follow soon, and I will also make an APEX X-Ray episode explaining in detail how the technology works.
+> In short: I do not feel confident yet, but I am hopeful that it will work."
+
 ## Files
 
 | Path | Content |

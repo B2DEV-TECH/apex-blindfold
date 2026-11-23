@@ -191,7 +191,7 @@ function live() {
     ],
     [
       '**The voter looks for his own vote.** He runs the `SELECT` statements himself, as `SYSTEM`, knowing how he voted.',
-      'Asked whether he could point to his own vote in those rows, he answered that he could not.',
+      'Asked whether he could point to his own vote in those rows, he answered: "Honest answer: I would not know my vote."',
       link('live-session/screenshots/04-dba-select-1-ballots.png', 'his five queries'),
     ],
     [
