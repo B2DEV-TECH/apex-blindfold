@@ -1,0 +1,54 @@
+# H4: ballot stuffing
+# generated: 2026-11-23T12:48:55.582Z
+# The attacker is an ordinary registered voter with a browser console. No database access.
+# Server-side validation in bf_election.cast_ballot: fixed width, lower-case hexadecimal, 0 < c < n^2.
+# A ciphertext of 1000 passes all three, exactly like a ciphertext of 1.
+
+Election X: one ballot worth a thousand votes
+  honest ballots: 9 (A=4  B=3  C=2), cast through bf_election.cast_ballot
+  tally before the attack, decrypted on the Tally page:  A=4  B=3  C=2
+  attacker VOTER-0010 pastes tests/snippets/ballot-stuffing.js with WEIGHTS = [1000, 0, 0]
+  database answer: {"ok":true,"ballot_id":10}
+  tally after the attack:                                 A=1004  B=3  C=2
+  turnout in VOTER_ROLL: 10    sum of totals: 1009
+  Tally page message: Decrypted in 190 ms. 1,009 votes from 10 voters: these totals cannot come from honest ballots. Some ciphertext did not encrypt 0 or 1, and the tally accepted it.
+
+  The last honest ballot (9) and the stuffed ballot (10), as the DBA sees them:
+
+  BALLOT_ID  CANDIDATE_ID  HEX_CHARS  VOTE_ENC
+  ---------  ------------  ---------  ---------------------------------
+  9          1             1024       2301df3609c86f859376...b4d135270f
+  9          2             1024       551aef73949a11d8ff58...87da347fae
+  9          3             1024       912dfa95f019a80481e6...22cfd07d38
+  10         1             1024       14d923b9a84d0edd1ffc...b8aacb001c
+  10         2             1024       330dc6c1a8311e33cab7...81fd01424e
+  10         3             1024       70893c913d37bca97fac...de502f83c6
+  
+  6 rows selected
+  
+Election Y: a ballot that keeps the totals plausible
+  honest ballots: 9 (A=4  B=3  C=2), cast through bf_election.cast_ballot
+  tally before the attack, decrypted on the Tally page:  A=4  B=3  C=2
+  attacker VOTER-0010 pastes tests/snippets/ballot-stuffing.js with WEIGHTS = [3, -2, 0]
+  database answer: {"ok":true,"ballot_id":10}
+  tally after the attack:                                 A=7  B=1  C=2
+  turnout in VOTER_ROLL: 10    sum of totals: 10
+  Tally page message: Decrypted in 95 ms. 10 votes from 10 voters.
+
+  The last honest ballot (9) and the stuffed ballot (10), as the DBA sees them:
+
+  BALLOT_ID  CANDIDATE_ID  HEX_CHARS  VOTE_ENC
+  ---------  ------------  ---------  ---------------------------------
+  9          1             1024       0ba25399c3a7144434d5...c28ca5b6fb
+  9          2             1024       10e2b831b2db63682695...427e56b409
+  9          3             1024       322b6d629158778bed40...44d5357974
+  10         1             1024       02585b90a293bfe9b66c...fcfbe668bf
+  10         2             1024       66c339610143a0f86cc8...944732ac04
+  10         3             1024       31a0cb00e0db593a3e2d...5d9a002bf4
+  
+  6 rows selected
+  
+What stops this in a real system (described, not implemented in this lab):
+  every ballot carries a zero-knowledge proof that each ciphertext encrypts 0 or 1
+  and that the three plaintexts sum to 1. The server, and anyone else, can verify
+  the proof without learning the vote, and rejects a ballot whose proof fails.

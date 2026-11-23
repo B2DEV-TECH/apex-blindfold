@@ -1,0 +1,208 @@
+# H2: APEX debug trace at LEVEL9
+# generated: 2026-11-23T12:48:19.594Z
+# election: 12 registered voters, 9 ballots cast in the browser, 2048-bit key, debug LEVEL9
+# both pages were opened with ?debug=LEVEL9; rows read as DBA from APEX_260200.WWV_FLOW_DEBUG_MESSAGES and ..._MESSAGES2
+
+messages: 4423 in 19 page views
+  level 1: 32
+  level 2: 6
+  level 3: 149
+  level 4: 540
+  level 8: 2324
+  level 9: 1372
+page views that are CAST_BALLOT requests: 9
+longest message: 2362 characters
+messages containing 64 or more hexadecimal characters in a row: 9
+messages containing a voter code: 10
+
+Complete trace of one CAST_BALLOT request (149 messages):
+
+  [4] ECID not set via CGI header, fetching from v$session
+  [9] APEX Version=26.2.0
+      SID=220
+      USER=APEX_PUBLIC_USER
+      ECID=9Y6lHOb7myBZw5m7I_iMCw
+      PROXY_USER=ORDS_PUBLIC_USER
+      INSTANCE=1
+      
+  [9] CGI: PATH_INFO = /wwv_flow.ajax?p_context=blindfold%2Fvote%2F<id>
+  [9] POST http://<host>/ords
+      REMOTE_USER=APEX_PUBLIC_USER
+      ORDS_VERSION=26.3.0.r2721811
+      REFERER=http://<host>/
+      ORIGIN=http://<host>
+      
+  [4] Reset NLS settings
+  [4] alter session set  NLS_LANGUAGE='AMERICAN' NLS_TERRITORY='AMERICA' NLS_SORT='BINARY' NLS_COMP='BINARY' NLS_CALENDAR='GREGORIAN'
+  [4] ...NLS: date_format=DD-MON-RR timestamp_format=DD-MON-RR HH.MI.SSXFF AM timestamp_tz_format=DD-MON-RR HH.MI.SSXFF AM TZR decimal separator=".", group separator=","
+  [8] reset_nls_environment
+  [3] R E Q U E S T ajax process CAST_BALLOT
+  [8] reset
+  [8] reset
+  [8] get_apex_path c_no_cgi_variables=>false,c_script_name=>/ords/,p_url_type=>0
+  [9] get_apex_path="/ords/"
+  [8] fetch_flow_info p_absolute_url=>false
+  [8] init_app_metadata p_session_state_commits=>END_OF_REQUEST
+  [8] wwv_flow_deepsec.disable
+  [9] no characterset conversion needed
+  [8] set_g_nls_decimal_separator
+  [9] CSV parameters: enclosed by:<<">>, separated by:<<,>>, escape char:<<	>>
+  [8] set_html_escaping_mode p_mode=>E
+  [9] get_workspace(<id>): reusing g_workspace
+  [8] get_friendly_workspace_url p_url=>files/static/v<id>/,p_security_group_id=>,p_url_type=>0
+  [9] get_workspace(<id>): reusing g_workspace
+  [9] get_friendly_workspace_url="r/blindfold/files/static/v<id>/"
+  [8] get_friendly_app_url p_application_id=>2620,p_url=>files/static/v<id>/,p_security_group_id=>,p_url_type=>0
+  [8] get_friendly_workspace_url p_url=>2620/files/static/v<id>/,p_security_group_id=>,p_url_type=>0
+  [9] get_friendly_workspace_url="r/blindfold/2620/files/static/v<id>/"
+  [8] check_request_can_be_processed
+  [9] ...check app owner "BLINDFOLD" is a valid workspace schema in "<id>"
+  [8] is_company_schema p_security_group_id=><id>,p_schema=>BLINDFOLD
+  [9] get_workspace(<id>): reusing g_workspace
+  [9] ...check app owner is a valid database schema
+  [4] Language derived from: FLOW_PRIMARY_LANGUAGE, current browser language: en
+  [8] alter_session p_language=>en,g_nls_language_set=>
+  [4] alter session set nls_language='AMERICAN' nls_territory='AMERICA'
+  [4] ...NLS: CSV charset=WE8MSWIN1252
+  [4] Setting NLS: NLS_DATE_FORMAT="DS" NLS_TIMESTAMP_FORMAT="DS" NLS_TIMESTAMP_TZ_FORMAT="DS"
+  [9] Applying session NLS settings to g_nls% variables
+  [4] ...NLS: date_format=DS timestamp_format=DS timestamp_tz_format=DS decimal separator=".", group separator=","
+  [8] reset_nls_environment
+  [4] ...NLS: Language=en
+  [4] Application 2620, Page Template: 
+  [8] authenticate_and_init_session p_app_id=>2620,p_auth_override=>,p_has_safe_url_parameters=>false,p_clone_session=>false
+  [8] get_current g_instance=><id>
+  [9] internal_get_authentication p_app_id=>2620, p_session_authn_id=>,p_app_security_group_id=><id>
+  [8] set_g_security_group_id p_security_group_id=><id>,p_check_host_prefix=>true,p_check_account_status=>true
+  [9] get_workspace(<id>): reusing g_workspace
+  [8] does_url_match_workspace p_security_group_id=><id>,p_host_prefix=>,l_http_host=><host>,p_path_prefix=>BLINDFOLD,c_path_info=>/wwv_flow.ajax
+  [9] ... PROXY_AUTHENTICATION not enabled - no path_prefix check
+  [8] set_workspace_id p_workspace_id=><id>
+  [8] get_apex_path c_no_cgi_variables=>false,c_script_name=>/ords/,p_url_type=>0
+  [9] get_apex_path="/ords/"
+  [9] ... authentication id=<id>, sgid=<id>, curr flow sgid=<id>, cookie=ORA_WWV_APP_2620
+  [8] get_page_info p_application_id=>2620,p_page_id=>1,p_security_group_id=><id>
+  [9] ...page info not cached, loading it
+  [9] invalid_session_type=LOGIN,LOGIN=,URL=f?p=&APP_ID.:LOGIN:&SESSION.
+  [8] init_authentication_globals p_mode=>0,p_dynamic_roles=>,p_namespaces=>
+  [9] ... RAS is disabled at instance level
+  [9] ... page is public:true, public auth:false
+  [8] rejoin_existing_sessions c_platform_rejoin_sessions=>P,p_app_id=>2620,p_app_browser_frame=>D,p_app_rejoin_existing_sessions=>P,p_page_info.rejoin_existing_sessions=>
+  [3] > APEX_APPLICATION_AUTH Oracle APEX Accounts 
+  [9] ...session id given - no rejoining
+  [8] get_executed_process_point
+  [8] builtin_cookie_sentry p_cookie_name=>ORA_WWV_APP_2620
+  [8] get_by_cookie_name p_cookie_name=>ORA_WWV_APP_2620
+  [9] ... session=<id>, user=nobody, sgid=<id>, auth_id= (from cache)
+  [9] ... ok, session id and security group id matches
+  [9] ... set user and session id in package globals
+  [8] set_user p_user=>nobody
+  [8] set_user p_user=>nobody
+  [8] set_g_security_group_id p_security_group_id=><id>,p_check_host_prefix=>true,p_check_account_status=>true
+  [9] ... already set - exit
+  [8] set_db_session_info
+  [9] get_workspace(<id>): reusing g_workspace
+  [8] do_get_plugin p_app_id=>2620,p_app_security_group_id=><id>,p_plugin_type=>AUTHENTICATION TYPE,p_name=>NATIVE_APEX_ACCOUNTS
+  [8] get_theme_id p_application_id=>2620,p_security_group_id=><id>
+  [9] check session integrity: security group id matches
+  [4] Session State: fetch from database (exact)
+  [8] execute_native_session_sentry p_type=>NATIVE_APEX_ACCOUNTS
+  [9] ... sentry success, no verification specified
+  [4] ... sentry+verification success
+  [8] create_or_reuse_session p_clone_session=>false,p_authentication_id=>,p_tenant_id=>
+  [4] ...Session ID <id> can be used
+  [8] init_session p_sessionid=>
+  [8] init_cache
+  [9] check session integrity: security group id matches
+  [3] < APEX_APPLICATION_AUTH Oracle APEX Accounts
+  [9] get_builder_session_id: builder session not available
+  [8] check_session_timeout
+  [4] ...Check for session expiration:
+  [9] ... idle timeout is recent enough - no update
+  [8] db_session_init g_db_session_init_status=>1,g_db_session_init_code=>
+  [8] fetch_step_info
+  [9] URL TAMPERING: AJAX, plug-in or print request
+  [8] ajax_set_session_state
+  [8] page_salt p_salt=><id>
+  [8] page_salt p_salt=>
+  [8] is_authorized c_authorization_id=>,p_component=>FLOW,c_can_use_cache=>true,caching=>
+  [4] Setting NLS: NLS_DATE_FORMAT="DS" NLS_TIMESTAMP_FORMAT="DS" NLS_TIMESTAMP_TZ_FORMAT="DS"
+  [9] Applying session NLS settings to g_nls% variables
+  [8] add_header p_key=>Cache-Control,l_name=>Cache-Control,p_value=>no-store,p_overwrite=>true,p_is_sticky=>true
+  [8] add_header p_key=>Pragma Cache-Control,l_name=>Pragma,p_value=>no-cache,p_overwrite=>true,p_is_sticky=>true
+  [8] add_header p_key=>Expires,l_name=>Expires,p_value=>Sun, 27 Jul 1997 13:00:00 GMT,p_overwrite=>true,p_is_sticky=>true
+  [8] add_header p_key=>X-Frame-Options,l_name=>X-Frame-Options,p_value=>SAMEORIGIN,p_overwrite=>true,p_is_sticky=>true
+  [4] Run APPLICATION_PROCESS=CAST_BALLOT request
+  [8] run_process p_process_name_or_id=>CAST_BALLOT
+  [8] is_authorized c_authorization_id=>,p_component=>PAGE,c_can_use_cache=>true,caching=>
+  [3] > APEX_APPLICATION_PAGE_PROCESS CAST_BALLOT cast-ballot
+  [8] is_ok_to_display p_required_patch=>,p_security_scheme=>,p_display_when_type=>,p_display_when_cond=>,p_display_when_cond2=>,p_component=>PROCESS
+  [8] execute p_code=>bf_web.cast_ballot;,p_language=>PLSQL,p_auto_bind_items=>true,p_names.count=>0,p_values.count=>0,p_binds.count=>0,p_parse_as_schema=>BLINDFOLD,p_is_user_schema=>null,p_mle_env=>,p_commit_session_state=>true,p_plugin_cache_key=>
+  [8] prepare_array_statement
+  [9] statement empty or no bind variables found. exiting.
+  [8] parse_as_user p_cursor=>1058597395,p_username=>BLINDFOLD,p_use_roles=>false
+  [4] begin bf_web.cast_ballot;
+      end;
+  [8] reset p_keep_sticky_headers=>false
+  [9] Content-Type: application/json
+  [9] X-Content-Type-Options: nosniff
+  [9] X-Xss-Protection: 1; mode=block
+  [9] Referrer-Policy: strict-origin
+  [9] Cache-Control: no-store
+  [9] Pragma: no-cache
+  [9] Expires: Sun, 27 Jul 1997 13:00:00 GMT
+  [9] X-Frame-Options: SAMEORIGIN
+  [3] < APEX_APPLICATION_PAGE_PROCESS CAST_BALLOT
+  [8] stop_apex_engine
+  [4] Final commit
+  [8] do_commit
+  [4] service "freepdb1" is already active. No need to switch.
+  [8] teardown g_db_session_cleanup_has_run=>false,g_db_session_cleanup_code=>
+  [8] close_cached_cursors
+  [8] delete_temp_request_files g_file_inserted_count=>0,g_temp_request_files.count=>0
+  [9] No pending session changes
+  [8] reset_cache
+  [8] reset
+  [8] wwv_flow_deepsec.disable
+  [8] init_session p_sessionid=>
+  [8] clear_context
+  [8] retrofit_headers
+  [9] body detected in read_htp_headers
+  [8] apex_debug_id p_debug=>38007,level=3
+  [8] add_header p_key=>APEX-Debug-ID,l_name=>Apex-Debug-Id,p_value=>38007,level=3,p_overwrite=>true,p_is_sticky=>true
+  [4] Log + final commit
+  [8] do_commit
+  [1] Cursor leak: difference in "opened cursors current" is 2:
+  [1] - user=APEX_260200, type=OPEN-RECURSIVE, sql_id=4z6jfdhm5uxr7, sql_text=select longname from javasnm$ where short = :1
+  [1] - user=APEX_260200, type=OPEN-RECURSIVE, sql_id=b3h2tykc2588b, sql_text=select longdbcs from javasnm$ where short = :1
+  [9] Session Statistics
+      consistent gets               :         285
+      execute count                 :         229
+      opened cursors current        :           2
+      parse count (total)           :          48
+      physical reads                :           5
+      redo size                     :     313,128
+      sorts (disk)                  :           0
+      sorts (memory)                :          25
+  [9] Memory Usage (total + top 20) :   1,480,320
+      WWV_FLOW                      :     187,496
+      WWV_FLOW_THEME                :     120,032
+      WWV_FLOW_WORKFLOW             :     103,680
+      WWV_FLOW_PLUGIN               :     101,544
+      WWV_FLOW_META_DATA            :     101,288
+      WWV_FLOW_SECURITY             :      94,168
+      WWV_FLOW_UTILITIES            :      88,680
+      WWV_FLOW_EXEC_API             :      69,440
+      SYS.WPG_DOCLOAD               :      68,744
+      WWV_FLOW_LANG                 :      65,144
+      WWV_FLOW_SESSION_STATE        :      62,000
+      WWV_FLOW_SESSION              :      57,120
+      WWV_FLOW_META_DATA            :      50,672
+      SYS.WWV_DBMS_SQL_APEX_260200  :      50,320
+      WWV_FLOW_PWA                  :      46,912
+      WWV_FLOW_AI                   :      46,040
+      WWV_FLOW_PLATFORM             :      45,576
+      WWV_FLOW_UTILITIES            :      41,312
+      WWV_FLOW_PAGE                 :      41,032
+      WWV_FLOW_AUTHENTICATION       :      39,120
+  [8] reset_globals

@@ -1,0 +1,46 @@
+# H2: where the test looked for a vote or a private key, and what it found
+# generated: 2026-11-23T12:48:19.589Z
+# election: 12 registered voters, 9 ballots cast in the browser, 2048-bit key, debug LEVEL9
+# browser: msedge 158.0.4370.33 (headless)
+# secrets searched for: 35 numbers (p, q, lambda, mu, p-1, q-1, phi(n), p+q; the randomizer r of 27 ciphertexts)
+# search windows: 90902 fragments of 20 characters, in hex, little-endian hex, decimal, base64 and base64url
+#    (3298 fragments left out because they also occur in n, n^2 or n / gcd(p-1, q-1): the upper half of phi(n) and lambda is public)
+# long numbers: every hexadecimal run of 48+ characters and decimal run of 60+ digits, tested against the public key
+#    (shares a factor with n? multiple of lambda? inverse of lambda? n-th root that opens a stored ciphertext?)
+
+How the test knows the secrets
+  key generation: 625 draws of random bytes recorded in the authority tab and replayed in Node;
+                  the replay produced the modulus published in ELECTION_KEY: yes
+  ballots:        30 draws recorded in the voter tab; 27/27 stored ciphertexts recomputed bit for bit
+
+source                                                          characters  long numbers  tested  findings
+----------------------------------------------------------------------------------------------------------
+network: 76 requests sent by the authority browser                   55133             1       1         0
+network: 74 responses received by the authority browser            5276390             5       5         0
+network: 155 requests sent by the voter browser                     150847            27      27         0
+network: 150 responses received by the voter browser              10564221            10      10         0
+table BLIND_BALLOTS (27 rows)                                        28754            27      27         0
+table CANDIDATES (3 rows)                                              232             0       0         0
+table ELECTION_KEY (1 rows)                                            518             1       1         0
+table VOTER_ROLL (12 rows)                                             599             0       0         0
+source code of the schema (400 lines)                                13568             0       0         0
+APEX session state (2 entries, 2 sessions of this run)                 651             0       0         0
+APEX debug trace (4423 messages)                                   1109442             9       9         0
+APEX activity log (19 rows)                                           7161             0       0         0
+APEX access log (0 rows)                                                 0             0       0         0
+SQL area, V$SQL (172 statements)                                     84055             0       0         0
+captured binds, V$SQL_BIND_CAPTURE (496 values)                      41462             0       0         0
+unified audit trail (0 records)                                          0             0       0         0
+database alert log (0 lines)                                             0             0       0         0
+browser: storage, cookies and form fields of the authority tab        1532             0       0         0
+browser: page HTML of the authority tab                              17051             0       0         0
+browser: storage, cookies and form fields of the voter tab            1536             0       0         0
+browser: page HTML of the voter tab                                  15971             0       0         0
+
+findings: 0
+
+Not inspected
+  ORDS log files and console: no access from the lab account. ORDS receives what the HAR shows, nothing else.
+  Redo, undo and flashback data: they hold past images of the tables above.
+  Operating system: memory of the database and ORDS processes, swap, network captures.
+  Timing and traffic analysis.

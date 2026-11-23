@@ -1,0 +1,61 @@
+# Step 0: MLE JavaScript and Java availability, by privilege
+# generated: 2026-11-23T12:35:18.770Z
+# A throwaway user receives one privilege at a time.
+# After each grant: create the source, create its PL/SQL call spec, execute it.
+# The execute step computes 4^13 mod 497. The expected answer is 445 = 0x1bd.
+
+== CREATE SESSION only
+   MLE JavaScript
+     create source/module : ORA-01031: insufficient privileges
+     create call spec     : ORA-01031: insufficient privileges
+     objects              : (none)
+     execute              : ORA-00904: "BF_PROBE_MODPOW": invalid identifier
+   Java stored procedure
+     create source/module : ORA-01031: insufficient privileges
+     create call spec     : ORA-01031: insufficient privileges
+     objects              : (none)
+     execute              : ORA-00904: "BF_PROBE_MODPOW": invalid identifier
+
+== + CREATE PROCEDURE
+   MLE JavaScript
+     create source/module : ORA-01031: insufficient privileges
+     create call spec     : OK
+     objects              : FUNCTION BF_PROBE_MODPOW INVALID
+     compile error        : FUNCTION BF_PROBE_MODPOW: PLS-00201: identifier 'BF_PROBE_MOD' must be declared
+     compile error        : FUNCTION BF_PROBE_MODPOW: PL/SQL: Compilation unit analysis terminated
+     execute              : ORA-06575: Package or function BF_PROBE_MODPOW is in an invalid state
+   Java stored procedure
+     create source/module : OK
+     create call spec     : OK
+     objects              : FUNCTION BF_PROBE_MODPOW VALID | JAVA CLASS BfProbe VALID | JAVA SOURCE BfProbe VALID
+     execute              : OK, answer 0x1bd
+
+== + CREATE MLE
+   MLE JavaScript
+     create source/module : OK
+     create call spec     : OK
+     objects              : FUNCTION BF_PROBE_MODPOW INVALID | MLE MODULE BF_PROBE_MOD INVALID
+     compile error        : MLE MODULE BF_PROBE_MOD: MLE is not available on this platform
+     compile error        : FUNCTION BF_PROBE_MODPOW: PLS-00905: object BF_PROBE_F07B39.BF_PROBE_MOD is invalid
+     compile error        : FUNCTION BF_PROBE_MODPOW: PL/SQL: Compilation unit analysis terminated
+     execute              : ORA-06575: Package or function BF_PROBE_MODPOW is in an invalid state
+   Java stored procedure
+     create source/module : OK
+     create call spec     : OK
+     objects              : FUNCTION BF_PROBE_MODPOW VALID | JAVA CLASS BfProbe VALID | JAVA SOURCE BfProbe VALID
+     execute              : OK, answer 0x1bd
+
+== + EXECUTE ON JAVASCRIPT
+   MLE JavaScript
+     create source/module : OK
+     create call spec     : OK
+     objects              : FUNCTION BF_PROBE_MODPOW INVALID | MLE MODULE BF_PROBE_MOD INVALID
+     compile error        : MLE MODULE BF_PROBE_MOD: MLE is not available on this platform
+     compile error        : FUNCTION BF_PROBE_MODPOW: PLS-00905: object BF_PROBE_F07B39.BF_PROBE_MOD is invalid
+     compile error        : FUNCTION BF_PROBE_MODPOW: PL/SQL: Compilation unit analysis terminated
+     execute              : ORA-06575: Package or function BF_PROBE_MODPOW is in an invalid state
+   Java stored procedure
+     create source/module : OK
+     create call spec     : OK
+     objects              : FUNCTION BF_PROBE_MODPOW VALID | JAVA CLASS BfProbe VALID | JAVA SOURCE BfProbe VALID
+     execute              : OK, answer 0x1bd

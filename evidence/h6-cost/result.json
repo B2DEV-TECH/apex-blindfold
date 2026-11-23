@@ -1,0 +1,96 @@
+{
+  "id": "H6",
+  "hypothesis": "Cost: time to cast a ballot, tally time against a plaintext COUNT, storage per ballot",
+  "verdict": "CONFIRMED",
+  "statement": "Measured: casting a ballot takes a median 282 ms in the browser; tallying 10000 voters takes 4.8 s against 1.039 ms for a plaintext COUNT (4654x); a ballot stores 3087 bytes against 5.",
+  "numbers": {
+    "cast_ballot_ui_ms": {
+      "n": 30,
+      "min": 272.6,
+      "median": 281.8,
+      "mean": 283.93,
+      "max": 328
+    },
+    "encrypt_ballot_ms": {
+      "n": 30,
+      "min": 201.3,
+      "median": 218,
+      "mean": 215.463,
+      "max": 236.3
+    },
+    "keygen_2048_ms": {
+      "n": 20,
+      "min": 76.3,
+      "median": 182.15,
+      "mean": 186.52,
+      "max": 343.6
+    },
+    "decrypt_one_ciphertext_ms": {
+      "n": 30,
+      "min": 30.9,
+      "median": 31.3,
+      "mean": 31.42,
+      "max": 32.2
+    },
+    "request_bytes": 3284,
+    "tally": [
+      {
+        "voters": 100,
+        "cold_ms": 135.488,
+        "warm_ms": 60.356,
+        "plaintext_ms": 0.484,
+        "bytes_per_ballot": 3084,
+        "plaintext_bytes_per_ballot": 4
+      },
+      {
+        "voters": 1000,
+        "cold_ms": 596.131,
+        "warm_ms": 497.611,
+        "plaintext_ms": 0.467,
+        "bytes_per_ballot": 3086.673,
+        "plaintext_bytes_per_ballot": 4.891
+      },
+      {
+        "voters": 10000,
+        "cold_ms": 5141.148,
+        "warm_ms": 4835.37,
+        "plaintext_ms": 1.039,
+        "bytes_per_ballot": 3086.94,
+        "plaintext_bytes_per_ballot": 4.98
+      }
+    ]
+  },
+  "mode": {
+    "quick": false,
+    "seed": 20261123
+  },
+  "checks": [
+    {
+      "name": "casting a ballot was measured in a real browser",
+      "pass": true,
+      "detail": "30 ballots, median 281.8 ms from click to receipt"
+    },
+    {
+      "name": "tally of 100 voters is correct",
+      "pass": true,
+      "detail": "36/35/29"
+    },
+    {
+      "name": "tally of 1000 voters is correct",
+      "pass": true,
+      "detail": "317/345/338"
+    },
+    {
+      "name": "tally of 10000 voters is correct",
+      "pass": true,
+      "detail": "3302/3317/3381"
+    }
+  ],
+  "notes": [],
+  "evidence": [
+    "h6-cost/timings.json",
+    "h6-cost/summary.txt"
+  ],
+  "started": "2026-11-23T12:49:44.226Z",
+  "finished": "2026-11-23T12:51:33.062Z"
+}

@@ -1,0 +1,34 @@
+# H5 extra: a DBA who writes can swap the public key
+# generated: 2026-11-23T12:49:43.516Z
+# NOT one of the three limits in the original hypothesis. Added because it bounds the main claim:
+# the database is blind to votes only as long as it is honest about the public key it hands out.
+# Voters in this lab receive n from the server and have no independent copy to compare it with.
+
+Timeline
+  1. the authority opens the election with its key; voters 1 to 4 vote
+  2. the DBA generates its own key pair and runs: update election_key set n_hex = :its_own_n
+  3. voters 5 to 8 ask the server for the key, receive the DBA key, encrypt and vote
+  4. the DBA decrypts those four ballots, re-encrypts each plaintext under the authority key,
+     overwrites the rows and restores election_key
+  5. voters 9 and 10 vote; the authority tallies
+
+voter       ballot  key the voter received  true choice  read by the DBA
+----------  ------  ----------------------  -----------  ---------------
+VOTER-0001       1  authority               C            -
+VOTER-0002       2  authority               C            -
+VOTER-0003       3  authority               B            -
+VOTER-0004       4  authority               C            -
+VOTER-0005       5  DBA                     C            C
+VOTER-0006       6  DBA                     C            C
+VOTER-0007       7  DBA                     A            A
+VOTER-0008       8  DBA                     B            B
+VOTER-0009       9  authority               A            -
+VOTER-0010      10  authority               B            -
+
+ballots read by the DBA: 4/4
+true tally of the ten ballots:         A=2  B=3  C=5
+tally decrypted by the authority:      A=2  B=3  C=5     correct: the authority sees nothing unusual
+
+What this needs: write access to ELECTION_KEY and BLIND_BALLOTS. A DBA who only reads cannot do it.
+What prevents it in a real system: voters verify the public key against a copy published out of
+band (a key ceremony, a fingerprint on paper), and ballots are signed so they cannot be replaced.

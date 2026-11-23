@@ -1,0 +1,55 @@
+# H5 (c): sequential ballot_id plus VOTER_ROLL.voted_at re-links voters to ballots
+# generated: 2026-11-23T12:49:21.993Z
+# BLIND_BALLOTS has no voter and no timestamp. VOTER_ROLL has no ballot. Both keep the order of arrival:
+# ballot_id comes from a sequence, voted_at from the clock. Sorting the two tables side by side joins them.
+
+SQL> select r.voter_id, b.ballot_id
+  from (select voter_id, row_number() over (order by voted_at, voter_id) as position
+          from blindfold.voter_roll
+         where voted_at is not null) r
+  join (select ballot_id, row_number() over (order by ballot_id) as position
+          from (select distinct ballot_id from blindfold.blind_ballots)) b
+    on b.position = r.position
+ order by b.ballot_id;
+
+Election 1: 24 voters arriving one at a time, in a random order of voter codes
+
+voter_id    ballot_id (DBA guess)  ballot_id (actual)  match
+----------  ---------------------  ------------------  -----
+VOTER-0018                      1                   1  yes
+VOTER-0007                      2                   2  yes
+VOTER-0009                      3                   3  yes
+VOTER-0019                      4                   4  yes
+VOTER-0017                      5                   5  yes
+VOTER-0022                      6                   6  yes
+VOTER-0003                      7                   7  yes
+VOTER-0015                      8                   8  yes
+VOTER-0027                      9                   9  yes
+VOTER-0021                     10                  10  yes
+VOTER-0016                     11                  11  yes
+VOTER-0001                     12                  12  yes
+VOTER-0023                     13                  13  yes
+VOTER-0008                     14                  14  yes
+VOTER-0029                     15                  15  yes
+VOTER-0011                     16                  16  yes
+VOTER-0006                     17                  17  yes
+VOTER-0020                     18                  18  yes
+VOTER-0005                     19                  19  yes
+VOTER-0024                     20                  20  yes
+VOTER-0004                     21                  21  yes
+VOTER-0030                     22                  22  yes
+VOTER-0002                     23                  23  yes
+VOTER-0026                     24                  24  yes
+
+re-linked: 24/24
+with the private key as well (limit b), voter -> vote: 24/24
+
+Election 2: 200 voters, cast by 8 database sessions at the same time
+re-linked exactly: 44/200 (22.0%)
+guess within 1 position of the real ballot: 116/200; within 3: 170/200; within 7: 200/200; farthest miss: 7 positions
+Concurrency blurs the order only among ballots that overlap in time: the candidates for one voter
+shrink from 200 ballots to a handful, even when the exact pairing fails.
+
+Other traces of the same order, not exploited here: the physical order of rows, ORA_ROWSCN, flashback
+and redo data, and the APEX activity log, which stores a timestamp, a session and an IP address for
+every CAST_BALLOT request (see evidence/h2-blindness).

@@ -1,0 +1,279 @@
+{
+  "generated": "2026-11-23T12:35:57.668Z",
+  "environment": {
+    "database": "Oracle AI Database 26ai Free Release 23.26.3.0.0 - Develop, Learn, and Run for Free Version 23.26.3.0.0",
+    "database_platform": "Microsoft Windows x86 64-bit",
+    "apex": "26.2.0",
+    "ords": "26.3.0.r2721811",
+    "database_jvm": "11.0.32",
+    "parameters": {
+      "compatible": "23.6.0",
+      "mle_prog_languages": "all"
+    },
+    "node": "v22.16.0",
+    "python": "Python 3.13.15",
+    "client_platform": "win32 x64"
+  },
+  "mle_javascript": {
+    "available": false,
+    "first_stage_that_works": null,
+    "compile_errors_with_all_privileges": [
+      "MLE MODULE BF_PROBE_MOD: MLE is not available on this platform",
+      "FUNCTION BF_PROBE_MODPOW: PLS-00905: object BF_PROBE_F07B39.BF_PROBE_MOD is invalid",
+      "FUNCTION BF_PROBE_MODPOW: PL/SQL: Compilation unit analysis terminated"
+    ],
+    "privileges_tried": [
+      "CREATE PROCEDURE",
+      "CREATE MLE",
+      "EXECUTE ON JAVASCRIPT"
+    ]
+  },
+  "java_stored_procedure": {
+    "available": true,
+    "first_stage_that_works": "+ CREATE PROCEDURE"
+  },
+  "tally_engine": "java",
+  "tally_engine_reason": "MLE JavaScript is not available in this database (MLE MODULE BF_PROBE_MOD: MLE is not available on this platform; FUNCTION BF_PROBE_MODPOW: PLS-00905: object BF_PROBE_F07B39.BF_PROBE_MOD is invalid; FUNCTION BF_PROBE_MODPOW: PL/SQL: Compilation unit analysis terminated). Fallback: Java stored procedure with java.math.BigInteger.",
+  "privilege_probe": [
+    {
+      "stage": "CREATE SESSION only",
+      "mle": {
+        "create_source": "ORA-01031: insufficient privileges",
+        "create_call_spec": "ORA-01031: insufficient privileges",
+        "objects": [],
+        "compile_errors": [],
+        "execute": "ORA-00904: \"BF_PROBE_MODPOW\": invalid identifier",
+        "works": false
+      },
+      "java": {
+        "create_source": "ORA-01031: insufficient privileges",
+        "create_call_spec": "ORA-01031: insufficient privileges",
+        "objects": [],
+        "compile_errors": [],
+        "execute": "ORA-00904: \"BF_PROBE_MODPOW\": invalid identifier",
+        "works": false
+      }
+    },
+    {
+      "stage": "+ CREATE PROCEDURE",
+      "mle": {
+        "create_source": "ORA-01031: insufficient privileges",
+        "create_call_spec": "OK",
+        "objects": [
+          "FUNCTION BF_PROBE_MODPOW INVALID"
+        ],
+        "compile_errors": [
+          "FUNCTION BF_PROBE_MODPOW: PLS-00201: identifier 'BF_PROBE_MOD' must be declared",
+          "FUNCTION BF_PROBE_MODPOW: PL/SQL: Compilation unit analysis terminated"
+        ],
+        "execute": "ORA-06575: Package or function BF_PROBE_MODPOW is in an invalid state",
+        "works": false
+      },
+      "java": {
+        "create_source": "OK",
+        "create_call_spec": "OK",
+        "objects": [
+          "FUNCTION BF_PROBE_MODPOW VALID",
+          "JAVA CLASS BfProbe VALID",
+          "JAVA SOURCE BfProbe VALID"
+        ],
+        "compile_errors": [],
+        "execute": "OK, answer 0x1bd",
+        "works": true
+      }
+    },
+    {
+      "stage": "+ CREATE MLE",
+      "mle": {
+        "create_source": "OK",
+        "create_call_spec": "OK",
+        "objects": [
+          "FUNCTION BF_PROBE_MODPOW INVALID",
+          "MLE MODULE BF_PROBE_MOD INVALID"
+        ],
+        "compile_errors": [
+          "MLE MODULE BF_PROBE_MOD: MLE is not available on this platform",
+          "FUNCTION BF_PROBE_MODPOW: PLS-00905: object BF_PROBE_F07B39.BF_PROBE_MOD is invalid",
+          "FUNCTION BF_PROBE_MODPOW: PL/SQL: Compilation unit analysis terminated"
+        ],
+        "execute": "ORA-06575: Package or function BF_PROBE_MODPOW is in an invalid state",
+        "works": false
+      },
+      "java": {
+        "create_source": "OK",
+        "create_call_spec": "OK",
+        "objects": [
+          "FUNCTION BF_PROBE_MODPOW VALID",
+          "JAVA CLASS BfProbe VALID",
+          "JAVA SOURCE BfProbe VALID"
+        ],
+        "compile_errors": [],
+        "execute": "OK, answer 0x1bd",
+        "works": true
+      }
+    },
+    {
+      "stage": "+ EXECUTE ON JAVASCRIPT",
+      "mle": {
+        "create_source": "OK",
+        "create_call_spec": "OK",
+        "objects": [
+          "FUNCTION BF_PROBE_MODPOW INVALID",
+          "MLE MODULE BF_PROBE_MOD INVALID"
+        ],
+        "compile_errors": [
+          "MLE MODULE BF_PROBE_MOD: MLE is not available on this platform",
+          "FUNCTION BF_PROBE_MODPOW: PLS-00905: object BF_PROBE_F07B39.BF_PROBE_MOD is invalid",
+          "FUNCTION BF_PROBE_MODPOW: PL/SQL: Compilation unit analysis terminated"
+        ],
+        "execute": "ORA-06575: Package or function BF_PROBE_MODPOW is in an invalid state",
+        "works": false
+      },
+      "java": {
+        "create_source": "OK",
+        "create_call_spec": "OK",
+        "objects": [
+          "FUNCTION BF_PROBE_MODPOW VALID",
+          "JAVA CLASS BfProbe VALID",
+          "JAVA SOURCE BfProbe VALID"
+        ],
+        "compile_errors": [],
+        "execute": "OK, answer 0x1bd",
+        "works": true
+      }
+    }
+  ],
+  "lab_schema_session_privs": [
+    "CREATE MLE",
+    "CREATE PROCEDURE",
+    "CREATE SEQUENCE",
+    "CREATE SESSION",
+    "CREATE TABLE"
+  ],
+  "modexp_4096": {
+    "engine": "java",
+    "all_agree": true,
+    "vectors": [
+      {
+        "vector": 0,
+        "base_bits": 4096,
+        "exponent_bits": 4096,
+        "modulus_bits": 4096,
+        "database_equals_python": true,
+        "database_equals_node": true,
+        "result_bits": 4093,
+        "result_prefix": "152a712b67fb460cdb906cf5…"
+      },
+      {
+        "vector": 1,
+        "base_bits": 4096,
+        "exponent_bits": 2048,
+        "modulus_bits": 4096,
+        "database_equals_python": true,
+        "database_equals_node": true,
+        "result_bits": 4094,
+        "result_prefix": "3c308fc619d445bbc76cac0c…"
+      },
+      {
+        "vector": 2,
+        "base_bits": 4096,
+        "exponent_bits": 2048,
+        "modulus_bits": 4096,
+        "database_equals_python": true,
+        "database_equals_node": true,
+        "result_bits": 4090,
+        "result_prefix": "2b0bc18e6b038339e50bbd4d…"
+      },
+      {
+        "vector": 3,
+        "base_bits": 4096,
+        "exponent_bits": 2048,
+        "modulus_bits": 4096,
+        "database_equals_python": true,
+        "database_equals_node": true,
+        "result_bits": 4095,
+        "result_prefix": "512997eec365c6d7ab4630fc…"
+      },
+      {
+        "vector": 4,
+        "base_bits": 4096,
+        "exponent_bits": 2048,
+        "modulus_bits": 4096,
+        "database_equals_python": true,
+        "database_equals_node": true,
+        "result_bits": 4095,
+        "result_prefix": "4b1c6de2b64a89f00c3dd99b…"
+      },
+      {
+        "vector": 5,
+        "base_bits": 4096,
+        "exponent_bits": 2048,
+        "modulus_bits": 4096,
+        "database_equals_python": true,
+        "database_equals_node": true,
+        "result_bits": 4096,
+        "result_prefix": "89b481235e6b2367ea3f8b06…"
+      },
+      {
+        "vector": 6,
+        "base_bits": 4096,
+        "exponent_bits": 2048,
+        "modulus_bits": 4096,
+        "database_equals_python": true,
+        "database_equals_node": true,
+        "result_bits": 4096,
+        "result_prefix": "c829c31372746feef8e5c5cd…"
+      },
+      {
+        "vector": 7,
+        "base_bits": 4096,
+        "exponent_bits": 2048,
+        "modulus_bits": 4096,
+        "database_equals_python": true,
+        "database_equals_node": true,
+        "result_bits": 4096,
+        "result_prefix": "c4dc109d34bf8cde3b456fd4…"
+      }
+    ],
+    "timing": {
+      "base_4096_exponent_2048_modulus_4096": {
+        "reps_per_call": 20,
+        "ms_per_modexp": {
+          "n": 7,
+          "min": 82.893,
+          "median": 83.011,
+          "mean": 83.038,
+          "max": 83.356
+        },
+        "raw_ms_per_modexp": [
+          82.89285,
+          83.01055,
+          83.35634999999999,
+          82.9517,
+          83.0681,
+          82.95,
+          83.03825
+        ]
+      },
+      "base_4096_exponent_4096_modulus_4096": {
+        "reps_per_call": 20,
+        "ms_per_modexp": {
+          "n": 7,
+          "min": 163.008,
+          "median": 163.732,
+          "mean": 163.556,
+          "max": 164.069
+        },
+        "raw_ms_per_modexp": [
+          163.783,
+          164.06869999999998,
+          164.05405000000002,
+          163.2083,
+          163.7315,
+          163.00820000000002,
+          163.0383
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "id": "H1",
+  "hypothesis": "Correctness: the decrypted tally equals the true tally",
+  "verdict": "CONFIRMED",
+  "statement": "The decrypted tally equals the true tally in 100/100 randomized elections (10 to 5000 voters, 82874 ballots), and JavaScript, Java and Python agree on every value compared.",
+  "numbers": {
+    "elections": 100,
+    "matching": 100,
+    "min_voters": 10,
+    "max_voters": 5000,
+    "ballots": 82874,
+    "ciphertexts": 248622,
+    "cross_checks": 5,
+    "python": "Python 3.13.15"
+  },
+  "mode": {
+    "quick": false,
+    "seed": 20261123
+  },
+  "checks": [
+    {
+      "name": "key derivation agrees (n, lambda, mu)",
+      "pass": true,
+      "detail": "Python derives the same n, lambda and mu from p and q"
+    },
+    {
+      "name": "JavaScript encrypts, Python decrypts",
+      "pass": true,
+      "detail": "60 messages, including 0, 1, n-1 and random values"
+    },
+    {
+      "name": "Python encrypts, JavaScript decrypts",
+      "pass": true,
+      "detail": "60 messages"
+    },
+    {
+      "name": "homomorphic sum agrees bit for bit",
+      "pass": true,
+      "detail": "product of 60 ciphertexts: same 1024-digit number in both languages, decrypts to the sum modulo n"
+    },
+    {
+      "name": "scalar multiplication agrees bit for bit",
+      "pass": true,
+      "detail": "Enc(1000)^888824 decrypts to 888824000"
+    },
+    {
+      "name": "decrypted tally equals true tally in 100 randomized elections",
+      "pass": true,
+      "detail": "100/100 elections match, 10 to 5000 voters, 82874 ballots in total"
+    },
+    {
+      "name": "Python decrypts the same encrypted totals to the true tally",
+      "pass": true,
+      "detail": "100/100 elections"
+    },
+    {
+      "name": "database product equals the product Python computes from the stored ciphertexts",
+      "pass": true,
+      "detail": "66/66 elections of up to 400 voters, compared bit for bit"
+    },
+    {
+      "name": "accelerated test ciphertexts equal pure BigInt ciphertexts",
+      "pass": true,
+      "detail": "1687 sampled ciphertexts recomputed with the browser code path, all identical (a difference aborts the run)"
+    }
+  ],
+  "notes": [],
+  "evidence": [
+    "h1-correctness/elections.txt",
+    "h1-correctness/crosscheck.txt"
+  ],
+  "started": "2026-11-23T12:35:57.816Z",
+  "finished": "2026-11-23T12:47:44.642Z"
+}

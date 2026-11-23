@@ -1,0 +1,35 @@
+# H5 (b): a single key holder can decrypt individual ballots
+# generated: 2026-11-23T12:49:20.397Z
+# election: 30 registered, 24 ballots, 2048-bit key
+# The design asks the authority to decrypt three totals and nothing else. Nothing enforces it:
+# the same private key opens every row of BLIND_BALLOTS, which the application itself displays.
+# Real systems split the key among trustees (threshold decryption), so that no single party can do this.
+
+ballot_id  decrypted row (A, B, C)  choice read  true choice
+---------  -----------------------  -----------  -----------
+        1  0, 0, 1                  C            C
+        2  0, 1, 0                  B            B
+        3  1, 0, 0                  A            A
+        4  1, 0, 0                  A            A
+        5  1, 0, 0                  A            A
+        6  0, 1, 0                  B            B
+        7  1, 0, 0                  A            A
+        8  0, 1, 0                  B            B
+        9  0, 1, 0                  B            B
+       10  0, 0, 1                  C            C
+       11  1, 0, 0                  A            A
+       12  0, 0, 1                  C            C
+       13  0, 1, 0                  B            B
+       14  1, 0, 0                  A            A
+       15  0, 1, 0                  B            B
+       16  0, 1, 0                  B            B
+       17  0, 1, 0                  B            B
+       18  0, 1, 0                  B            B
+       19  0, 0, 1                  C            C
+       20  1, 0, 0                  A            A
+       21  1, 0, 0                  A            A
+       22  0, 0, 1                  C            C
+       23  0, 1, 0                  B            B
+       24  1, 0, 0                  A            A
+
+ballots opened correctly: 24/24

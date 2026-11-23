@@ -1,0 +1,50 @@
+# H2: where the private key is not, inside the browser
+# generated: 2026-11-23T12:48:19.668Z
+# election: 12 registered voters, 9 ballots cast in the browser, 2048-bit key, debug LEVEL9
+# The key pair is a variable of one JavaScript module in the authority tab. This file shows the places
+# it must never reach: storage, cookies, form fields (APEX page items are form fields) and the page itself.
+# A field without a name attribute is not part of any form submission.
+
+authority tab
+  localStorage:   {}
+  sessionStorage: {}
+  IndexedDB databases: 0    Cache Storage caches: 0
+  cookies: ORA_WWV_APP_2620=<masked> (httpOnly true)
+  form fields in the page: 13
+    pFlowId                    name=p_flow_id              type=hidden  value="2620"
+    pFlowStepId                name=p_flow_step_id         type=hidden  value="3"
+    pInstance                  name=p_instance             type=hidden  value="<id>"
+    pPageSubmissionId          name=p_page_submission_id   type=hidden  value=<139 characters, searched>
+    pRequest                   name=p_request              type=hidden  value=""
+    pReloadOnSubmit            name=p_reload_on_submit     type=hidden  value="S"
+    pContext                   name=(none)                 type=hidden  value="blindfold/tally/<id>"
+    pSalt                      name=(none)                 type=hidden  value="<id>"
+    pdebug                     name=p_debug                type=hidden  value="LEVEL9"
+    bf-voters                  name=(none)                 type=number  value="12"
+    pPageFormRegionChecksums   name=(none)                 type=hidden  value="[]"
+    pPageItemsRowVersion       name=(none)                 type=hidden  value=""
+    pPageItemsProtected        name=(none)                 type=hidden  value=<87 characters, searched>
+  page HTML searched: 17051 characters
+
+voter tab
+  localStorage:   {}
+  sessionStorage: {}
+  IndexedDB databases: 0    Cache Storage caches: 0
+  cookies: ORA_WWV_APP_2620=<masked> (httpOnly true)
+  form fields in the page: 13
+    pFlowId                    name=p_flow_id              type=hidden  value="2620"
+    pFlowStepId                name=p_flow_step_id         type=hidden  value="1"
+    pInstance                  name=p_instance             type=hidden  value="<id>"
+    pPageSubmissionId          name=p_page_submission_id   type=hidden  value=<139 characters, searched>
+    pRequest                   name=p_request              type=hidden  value=""
+    pReloadOnSubmit            name=p_reload_on_submit     type=hidden  value="S"
+    pContext                   name=(none)                 type=hidden  value="blindfold/vote/<id>"
+    pSalt                      name=(none)                 type=hidden  value="<id>"
+    pdebug                     name=p_debug                type=hidden  value="LEVEL9"
+    bf-voter                   name=(none)                 type=text    value="VOTER-0010"
+    pPageFormRegionChecksums   name=(none)                 type=hidden  value="[]"
+    pPageItemsRowVersion       name=(none)                 type=hidden  value=""
+    pPageItemsProtected        name=(none)                 type=hidden  value=<87 characters, searched>
+  page HTML searched: 15971 characters
+
+stores in use (localStorage + sessionStorage + IndexedDB + Cache Storage): authority 0, voter 0

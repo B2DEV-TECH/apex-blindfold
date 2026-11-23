@@ -1,0 +1,33 @@
+# H2: APEX session state
+# generated: 2026-11-23T12:48:19.592Z
+# election: 12 registered voters, 9 ballots cast in the browser, 2048-bit key, debug LEVEL9
+# APEX_260200.WWV_FLOW_DATA holds the value of every page and application item of every session.
+# The application has no page item and no application item: the voter code and the options are plain HTML,
+# never submitted. What APEX does keep is the paging position of the two reports on the page
+# "What the database sees": first row, rows per page, rows found, and a fourth field, keyed by the report region.
+
+SQL> select d.*, p.plug_name as report_region from apex_260200.wwv_flow_data d left join apex_260200.wwv_flow_page_plugs p on p.id = d.item_id and p.flow_id = d.flow_id
+      where d.flow_id = 2620 or d.flow_instance in (<the 2 sessions of this run>);
+
+Entries of the 2 sessions of this run: 2
+
+  FLOW_INSTANCE  FLOW_ID  ITEM_ID  ITEM_NAME  REPORT_REGION  IS_ENCRYPTED  ITEM_VALUE_VC2  ITEM_VALUE_CLOB
+  -------------  -------  -------  ---------  -------------  ------------  --------------  ---------------
+  <id>           2620     <id>                BLIND_BALLOTS  N             1:9:27:0
+  <id>           2620     <id>                VOTER_ROLL     N             1:10:12:0
+
+  2 rows selected
+
+Entries of other sessions of the application still stored: 0 (none)
+Page items or application items with a value, in any session: 0
+
+Sessions of the two browsers (APEX_260200.WWV_FLOW_SESSIONS$, cookie and salt columns left out):
+
+  ID    USERNAME  CREATED_ON           REMOTE_ADDR        DEBUG_LEVEL  ON_NEW_INSTANCE_FIRED_FOR
+  ----  --------  -------------------  -----------------  -----------  -------------------------
+  <id>  nobody    2026-11-23 12:47:45  [0:0:0:0:0:0:0:1]               2620i
+  <id>  nobody    2026-11-23 12:47:48  [0:0:0:0:0:0:0:1]               2620i
+
+  2 rows selected
+
+APEX collections owned by these sessions: 0

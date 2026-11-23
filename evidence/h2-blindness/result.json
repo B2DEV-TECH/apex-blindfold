@@ -1,0 +1,129 @@
+{
+  "id": "H2",
+  "hypothesis": "Blindness: no vote and no private key ever exists server side",
+  "verdict": "CONFIRMED",
+  "statement": "Knowing the private key and the randomizer of all 27 ciphertexts, the test found none of them, whole or in part, in 21 sources: 231 HTTP requests and their responses, 4 tables, APEX session state (0 page items; 2 report paging positions), 4423 LEVEL9 debug messages, the activity and access logs, 172 SQL statements, captured binds, audit trail, alert log, and the storage of both tabs. Ballot requests differ only in the voter code and three ciphertexts. ORDS log files were not read.",
+  "numbers": {
+    "ballots": 9,
+    "ciphertexts": 27,
+    "secrets": 35,
+    "search_windows": 90902,
+    "sources": 21,
+    "characters_searched": 17369123,
+    "long_numbers_tested": 80,
+    "findings": 0,
+    "requests": 231,
+    "tables": 4,
+    "session_state_page_items": 0,
+    "session_state_paging_entries": 2,
+    "debug_messages": 4423,
+    "activity_rows": 19,
+    "sql_statements": 172,
+    "captured_binds": 496,
+    "keygen_draws": 625,
+    "canary": {
+      "table": true,
+      "network": true,
+      "session_state": false,
+      "debug": false,
+      "activity_log": false,
+      "sql_area": false,
+      "bind_capture": false
+    },
+    "browser": "msedge 158.0.4370.33"
+  },
+  "mode": {
+    "quick": false,
+    "seed": 20261123
+  },
+  "checks": [
+    {
+      "name": "a monitored election ran end to end in two browsers, with debug at LEVEL9",
+      "pass": true,
+      "detail": "9 ballots cast on the Vote page, tally decrypted on the Tally page: A=1  B=6  C=2"
+    },
+    {
+      "name": "the test knows the private key: key generation replayed from the bytes the tab drew",
+      "pass": true,
+      "detail": "625 draws replayed, modulus equals ELECTION_KEY.n_hex: true"
+    },
+    {
+      "name": "the test knows the randomizer of every ciphertext: each one recomputed bit for bit",
+      "pass": true,
+      "detail": "27/27 ciphertexts equal (1 + m*n) * r^n mod n^2 for the choice made and the bytes drawn, in the request and in BLIND_BALLOTS"
+    },
+    {
+      "name": "scanner controls: every planted leak is found, clean data is not flagged",
+      "pass": true,
+      "detail": "11/11 planted leaks found, 0 false alarms"
+    },
+    {
+      "name": "nothing the browsers sent or received holds a secret",
+      "pass": true,
+      "detail": "231 requests with headers and bodies; 224 text responses (7 fonts and images not searched)"
+    },
+    {
+      "name": "every request went to one origin, and the HAR has all of them",
+      "pass": true,
+      "detail": "1 origin, 231 requests in the HAR, 231 seen by the browser"
+    },
+    {
+      "name": "ballot requests differ only in the voter code and in three ciphertexts of fixed length",
+      "pass": true,
+      "detail": "9 CAST_BALLOT requests, fields \"f01 p_debug p_flow_id p_flow_step_id p_instance p_json p_request x01\", 3290 bytes each whatever the choice"
+    },
+    {
+      "name": "the JavaScript the browsers ran is the JavaScript of this repository",
+      "pass": true,
+      "detail": "6/6 files identical: authority.js, boot.js, ledger.js, paillier.js, shared.js, vote.js"
+    },
+    {
+      "name": "no table of the schema holds a secret",
+      "pass": true,
+      "detail": "4 tables read in full as DBA: BLIND_BALLOTS 27, CANDIDATES 3, ELECTION_KEY 1, VOTER_ROLL 12"
+    },
+    {
+      "name": "APEX session state holds no page item and no secret: only the paging position of two reports",
+      "pass": true,
+      "detail": "0 page or application items; 2 paging entries for the 2 sessions of this run (BLIND_BALLOTS 1:9:27:0, VOTER_ROLL 1:10:12:0), 0 of the same kind left by other sessions; collections: 0"
+    },
+    {
+      "name": "the LEVEL9 debug trace holds no secret",
+      "pass": true,
+      "detail": "4423 messages in 19 page views, 9 of them CAST_BALLOT requests"
+    },
+    {
+      "name": "APEX logs, SQL area, captured binds, audit trail and alert log hold no secret",
+      "pass": true,
+      "detail": "19 activity rows, 0 logins, 172 statements, 496 captured binds, audit 0, alert 0"
+    },
+    {
+      "name": "storage, cookies, form fields and HTML of the tabs hold no secret",
+      "pass": true,
+      "detail": "authority tab: 0 localStorage and 0 sessionStorage entries, 1 cookies, 13 form fields"
+    },
+    {
+      "name": "canary: a secret smuggled into a ballot is found by the same search",
+      "pass": true,
+      "detail": "table found, network found, session_state not recorded, debug not recorded, activity_log not recorded, sql_area not recorded, bind_capture not recorded"
+    }
+  ],
+  "notes": [
+    "ORDS log files were not read: the lab account has no access to the ORDS configuration or console. ORDS can only log what it receives, and every byte it received is in the HAR above.",
+    "getRandomValues calls from scripts other than paillier.js: 0 (authority), 0 (voter)."
+  ],
+  "evidence": [
+    "h2-blindness/scan-summary.txt",
+    "h2-blindness/tables.txt",
+    "h2-blindness/session-state.txt",
+    "h2-blindness/debug-trace.txt",
+    "h2-blindness/request-payloads.txt",
+    "h2-blindness/authority.har",
+    "h2-blindness/voter.har",
+    "h2-blindness/apex-logs.txt",
+    "h2-blindness/client-side.txt",
+    "h2-blindness/controls.txt"
+  ],
+  "started": "2026-11-23T12:47:45.353Z",
+  "finished": "2026-11-23T12:48:19.671Z"
+}

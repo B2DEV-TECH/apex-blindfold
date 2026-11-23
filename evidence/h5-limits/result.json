@@ -1,0 +1,80 @@
+{
+  "id": "H5",
+  "hypothesis": "Other limits: a DBA can add votes, a key holder can read ballots, voters can be re-linked",
+  "verdict": "CONFIRMED",
+  "statement": "All three limits hold: a DBA with the public key moved 5 votes with two UPDATEs and the totals still matched the turnout; the key holder read 24/24 individual ballots; ordering by voted_at and ballot_id re-linked 24/24 voters arriving one at a time (44/200 exactly, 200/200 within 7 positions, when 8 sessions vote at once).",
+  "numbers": {
+    "ballots_read": 24,
+    "ballots": 24,
+    "relinked_sequential": 24,
+    "relinked_concurrent": 44,
+    "concurrent_voters": 200,
+    "concurrent_sessions": 8,
+    "concurrent_within_window": 200,
+    "concurrent_farthest_miss": 7,
+    "tally_honest": [
+      6,
+      7,
+      7
+    ],
+    "tally_forged": [
+      1,
+      12,
+      7
+    ],
+    "turnout": 20,
+    "extra_key_substitution": {
+      "worked": true,
+      "ballots_read": 4,
+      "ballots_exposed": 4
+    }
+  },
+  "mode": {
+    "quick": false,
+    "seed": 20261123
+  },
+  "checks": [
+    {
+      "name": "(b) the key holder decrypts every individual ballot",
+      "pass": true,
+      "detail": "24/24 ballots opened correctly with the one private key"
+    },
+    {
+      "name": "(c) ordering by voted_at and by ballot_id re-links voters to ballots",
+      "pass": true,
+      "detail": "24/24 voters paired with their own ballot, voters arriving one at a time"
+    },
+    {
+      "name": "(b) and (c) together name the vote of every voter",
+      "pass": true,
+      "detail": "24/24 voters: voter code -> ballot -> decrypted choice"
+    },
+    {
+      "name": "(a) the DBA adds 5 votes to option B with one UPDATE and the public key",
+      "pass": true,
+      "detail": "A=6  B=7  C=7  ->  A=6  B=12  C=7"
+    },
+    {
+      "name": "(a) taking the same 5 votes from option A keeps the totals equal to the turnout",
+      "pass": true,
+      "detail": "A=1  B=12  C=7: 20 votes from 20 voters"
+    },
+    {
+      "name": "(a) row counts, ballot count and turnout are unchanged",
+      "pass": true,
+      "detail": "60 rows, 20 ballots, turnout 20, before and after"
+    }
+  ],
+  "notes": [
+    "(c) with 8 database sessions casting at the same time: 44/200 voters paired with their own ballot (22.0%), 200/200 within 7 positions, farthest miss 7",
+    "extra (not in the original list): a DBA who swaps the public key read 4/4 ballots cast meanwhile, and the final tally was still correct (A=2  B=3  C=5)"
+  ],
+  "evidence": [
+    "h5-limits/b-key-holder-reads-ballots.txt",
+    "h5-limits/c-relinking.txt",
+    "h5-limits/a-dba-adds-votes.txt",
+    "h5-limits/extra-key-substitution.txt"
+  ],
+  "started": "2026-11-23T12:48:55.973Z",
+  "finished": "2026-11-23T12:49:43.518Z"
+}

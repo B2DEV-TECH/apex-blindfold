@@ -1,0 +1,31 @@
+# H3 (a): identical votes produce different ciphertexts
+# generated: 2026-11-23T12:48:36.375Z
+# election of 2000 voters, 2048-bit key, queries run as the DBA account
+
+SQL> select count(*) as ciphertexts, count(distinct vote_enc) as distinct_values, count(distinct length(vote_enc)) as lengths from blindfold.blind_ballots;
+
+CIPHERTEXTS  DISTINCT_VALUES  LENGTHS
+-----------  ---------------  -------
+6000         6000             1
+
+1 row selected
+
+SQL> select vote_enc, count(*) as copies from blind_ballots group by vote_enc having count(*) > 1;
+
+no rows selected
+
+Ballots 8 and 10 carry the same vote (the harness knows it, the database does not).
+Their six ciphertexts, side by side:
+
+BALLOT_ID  CANDIDATE_ID  VOTE_ENC
+---------  ------------  ---------------------------------------
+8          1             3519dac90cc8ac21a006ef48...a360c9b1675c
+10         1             0d87670f68ec82c1406a1b7f...32f85c8f0b42
+8          2             578bd95556cec0740c219ba1...fad0b73f87ac
+10         2             2604171830afa2c097f568fa...50db17589f2c
+8          3             afa3b8e9dbf5eda43d906dbd...7fc709a1d8b2
+10         3             daa2e16d351fb173bb2b5c41...397f59029cc9
+
+6 rows selected
+
+Encrypting the same ballot 200 more times gave 600 distinct ciphertexts out of 600.

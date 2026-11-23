@@ -1,0 +1,74 @@
+{
+  "id": "H4",
+  "hypothesis": "Ballot stuffing: a voter can submit Enc(1000) instead of Enc(1) and the tally accepts it",
+  "verdict": "CONFIRMED",
+  "statement": "The tally accepted a ballot encrypting 1000 (A=4  B=3  C=2 became A=1004  B=3  C=2). A balanced ballot of [3, -2, 0] changed the result (A=7  B=1  C=2) while the totals still added up to the turnout.",
+  "numbers": {
+    "honest": [
+      4,
+      3,
+      2
+    ],
+    "naive_after": [
+      1004,
+      3,
+      2
+    ],
+    "balanced_after": [
+      7,
+      1,
+      2
+    ],
+    "turnout": 10,
+    "browser": "msedge 158.0.4370.33"
+  },
+  "mode": {
+    "quick": false,
+    "seed": 20261123
+  },
+  "checks": [
+    {
+      "name": "before the attack the tally is the honest one",
+      "pass": true,
+      "detail": "A=4  B=3  C=2"
+    },
+    {
+      "name": "the database accepts a ballot that encrypts 1000",
+      "pass": true,
+      "detail": "CAST_BALLOT answered ok, ballot 10"
+    },
+    {
+      "name": "the tally counts it as 1000 votes",
+      "pass": true,
+      "detail": "A=4  B=3  C=2  ->  A=1004  B=3  C=2"
+    },
+    {
+      "name": "the only symptom is in the aggregate: totals no longer add up to the turnout",
+      "pass": true,
+      "detail": "1009 votes from 10 voters; nothing tells which ballot or which option"
+    },
+    {
+      "name": "the database accepts a ballot that encrypts 3, -2 and 0",
+      "pass": true,
+      "detail": "CAST_BALLOT answered ok, ballot 10"
+    },
+    {
+      "name": "the tally moves two votes from B to A and adds one",
+      "pass": true,
+      "detail": "A=4  B=3  C=2  ->  A=7  B=1  C=2"
+    },
+    {
+      "name": "this time nothing is flagged: the totals add up to the turnout",
+      "pass": true,
+      "detail": "10 votes from 10 voters; page says \"Decrypted in 95 ms. 10 votes from 10 voters.\""
+    }
+  ],
+  "notes": [],
+  "evidence": [
+    "h4-ballot-stuffing/01-stuffed-tally.png",
+    "h4-ballot-stuffing/02-balanced-stuffing-undetected.png",
+    "h4-ballot-stuffing/stuffing.txt"
+  ],
+  "started": "2026-11-23T12:48:39.424Z",
+  "finished": "2026-11-23T12:48:55.585Z"
+}

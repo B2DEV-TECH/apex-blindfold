@@ -1,0 +1,138 @@
+# H2: what the browsers sent
+# generated: 2026-11-23T12:48:19.598Z
+# election: 12 registered voters, 9 ballots cast in the browser, 2048-bit key, debug LEVEL9
+# source: HAR recorded by Playwright in both browser contexts (authority.har and voter.har in this folder)
+
+requests: 76 by the authority browser, 155 by the voter browser, all to one origin: yes
+static files (scripts, styles, fonts, images): 212 GET requests
+distinct query strings of static files (searched like everything else):
+  ?v=26.2.0
+  ?p_app_id=2620&p_lang=en&p_version=26.2.0-69648050&p_nls_settings=eyJudW1lcmljQ2hhcmFjdGVycyI6Ii4sIiwiY3VycmVu… (178 characters)
+  ?p_app_id=2620&p_version=26.2.0-69648050
+
+Pages and Ajax calls of the authority browser:
+
+  METHOD  PATH                                                PROCESS          STATUS  TYPE              SENT_BYTES
+  ------  --------------------------------------------------  ---------------  ------  ----------------  ----------
+  GET     /ords/r/blindfold/blindfold/tally?debug=LEVEL9                       200     text/html         0
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/tally/<id>  ELECTION_INFO    200     application/json  190
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/tally/<id>  OPEN_ELECTION    200     application/json  714
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/tally/<id>  ELECTION_INFO    200     application/json  190
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/tally/<id>  ENCRYPTED_TALLY  200     application/json  192
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/tally/<id>  ELECTION_INFO    200     application/json  190
+
+  6 rows selected
+
+Pages and Ajax calls of the voter browser:
+
+  METHOD  PATH                                                 PROCESS        STATUS  TYPE              SENT_BYTES
+  ------  ---------------------------------------------------  -------------  ------  ----------------  ----------
+  GET     /ords/r/blindfold/blindfold/vote?debug=LEVEL9                       200     text/html         0
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    ELECTION_INFO  200     application/json  190
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3290
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3290
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3290
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3290
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3290
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3290
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3290
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3290
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/vote/<id>    CAST_BALLOT    200     application/json  3290
+  GET     /ords/r/blindfold/blindfold/ledger?debug=LEVEL9                     200     text/html         0
+  POST    /ords/wwv_flow.ajax?p_context=blindfold/ledger/<id>  ELECTION_INFO  200     application/json  190
+
+  13 rows selected
+
+The ballot requests, field by field. "choice" is known to the test only: it is not in the request.
+
+  BALLOT  CHOICE  X01         F01_VALUES  F01_CHARS  BODY_BYTES  OTHER_FIELDS_AS_BALLOT_1  HEADERS_AS_BALLOT_1  RESPONSE
+  ------  ------  ----------  ----------  ---------  ----------  ------------------------  -------------------  -------------------------
+  1       C       VOTER-0001  3           1024       3290        identical                 identical            {"ok":true,"ballot_id":1}
+  2       C       VOTER-0002  3           1024       3290        identical                 identical            {"ok":true,"ballot_id":2}
+  3       B       VOTER-0003  3           1024       3290        identical                 identical            {"ok":true,"ballot_id":3}
+  4       B       VOTER-0004  3           1024       3290        identical                 identical            {"ok":true,"ballot_id":4}
+  5       B       VOTER-0005  3           1024       3290        identical                 identical            {"ok":true,"ballot_id":5}
+  6       B       VOTER-0006  3           1024       3290        identical                 identical            {"ok":true,"ballot_id":6}
+  7       B       VOTER-0007  3           1024       3290        identical                 identical            {"ok":true,"ballot_id":7}
+  8       A       VOTER-0008  3           1024       3290        identical                 identical            {"ok":true,"ballot_id":8}
+  9       B       VOTER-0009  3           1024       3290        identical                 identical            {"ok":true,"ballot_id":9}
+
+  9 rows selected
+
+fields other than x01 and f01, the same in every ballot request: p_flow_id=2620  p_flow_step_id=1  p_instance=<id>  p_debug=LEVEL9  p_request=APPLICATION_PROCESS=CAST_BALLOT  p_json={"salt":"<id>"}
+
+One complete ballot request, as sent (ciphertexts wrapped for display, cookie value masked):
+
+  POST http://<host>/ords/wwv_flow.ajax?p_context=blindfold/vote/<id>
+  Accept: application/json, text/javascript, */*; q=0.01
+  Accept-Encoding: gzip, deflate, br, zstd
+  Accept-Language: en-US,en;q=0.9
+  Connection: keep-alive
+  Content-Length: 3290
+  Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+  Cookie: ORA_WWV_APP_2620=<masked>
+  Host: <host>
+  Origin: http://<host>
+  Referer: http://<host>/
+  Sec-Fetch-Dest: empty
+  Sec-Fetch-Mode: cors
+  Sec-Fetch-Site: same-origin
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0
+  X-Requested-With: XMLHttpRequest
+  sec-ch-ua: "Chromium";v="158", "Not.A/Brand";v="24", "Microsoft Edge";v="158"
+  sec-ch-ua-mobile: ?0
+  sec-ch-ua-platform: "Windows"
+
+  p_flow_id      = 2620
+  p_flow_step_id = 1
+  p_instance     = <id>
+  p_debug        = LEVEL9
+  p_request      = APPLICATION_PROCESS=CAST_BALLOT
+  x01            = VOTER-0001
+  f01            = 70150ff08ac6bdba5f0bf07661f6961026072863ace00e6370dd2b693f6d59039d43cd1069da310e4dc1c7cbf3d749ba
+                   571402529b0b7f437dd4ce1272d200da6e8e505c4ad266d3bc8af0091d5a2ba2114d74aa57d3dde7f40d5fcf20162855
+                   df591b2c49acd709a722bccaa2171fd835391fc7d2b902bde941749667e56bfbafc9dd29de1e1e68e1fd84e333924218
+                   86dcd414e42d1ed089331f8e3564cf4952a32e06c4acb4f0162f4e4c0e024d71d1c12a65986a97057367f2311c456327
+                   64c20175292582b893eb2477bcfc16e3561f35321fd3d648c4e98593cca74c41d61d48e18ed0012084da07930c19b0c3
+                   08be1dc3c16879646801cd7e574c175a990a5bebe02bede462c1b881dbeee7a556aa06c7c21a1cf474cd5ed7a9d11de3
+                   af1919c87888b771f5a6a41ee210edc185e67641871f52d7f18a06dd7b88892ae2323b4d1c6dfbc8b88e0acac68818ad
+                   ca7e1a391e18c2d360ce763c30039e21db101360a5ef1fc92da53a2947963ef5c867d1586e1555e64e110136f942da0c
+                   38ac8ffd8596b083121b274e95f42f135bfa488b58bdd83ad1f564dfcab1efae568361c65f7af41c35a83173e119e772
+                   ceab3069cbebba6916690119739c8722086310fdabca0beebf4e2a9b6a7d8f350287b6d8ac74424fafee063f4edaea2e
+                   97621df1664884b199fbd68e1fbf4929f757dfb88f1554b8d51c0ddced58d546
+  f01            = 9784b58729d3d4aef5e22f78ecd216d5b19ea1240a1ffa1f00da589f627bec77fb1870124ffc1569e4699a4de0a11c60
+                   50ff5cc928d1220118e35eeeb66cb157924b380b8bab2e1a04ed5ffbc68f9eacbe880ead0ce2a1d3f6e6dc81aff095db
+                   ce81862885dfe8ef890401c1159a690981b38d5836918122835288b20fda7a2cdb5c657fcc2e963f4e58b390865498da
+                   7930d492a5bf020cc42529c9fc4431d157c70f3636b377edb0d188d57243bc18dd74d776d7ff0a92d397f74ce236911e
+                   9be40b58c0cc77d89fe21b30c17d1780623512f6a891bd8231309f89227d10332a0a264d35485481cb4a0d03e46c3024
+                   39cc57e9c2bfd2d221228953073e8837e331b678dd5d433ebb9264e454aae6410bee1891aba0935a4d14f0a0bfacc1b0
+                   0c9afb4a8432dc02eef0c0f52dab7a34ae2004644d164f514b16514b61b42b9b9d082856f40a63ce000a2cd15bf6be63
+                   aa53b371c96b178984bd9229a7beec5a45246061a751dc3fa38f83a1774555b22c5cd58a1816a5fe9fc2514ef5461190
+                   6ef1ae5a0ac963f050768e14a816e89b4d3d3dd93ce23ed6d7f4ec6c75b2dbcef61000087e2ec049e4d0d34573fa15aa
+                   294a78484db24d77108fdbc55c7db9ed7ef71b665ea915a89aa1c6c299162b825d57247162af2b228e7fee69bb73cc37
+                   11586ebf7b61ecf706f28e863d5f433ecc2647e6a12ebac4758fac892a4fe061
+  f01            = 203f04c3fdc474c7f903779a6a4e352e11d3804a13cf71ece68472345e75bce437696b547c482cefc5e2e08038bdc3cb
+                   f140ce58aa445d0fbd1779328e4b9ed90699483c35488b1f8b14daa2aaf72a51ddf6a8137e3a25160a5140dc0fe9b8ec
+                   0d6732344ade9e5d3312ba905623c976edc17cdd8735dabe90b081bf4ae2af235f1fe4ff7c5bd1e395e64af0a1d08e29
+                   cea7ee2ae973a5a5d3aa1366a9b161d6a37b67ab33b4df1a4347d1df425d9259495218f3fbea947144e4b971d13e9bbd
+                   18a5aeb97a4a142d9f4b050f55e2f1d66edf285e06e72c018dadede7e1b72551338f14ecc5e86141a003cb41a0b69fc8
+                   e36accd0764977c871dd049eb6d5301ea146c7e114f3a6cbbe6160e4f7f836abdd432acc6a87839e5893bd087f2a9e93
+                   a30fa951052a293368de78d1095e7a876b2df08ff508319db03e354f8f97fa500831bab1c0cfa6d8230055b7e6a2a711
+                   aa91bceffd121bb7631a367b4d48a2fb1ed0829f8ad57bb2d4d96f24ee724dcbb8dde49cf3d763a178bd73b9548fefd9
+                   8da6ca6468557bc42be79ddb227b7b4bbd5dce8625eaae011c3a4a8d7ccc8c2d6c3324958e8f60da1d6296abadb46a21
+                   2f867dd85744c3c1a9f5b4984cff7fedea82f73e6e137b08a78059d99934ac7c035bc8415fb4cf727c6203449ed32b1e
+                   1ae69a7b14676499d2622dcda1bb249f5fb3e9c3dcda25bda68f658aa40c87a3
+  p_json         = {"salt":"<id>"}
+
+The JavaScript the browsers ran, against the files of this repository (SHA-256, first 16 characters, line endings normalized):
+
+  FILE          SHA256_SERVED     SHA256_REPOSITORY  SAME
+  ------------  ----------------  -----------------  ----
+  authority.js  f60194c2e0f75bc7  f60194c2e0f75bc7   yes
+  boot.js       db5d06e2e9401be8  db5d06e2e9401be8   yes
+  ledger.js     189f893685a19706  189f893685a19706   yes
+  paillier.js   7607af449d31c034  7607af449d31c034   yes
+  shared.js     2a0fc0970e459f53  2a0fc0970e459f53   yes
+  vote.js       fd2c97d971f9757c  fd2c97d971f9757c   yes
+
+  6 rows selected

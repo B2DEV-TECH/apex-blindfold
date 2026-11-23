@@ -1,0 +1,59 @@
+# H2: APEX logs and instance-level traces
+# generated: 2026-11-23T12:48:19.666Z
+# election: 12 registered voters, 9 ballots cast in the browser, 2048-bit key, debug LEVEL9
+# everything recorded since the election of this run was opened, read as DBA
+
+APEX activity log (APEX_260200.WWV_FLOW_ACTIVITY_LOG1$ and 2$): 19 rows
+
+  TIME                      PAGE  VIEW_TYPE  REQUEST_VALUE    USERID  ELAPSED_S  BYTES  IP_ADDRESS         ERROR
+  ------------------------  ----  ---------  ---------------  ------  ---------  -----  -----------------  -----
+  2026-11-23T12:47:45.906Z  3     2                           nobody  0.737499   0      [0:0:0:0:0:0:0:1]
+  2026-11-23T12:47:47.174Z  3     3          ELECTION_INFO    nobody  0.096684   0
+  2026-11-23T12:47:48.339Z  3     3          OPEN_ELECTION    nobody  0.130656   0
+  2026-11-23T12:47:48.499Z  3     3          ELECTION_INFO    nobody  0.054815   0
+  2026-11-23T12:47:48.853Z  1     2                           nobody  0.144601   0      [0:0:0:0:0:0:0:1]
+  2026-11-23T12:47:49.295Z  1     3          ELECTION_INFO    nobody  0.052455   0
+  2026-11-23T12:47:50.312Z  1     3          CAST_BALLOT      nobody  0.075811   0
+  2026-11-23T12:47:50.862Z  1     3          CAST_BALLOT      nobody  0.066066   0
+  2026-11-23T12:47:51.398Z  1     3          CAST_BALLOT      nobody  0.065017   0
+  2026-11-23T12:47:51.934Z  1     3          CAST_BALLOT      nobody  0.065248   0
+  2026-11-23T12:47:52.452Z  1     3          CAST_BALLOT      nobody  0.066289   0
+  2026-11-23T12:47:52.955Z  1     3          CAST_BALLOT      nobody  0.067087   0
+  2026-11-23T12:47:53.459Z  1     3          CAST_BALLOT      nobody  0.064767   0
+  2026-11-23T12:47:53.960Z  1     3          CAST_BALLOT      nobody  0.064163   0
+  2026-11-23T12:47:54.463Z  1     3          CAST_BALLOT      nobody  0.065847   0
+  2026-11-23T12:47:54.685Z  3     3          ENCRYPTED_TALLY  nobody  0.398466   0
+  2026-11-23T12:47:55.124Z  3     3          ELECTION_INFO    nobody  0.055615   0
+  2026-11-23T12:47:55.821Z  2     2                           nobody  0.695969   0
+  2026-11-23T12:47:56.837Z  2     3          ELECTION_INFO    nobody  0.052448   0
+
+  19 rows selected
+
+The activity log names the page, the time and the address of every ballot request. It says who voted when (see H5), not what.
+
+APEX access log (logins): 0 rows. The application has no login.
+SQL area: 172 statements parsed by BLINDFOLD, APEX_260200, APEX_PUBLIC_USER or ORDS_PUBLIC_USER, full text searched
+captured bind values (V$SQL_BIND_CAPTURE): 496
+unified audit trail: 0 records
+database alert log: 0 lines
+
+Statements of the schema seen in the SQL area (the application binds every value):
+
+  SELECT COUNT(*) FROM BLIND_BALLOTS
+  select n_hex from election_key
+  DELETE FROM ELECTION_KEY
+  INSERT INTO VOTER_ROLL (VOTER_ID) SELECT 'VOTER-' || LPAD(TO_CHAR(LEVEL), GREATEST(4, LENGTH(TO_CHAR(LEVEL))), '0') FROM DUAL CONNECT BY LEVEL <= :B1 
+  SELECT BLIND_BALLOTS_SEQ.NEXTVAL FROM "SYS"."DUAL"
+  SELECT CANDIDATE_ID, LABEL, TAG FROM CANDIDATES ORDER BY CANDIDATE_ID 
+  INSERT INTO ELECTION_KEY (N_HEX) VALUES (:B1 )
+  begin bf_web.encrypted_tally; end;
+  select candidate_id from candidates order by candidate_id
+  select /*+qb_name(apex$2620_2)*/* from(select a.*,row_number()over(order by null)apx$rownum from(select i.*, count(*) over () as APEX$TOTAL_ROW_COUNT 
+  begin bf_web.open_election; end;
+  begin bf_web.cast_ballot; end;
+  SELECT MAX(N_HEX) FROM ELECTION_KEY
+  SELECT COUNT(*), COUNT(VOTED_AT) FROM VOTER_ROLL
+  begin bf_web.election_info; end;
+  select candidate_id, vote_enc from blind_ballots
+  INSERT INTO BLIND_BALLOTS (BALLOT_ID, CANDIDATE_ID, VOTE_ENC) VALUES (:B3 , :B1 , :B2 )
+  UPDATE VOTER_ROLL SET VOTED_AT = SYSTIMESTAMP WHERE VOTER_ID = :B1 AND VOTED_AT IS NULL

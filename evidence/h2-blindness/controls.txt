@@ -1,0 +1,46 @@
+# H2: can this search find anything?
+# generated: 2026-11-23T12:48:19.669Z
+# election: 12 registered voters, 9 ballots cast in the browser, 2048-bit key, debug LEVEL9
+# A search that finds nothing proves nothing unless it finds what is planted.
+
+Control 1. Secrets of this election planted in text, whole and in fragments
+
+  PLANTED                                                       EXPECTED  RESULT  DETECTOR
+  ------------------------------------------------------------  --------  ------  ----------------
+  lambda, full hex inside JSON                                  found     found   window+structure
+  p, upper-case hex                                             found     found   window+structure
+  q, decimal                                                    found     found   window+structure
+  mu, base64 at byte offset 1                                   found     found   window
+  phi(n), full hex                                              found     found   window+structure
+  lambda, 24 characters of its lower half                       found     found   window
+  phi(n), 30 decimal digits of its lower half                   found     found   window
+  3 * lambda as hex (structure detector only)                   found     found   structure
+  7 * p as decimal (structure detector only)                    found     found   structure
+  randomizer r of one ciphertext, hex                           found     found   window+structure
+  r + 5n as decimal (structure detector only)                   found     found   structure
+  control: n, n^2 and random hex                                silent    silent
+  control: upper half of phi(n), which equals the upper half …  silent    silent
+  control: the ciphertext itself                                silent    silent
+
+  14 rows selected
+
+Control 2. Canary: a decoy secret sent through the real application
+  A second key pair is generated in Node and never opens an election. Its lambda is sent twice from a browser
+  console: as an extra parameter of an Ajax call, and in the place of the first ciphertext of a ballot.
+  ballot answer from the database: {"ok":true,"ballot_id":10}
+
+  SURFACE                              DECOY_FOUND  DETAIL
+  -----------------------------------  -----------  --------------
+  table BLIND_BALLOTS                  yes          30 rows
+  network record (HAR requests)        yes          74 requests
+  APEX session state                   no           0 items
+  APEX debug trace, LEVEL9             no           978 messages
+  APEX activity log                    no           4 rows
+  SQL area (V$SQL)                     no           115 statements
+  captured binds (V$SQL_BIND_CAPTURE)  no           24 values
+
+  7 rows selected
+
+Reading: the ballot table and the network record whatever a browser sends, and the search finds it there.
+Surfaces marked "no" did not record request parameters at all in this run, so their silence in the main
+search says little by itself. The network record is the complete one.
