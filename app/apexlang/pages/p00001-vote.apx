@@ -1,0 +1,109 @@
+page 1 (
+    name: Vote
+    alias: VOTE
+    title: Vote | APEX Blindfold
+    appearance {
+        pageTemplate: @/blank
+        templateOptions: #DEFAULT#
+        cssClasses: bf-page
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+    }
+
+    region ballot (
+        name: Ballot
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        source {
+            htmlCode:
+                ```html
+                <div class="bf-shell" data-bf-page="vote">
+                  <section class="bf-hero">
+                    <p class="bf-eyebrow">Fictional election &middot; educational cryptography</p>
+                    <h1 class="bf-title">Best Oracle APEX 26.2 feature</h1>
+                    <p class="bf-lede">Pick one. This browser encrypts your choice before anything leaves the page. <strong>The database stores three numbers it cannot read.</strong></p>
+                  </section>
+
+                  <div class="bf-grid">
+                    <section class="bf-panel" id="bf-ballot" aria-labelledby="bf-ballot-title">
+                      <h2 class="bf-panel__title" id="bf-ballot-title"><span class="bf-step">1</span>Your ballot</h2>
+                      <label class="bf-field">
+                        <span class="bf-field__label">Voter code</span>
+                        <input class="bf-input" id="bf-voter" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="VOTER-0001" maxlength="30">
+                        <span class="bf-field__hint">The code proves you are on the roll. It is recorded apart from the ballot.</span>
+                      </label>
+                      <span class="bf-field__label" id="bf-options-label">Your choice</span>
+                      <div class="bf-options" id="bf-options" role="radiogroup" aria-labelledby="bf-options-label"></div>
+                      <button class="bf-button bf-button--wide" id="bf-cast" type="button" disabled>Encrypt and cast ballot</button>
+                      <p class="bf-message" id="bf-message" role="status"></p>
+                    </section>
+
+                    <section class="bf-panel" id="bf-receipt" aria-labelledby="bf-receipt-title" hidden>
+                      <h2 class="bf-panel__title" id="bf-receipt-title"><span class="bf-step">1</span>Ballot stored</h2>
+                      <p class="bf-receipt__id">Ballot <span id="bf-receipt-id"></span></p>
+                      <p class="bf-receipt__text">Three ciphertexts are now rows in <code class="bf-hex">BLIND_BALLOTS</code>. The database cannot tell which one encrypts your vote.</p>
+                      <p class="bf-receipt__local"><small>On this screen only</small><span id="bf-receipt-choice"></span></p>
+                      <div class="bf-actions">
+                        <a class="bf-button" id="bf-receipt-link" href="#">See what the database sees</a>
+                        <button class="bf-button bf-button--ghost" id="bf-next" type="button">Next voter</button>
+                      </div>
+                    </section>
+
+                    <section class="bf-panel" aria-labelledby="bf-wire-title">
+                      <h2 class="bf-panel__title" id="bf-wire-title"><span class="bf-step">2</span>What leaves this browser</h2>
+                      <ol class="bf-wire" id="bf-wire"></ol>
+                    </section>
+                  </div>
+                </div>
+                ```
+        }
+    )
+
+    process election-info (
+        name: ELECTION_INFO
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                bf_web.election_info;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: ajaxCallback
+        }
+        advanced {
+            executionMappingIdentifier: 26200101
+        }
+    )
+
+    process cast-ballot (
+        name: CAST_BALLOT
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                bf_web.cast_ballot;
+                ```
+        }
+        execution {
+            sequence: 20
+            point: ajaxCallback
+        }
+        advanced {
+            executionMappingIdentifier: 26200102
+        }
+    )
+
+)

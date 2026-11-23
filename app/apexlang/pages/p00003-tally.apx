@@ -1,0 +1,129 @@
+page 3 (
+    name: Tally
+    alias: TALLY
+    title: Tally | APEX Blindfold
+    appearance {
+        pageTemplate: @/blank
+        templateOptions: #DEFAULT#
+        cssClasses: bf-page
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+    }
+
+    region authority (
+        name: Authority
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        source {
+            htmlCode:
+                ```html
+                <div class="bf-shell" data-bf-page="authority">
+                  <section class="bf-hero">
+                    <p class="bf-eyebrow">Election authority &middot; the private key never leaves this tab</p>
+                    <h1 class="bf-title">Tally</h1>
+                    <p class="bf-lede">The database adds up votes it cannot read and hands back three encrypted totals. <strong>Only the key in this browser tab turns them into numbers.</strong></p>
+                  </section>
+
+                  <div class="bf-steps">
+                    <section class="bf-panel" aria-labelledby="bf-step-key">
+                      <h2 class="bf-panel__title" id="bf-step-key"><span class="bf-step">1</span>Generate the key pair</h2>
+                      <p class="bf-panel__text">Two 1024-bit primes are found in this browser. The public key goes to the database. The private key stays in the memory of this tab.</p>
+                      <div class="bf-inline">
+                        <label class="bf-field">
+                          <span class="bf-field__label">Registered voters</span>
+                          <input class="bf-input bf-input--number" id="bf-voters" type="number" min="1" max="100000" value="20">
+                        </label>
+                        <button class="bf-button" id="bf-generate" type="button">Generate key pair and open election</button>
+                      </div>
+                      <p class="bf-message" id="bf-key-status" role="status"></p>
+                      <div class="bf-facts" id="bf-key-facts"></div>
+                    </section>
+
+                    <section class="bf-panel" aria-labelledby="bf-step-tally">
+                      <h2 class="bf-panel__title" id="bf-step-tally"><span class="bf-step">2</span>Ask the database to tally</h2>
+                      <p class="bf-panel__text">For each option the database multiplies the stored ciphertexts modulo n&sup2;. The product is a ciphertext of the number of votes.</p>
+                      <p class="bf-live" id="bf-live" role="status"></p>
+                      <button class="bf-button" id="bf-tally" type="button">Tally encrypted ballots</button>
+                      <p class="bf-message" id="bf-tally-status" role="status"></p>
+                      <div class="bf-totals" id="bf-totals"></div>
+                    </section>
+
+                    <section class="bf-panel" aria-labelledby="bf-step-decrypt">
+                      <h2 class="bf-panel__title" id="bf-step-decrypt"><span class="bf-step">3</span>Decrypt the totals</h2>
+                      <p class="bf-panel__text">Three decryptions, in this browser, with the private key. Nothing else is decrypted.</p>
+                      <button class="bf-button" id="bf-decrypt" type="button" disabled>Decrypt three totals</button>
+                      <p class="bf-message" id="bf-decrypt-status" role="status"></p>
+                      <div class="bf-results" id="bf-results"></div>
+                    </section>
+                  </div>
+                </div>
+                ```
+        }
+    )
+
+    process election-info (
+        name: ELECTION_INFO
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                bf_web.election_info;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: ajaxCallback
+        }
+        advanced {
+            executionMappingIdentifier: 26200301
+        }
+    )
+
+    process open-election (
+        name: OPEN_ELECTION
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                bf_web.open_election;
+                ```
+        }
+        execution {
+            sequence: 20
+            point: ajaxCallback
+        }
+        advanced {
+            executionMappingIdentifier: 26200302
+        }
+    )
+
+    process encrypted-tally (
+        name: ENCRYPTED_TALLY
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                bf_web.encrypted_tally;
+                ```
+        }
+        execution {
+            sequence: 30
+            point: ajaxCallback
+        }
+        advanced {
+            executionMappingIdentifier: 26200303
+        }
+    )
+
+)

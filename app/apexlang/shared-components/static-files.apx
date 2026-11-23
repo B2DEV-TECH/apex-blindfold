@@ -1,0 +1,69 @@
+file "icons/app-icon-144-rounded.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-192.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-256-rounded.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-32.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-512.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+
+file "blindfold/paillier.js" (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
+file "blindfold/boot.js" (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
+file "blindfold/shared.js" (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
+file "blindfold/vote.js" (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
+file "blindfold/ledger.js" (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
+file "blindfold/authority.js" (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
+file "blindfold/blindfold.css" (
+    mimeType: text/css
+    charSet: utf-8
+)
+
+file "blindfold/space-grotesk-latin.woff2" (
+    mimeType: font/woff2
+)
+
+file "blindfold/space-grotesk-OFL.txt" (
+    mimeType: text/plain
+    charSet: utf-8
+)

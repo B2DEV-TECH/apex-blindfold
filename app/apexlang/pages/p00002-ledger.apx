@@ -1,0 +1,283 @@
+page 2 (
+    name: What the database sees
+    alias: LEDGER
+    title: What the database sees | APEX Blindfold
+    appearance {
+        pageTemplate: @/blank
+        templateOptions: #DEFAULT#
+        cssClasses: bf-page
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+    }
+
+    region intro (
+        name: Intro
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        source {
+            htmlCode:
+                ```html
+                <div class="bf-shell" data-bf-page="ledger">
+                  <section class="bf-hero">
+                    <p class="bf-eyebrow">Full DBA view &middot; nothing hidden</p>
+                    <h1 class="bf-title">What the database sees</h1>
+                    <p class="bf-lede">Every vote of the election is on this page. <strong>None of them can be read here.</strong> The key that opens them was generated in a browser and never reached the server.</p>
+                  </section>
+
+                  <div class="bf-stats">
+                    <div class="bf-stat"><span class="bf-stat__value" data-bf-stat="ballots">0</span><span class="bf-stat__name">Ballots</span></div>
+                    <div class="bf-stat"><span class="bf-stat__value" data-bf-stat="rows">0</span><span class="bf-stat__name">Ciphertext rows</span></div>
+                    <div class="bf-stat"><span class="bf-stat__value" data-bf-stat="bytes">0</span><span class="bf-stat__name">Hex characters stored</span></div>
+                    <div class="bf-stat bf-stat--zero"><span class="bf-stat__value">0</span><span class="bf-stat__name">Votes in the clear</span></div>
+                  </div>
+
+                  <div class="bf-table-head">
+                    <div>
+                      <h2>BLIND_BALLOTS</h2>
+                      <p>One ciphertext per option per ballot: Enc(1) for the choice, Enc(0) for the others. No voter, no timestamp.</p>
+                    </div>
+                    <button class="bf-button bf-button--ghost" id="bf-refresh" type="button">Refresh</button>
+                  </div>
+                  <code class="bf-sql">select ballot_id, candidate_id, vote_enc
+  from blind_ballots
+ order by ballot_id, candidate_id</code>
+                </div>
+                ```
+        }
+    )
+
+    region ballots (
+        name: BLIND_BALLOTS
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ballot_id, candidate_id, vote_enc
+                  from blind_ballots
+                 order by ballot_id, candidate_id
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: bf-report
+        }
+        advanced {
+            htmlDomId: bf-ballots
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: #DEFAULT#
+        }
+        reportLayout {
+            numberOfRows: 9
+        }
+        pagination {
+            type: rowRangesXToYOfZWithPagination
+            partialPageRefresh: true
+        }
+        messages {
+            whenNoDataFound: No ballots yet. The table is empty.
+        }
+
+        column BALLOT_ID (
+            heading {
+                heading: BALLOT_ID
+            }
+            sorting {
+                sortable: false
+            }
+            layout {
+                sequence: 10
+            }
+            columnFormatting {
+                cssClasses: bf-cell-num
+            }
+        )
+
+        column CANDIDATE_ID (
+            heading {
+                heading: CANDIDATE_ID
+            }
+            sorting {
+                sortable: false
+            }
+            layout {
+                sequence: 20
+            }
+            columnFormatting {
+                cssClasses: bf-cell-num
+            }
+        )
+
+        column VOTE_ENC (
+            heading {
+                heading: VOTE_ENC
+            }
+            sorting {
+                sortable: false
+            }
+            layout {
+                sequence: 30
+            }
+            columnFormatting {
+                cssClasses: bf-cell-enc
+            }
+        )
+    )
+
+    region roll-intro (
+        name: Roll intro
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        source {
+            htmlCode:
+                ```html
+                <div class="bf-shell">
+                  <div class="bf-table-head">
+                    <div>
+                      <h2>VOTER_ROLL</h2>
+                      <p>Turnout only: who is registered and when they voted. It is kept apart from the ballots, and that separation is weaker than it looks.</p>
+                    </div>
+                    <p class="bf-stat__name">Turnout <span data-bf-stat="turnout">0 / 0</span></p>
+                  </div>
+                  <code class="bf-sql">select voter_id, voted_at
+  from voter_roll
+ order by voted_at nulls last, voter_id</code>
+                </div>
+                ```
+        }
+    )
+
+    region roll (
+        name: VOTER_ROLL
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select voter_id,
+                       to_char(voted_at, 'YYYY-MM-DD HH24:MI:SS.FF3 TZH:TZM') as voted_at
+                  from voter_roll
+                 order by voter_roll.voted_at nulls last, voter_id
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: bf-report
+        }
+        advanced {
+            htmlDomId: bf-roll
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: #DEFAULT#
+            showNullValuesAs: (has not voted)
+        }
+        reportLayout {
+            numberOfRows: 10
+        }
+        pagination {
+            type: rowRangesXToYOfZWithPagination
+            partialPageRefresh: true
+        }
+        messages {
+            whenNoDataFound: No voters registered. Open an election on the Tally page.
+        }
+
+        column VOTER_ID (
+            heading {
+                heading: VOTER_ID
+            }
+            sorting {
+                sortable: false
+            }
+            layout {
+                sequence: 10
+            }
+            columnFormatting {
+                cssClasses: bf-cell-num
+            }
+        )
+
+        column VOTED_AT (
+            heading {
+                heading: VOTED_AT
+            }
+            sorting {
+                sortable: false
+            }
+            layout {
+                sequence: 20
+            }
+        )
+    )
+
+    region foot (
+        name: Footer
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        source {
+            htmlCode:
+                ```html
+                <div class="bf-shell bf-foot-slot"></div>
+                ```
+        }
+    )
+
+    process election-info (
+        name: ELECTION_INFO
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                bf_web.election_info;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: ajaxCallback
+        }
+        advanced {
+            executionMappingIdentifier: 26200201
+        }
+    )
+
+)
