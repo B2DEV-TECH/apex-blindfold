@@ -51,6 +51,7 @@ function describe(before, after) {
   if (removed.length) parts.push(`ballot ${removed.join(', ')} removed`);
   const changed = after.ballots.filter((row) => before.ballots.some((old) => old.BALLOT_ID === row.BALLOT_ID && old.CANDIDATE_ID === row.CANDIDATE_ID && old.VOTE_ENC !== row.VOTE_ENC));
   if (changed.length) parts.push(`${changed.length} stored ciphertext(s) rewritten in place: ${changed.map((row) => `ballot ${row.BALLOT_ID} option ${row.CANDIDATE_ID}`).join(', ')}`);
+  if (before.roll.length !== after.roll.length) parts.push(`voters registered: ${before.roll.length} -> ${after.roll.length}`);
   const voted = (state) => state.roll.filter((row) => row.VOTED_AT !== null).length;
   if (voted(before) !== voted(after)) parts.push(`voters marked as voted: ${voted(before)} -> ${voted(after)} of ${after.roll.length}`);
   return parts.join('; ') || 'no change in the election tables';

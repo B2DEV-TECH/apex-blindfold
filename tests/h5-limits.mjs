@@ -4,11 +4,13 @@
 //   (b) a single key holder can decrypt individual ballots;
 //   (c) sequential ballot_id plus VOTER_ROLL.voted_at can re-link voters to ballots.
 //
-// One addition that the original list does not have, kept separate and
+// Two additions that the original list does not have, kept separate and
 // labelled as such:
 //
 //   (extra) a DBA who writes can swap the public key, read the ballots cast
-//           meanwhile and put everything back.
+//           meanwhile and put everything back;
+//   (extra) the private key lives in one browser tab and is lost with it.
+//           Found in the live session, where it happened twice.
 //
 // The harness plays three roles with three different powers:
 //   authority  holds the private key (generated here, never sent anywhere)
@@ -21,7 +23,8 @@ import { loadConfig } from './lib/config.mjs';
 import { connect, asTable } from './lib/db.mjs';
 import { BallotFactory } from './lib/ballot-factory.mjs';
 import { OPTIONS, voterCode, openElection, castBallot, encryptedTally, decryptTally, countChoices, seededRandom } from './lib/election.mjs';
-import { LETTERS } from './lib/app.mjs';
+import { LETTERS, watch, openElectionInBrowser, tallyInBrowser } from './lib/app.mjs';
+import { launchBrowser } from './lib/browser.mjs';
 import { writeText, header } from './lib/evidence.mjs';
 import { parseArgs, Report, isMain, main } from './lib/harness.mjs';
 
@@ -50,6 +53,53 @@ const RELINK_SQL = (owner) => `select r.voter_id, b.ballot_id
           from (select distinct ballot_id from ${owner}.blind_ballots)) b
     on b.position = r.position
  order by b.ballot_id`;
+
+// The Tally page in a real browser. The authority generates the key in one tab;
+// three voters vote; a link of the page is followed; then the tab is reloaded.
+async function loseTheKey(cfg, conn, random) {
+  const browser = await launchBrowser(cfg);
+  try {
+    const context = await browser.newContext();
+    const authority = await context.newPage();
+    watch(authority, 'authority');
+    await openElectionInBrowser(authority, cfg, 6);
+    const questions = [];
+    authority.on('dialog', (dialog) => questions.push(dialog.type())); // openElectionInBrowser answers them: "leave"
+
+    const key = P.publicKeyFromN(P.fromHex((await conn.execute('select bf_election.public_key as n from dual')).rows[0].N));
+    const choices = [];
+    for (let voter = 0; voter < 3; voter++) {
+      const choice = Math.floor(random() * OPTIONS);
+      await castBallot(conn, voterCode(voter), P.encryptBallot(key, choice, OPTIONS));
+      choices.push(choice);
+    }
+    await conn.commit();
+
+    // 1. A link of the page itself, while the tab holds the key.
+    const [beside] = await Promise.all([
+      context.waitForEvent('page', { timeout: 30000 }),
+      authority.locator('.bf-nav__link', { hasText: 'Vote' }).click(),
+    ]);
+    await beside.waitForURL(/^https?:/, { timeout: 60000 }); // a new tab starts empty
+    const linkOpened = new URL(beside.url()).pathname.split('/').pop();
+    const stayedOn = new URL(authority.url()).pathname.split('/').pop();
+    const title = await authority.title();
+    const withKey = await tallyInBrowser(authority);
+
+    // 2. The tab is reloaded.
+    await authority.reload({ waitUntil: 'networkidle' });
+    await authority.waitForSelector('#bf-key-status.bf-message--error', { timeout: 60000 });
+    const keyStatus = (await authority.textContent('#bf-key-status')).trim();
+    await authority.click('#bf-tally');
+    await authority.waitForSelector('#bf-totals .bf-total', { timeout: 120000 });
+    const totalsFetched = await authority.locator('#bf-totals .bf-total').count();
+    const decryptDisabled = await authority.isDisabled('#bf-decrypt');
+    const decryptStatus = (await authority.textContent('#bf-decrypt-status')).trim();
+    return { truth: countChoices(choices), linkOpened, stayedOn, title, withKey, questions, keyStatus, totalsFetched, decryptDisabled, decryptStatus, browser: browser.bfChannel };
+  } finally {
+    await browser.close();
+  }
+}
 
 export async function run(cfg, args) {
   const report = new Report('H5', 'Other limits: a DBA can add votes, a key holder can read ballots, voters can be re-linked', DIR);
@@ -317,13 +367,53 @@ export async function run(cfg, args) {
       '',
     ].join('\n'));
 
+    // ---- extra: the private key lives in one browser tab
+    const lost = await loseTheKey(cfg, conn, random);
+    const keptByLink = lost.linkOpened === 'vote' && lost.stayedOn === 'tally' && lost.withKey.totals.join() === lost.truth.join() && !lost.withKey.flagged;
+    const lostByReload = lost.decryptDisabled && lost.totalsFetched === OPTIONS;
+    report.note(`extra (not in the original list, found in the live session): the private key lives in one browser tab. A link of the Tally page ${keptByLink ? 'opened beside the tab, which then decrypted the right totals' : 'did NOT leave the tab in place'} (${fmt(lost.withKey.totals)}); after a reload of the tab the ${lost.totalsFetched} encrypted totals could still be fetched and ${lostByReload ? 'could not be decrypted' : 'were STILL decrypted'}`);
+
+    writeText(cfg, report.file(`${DIR}/extra-key-loss.txt`), [
+      header('H5 extra: the private key lives in one browser tab, and is lost with it', [
+        'NOT one of the three limits in the original hypothesis. Added after the live session, where it',
+        'happened twice: the tab that held the key was taken to another page (first a new load of the Tally',
+        'page, later the Vote link of the page itself), and neither election could be counted afterwards',
+        '(evidence/live-session). The design keeps the private key in memory only, so that is all it takes:',
+        'there is no copy to restore.',
+      ]),
+      `election: 6 registered, 3 ballots, true tally ${fmt(lost.truth)}; browser: ${lost.browser}, driven by Playwright`,
+      '',
+      'Step 1. In the tab that holds the key, the authority follows the "Vote" link of the page',
+      `  the link opened:                  /${lost.linkOpened}, in a second tab`,
+      `  the first tab stayed on:          /${lost.stayedOn}`,
+      `  title of the first tab:           ${lost.title}`,
+      `  tally decrypted there afterwards: ${fmt(lost.withKey.totals)}     ${lost.withKey.totals.join() === lost.truth.join() ? 'correct: the key is still in memory' : 'DIFFERENT'}`,
+      '  Since the live session, the links of the page open beside the tab once it holds a key. During the',
+      '  live session they replaced it.',
+      '',
+      'Step 2. The same tab is reloaded',
+      `  questions the browser raised:     ${lost.questions.length ? lost.questions.join(', ') : 'none'}     (the test answers "leave", as the authority did)`,
+      `  the page after the reload says:   ${lost.keyStatus}`,
+      `  encrypted totals fetched again:   ${lost.totalsFetched} of ${OPTIONS}`,
+      `  Decrypt button:                   ${lost.decryptDisabled ? 'disabled' : 'ENABLED'}`,
+      `  the page says:                    ${lost.decryptStatus}`,
+      '',
+      'The ballots are intact and the database can still multiply them. Nobody can read the result, and',
+      'nobody ever will: H2 shows that the private key is in no page item, session state, browser storage,',
+      'request or log. The question a browser asks before a reload is worded by the browser: it mentions',
+      'unsaved information, not a key, and the page cannot change that text.',
+      'What prevents it in a real system: the key is generated in a ceremony, split among several trustees',
+      '(threshold decryption) and kept on hardware, so that no single tab, person or machine is the only copy.',
+      '',
+    ].join('\n'));
+
     const ok = report.failed.length === 0;
     return report.close(cfg, {
       verdict: ok ? 'CONFIRMED' : 'PARTIAL',
       statement: ok
         ? `All three limits hold: a DBA with the public key moved 5 votes with two UPDATEs and the totals still matched the turnout; the key holder read ${ballotsRead}/${cast.length} individual ballots; ordering by voted_at and ballot_id re-linked ${linked}/${cast.length} voters arriving one at a time (${crowdLinked}/${crowd} exactly, ${within(sessions - 1)}/${crowd} within ${sessions - 1} positions, when ${sessions} sessions vote at once).`
         : `${report.failed.length} of the demonstrations did not behave as stated: ${report.failed.map((c) => c.name).join('; ')}.`,
-      numbers: { ballots_read: ballotsRead, ballots: cast.length, relinked_sequential: linked, relinked_concurrent: crowdLinked, concurrent_voters: crowd, concurrent_sessions: sessions, concurrent_within_window: within(sessions - 1), concurrent_farthest_miss: farthest, tally_honest: honest, tally_forged: afterMinus, turnout: countsAfter.TURNOUT, extra_key_substitution: { worked: extraWorked, ballots_read: votesLearned, ballots_exposed: exposed.length } },
+      numbers: { ballots_read: ballotsRead, ballots: cast.length, relinked_sequential: linked, relinked_concurrent: crowdLinked, concurrent_voters: crowd, concurrent_sessions: sessions, concurrent_within_window: within(sessions - 1), concurrent_farthest_miss: farthest, tally_honest: honest, tally_forged: afterMinus, turnout: countsAfter.TURNOUT, extra_key_substitution: { worked: extraWorked, ballots_read: votesLearned, ballots_exposed: exposed.length }, extra_key_loss: { link_kept_the_tab: keptByLink, lost_by_reload: lostByReload, questions: lost.questions, tally_before_reload: lost.withKey.totals, true_tally: lost.truth } },
       mode: { quick: args.quick, seed: args.seed },
     });
   } finally {

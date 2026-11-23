@@ -14,6 +14,7 @@
     "test:crypto": "node --test tests/unit/paillier.test.mjs",
     "readme": "node scripts/readme-sync.mjs && node scripts/readme-images.mjs",
     "readme:check": "node scripts/readme-sync.mjs --check",
+    "readme:gif": "node scripts/readme-gif.mjs",
     "scan": "node scripts/prepush-scan.mjs"
   },
   "devDependencies": {

@@ -11,6 +11,10 @@
   const VOTER = 'VOTER-0011'; // a registered voter code that has not voted yet
   const WEIGHTS = [1000, 0, 0]; // what the three ciphertexts encrypt, for options A, B, C
 
+  // The callback that stores a ballot exists on the Vote page only (page 1 of the application).
+  const page = document.getElementById('pFlowStepId')?.value;
+  if (page && page !== '1') throw new Error('Paste this on the Vote page. This page has no CAST_BALLOT callback, so nothing was sent.');
+
   const base = document.querySelector('script[src*="blindfold/boot.js"]').src.replace(/boot\.js.*$/, '');
   const P = await import(`${base}paillier.js`);
   const call = (name, data) => new Promise((resolve, reject) => {

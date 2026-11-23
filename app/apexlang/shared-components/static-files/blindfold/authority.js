@@ -76,12 +76,26 @@ export async function mount(root) {
   // Turnout is public information: keep it current while ballots arrive.
   window.setInterval(refreshInfo, LIVE_REFRESH_MS);
 
-  // Leaving the page destroys the private key: ask first.
+  // Leaving the page destroys the private key: ask first. The browser words
+  // that question itself, and its text says nothing about a key.
   window.addEventListener('beforeunload', (event) => {
     if (!keyPair) return;
     event.preventDefault();
     event.returnValue = '';
   });
+
+  // So the page does not rely on the question alone. Once this tab holds a
+  // key, its own links open beside it instead of replacing it, and the title
+  // tells this tab apart from the others.
+  const pageTitle = document.title;
+  const keepThisTab = () => {
+    for (const link of root.querySelectorAll('.bf-top a')) {
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.title = 'Opens in a new tab: this tab holds the private key';
+    }
+    document.title = `Key holder · ${pageTitle}`;
+  };
 
   // ---- 1. key pair: generated here, only n goes to the database
   keyButton.addEventListener('click', async () => {
@@ -118,6 +132,7 @@ export async function mount(root) {
     }
 
     keyPair = pair;
+    keepThisTab();
     encrypted = null;
     await refreshInfo();
     totalsBox.replaceChildren();

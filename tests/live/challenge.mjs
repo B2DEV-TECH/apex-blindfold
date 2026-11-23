@@ -1,14 +1,22 @@
 // Live session, challenge round: the DBA tries to tell how each ballot voted.
 //
-//   node tests/live/challenge.mjs commit
+//   node tests/live/challenge.mjs commit [--since <ISO time>]
 //       Reads everything a DBA can read (tables, APEX session state, logs,
 //       the SQL area), tries to open the ballots, writes one guess per ballot
 //       and prints a commitment: the SHA-256 of the guess file. Read-only.
-//       This runs BEFORE the voter reveals anything.
+//       This runs BEFORE the voter reveals anything. The logs are read from
+//       the start of the live session, or from --since when a session holds
+//       more than one election and only the last one is being attacked.
 //
-//   node tests/live/challenge.mjs reveal B,A,C,...
+//   node tests/live/challenge.mjs reveal B,A,C,... [--source "<where the votes come from>"]
 //       The real votes, in ballot order. Checks that the guess file still has
-//       the committed hash, then writes the comparison.
+//       the committed hash, then writes the comparison. --source records how
+//       the votes were obtained when the voter did not simply tell them, for
+//       example read from a recording of the voter's screen.
+//
+//   node tests/live/challenge.mjs summary
+//       Every revealed round under evidence/live-session in one table, with
+//       the rounds added up. Reads the result files, nothing else.
 //
 // The attack is passive: the DBA reads, and changes nothing. What a DBA who
 // writes can do is another matter, shown in H5 (forged votes, key substitution).
@@ -16,8 +24,9 @@
 // Files, under evidence/live-session/challenge (or --out <folder under evidence>):
 //   guesses.json  guesses.txt  guesses.sha256     written by "commit"
 //   result.json   result.txt                      written by "reveal"
+// and evidence/live-session/challenge-summary.txt and .json, written by "summary".
 import { randomBytes } from 'node:crypto';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { loadConfig } from '../lib/config.mjs';
 import { connect, asTable, attempt } from '../lib/db.mjs';
@@ -27,9 +36,13 @@ import { LETTERS } from '../lib/app.mjs';
 import { LIVE, sha256, maskIds, addressAliases, shortHex, apexSchema, readTables, readApex, sessionStart, relink } from './lib.mjs';
 
 const argv = process.argv.slice(2);
-const outAt = argv.indexOf('--out');
-const OUT = outAt >= 0 ? argv[outAt + 1] : `${LIVE}/challenge`;
-const [command, votes] = argv.filter((arg, index) => !arg.startsWith('--') && (outAt < 0 || index !== outAt + 1));
+const VALUE_OPTIONS = ['--out', '--source', '--since'];
+const option = (name) => (argv.includes(name) ? argv[argv.indexOf(name) + 1] : undefined);
+const OUT = option('--out') ?? `${LIVE}/challenge`;
+const SOURCE = option('--source') ?? 'told by the voter, in ballot order';
+const SINCE = option('--since') ? new Date(option('--since')) : null;
+if (SINCE && Number.isNaN(SINCE.getTime())) throw new Error(`--since is not a time: ${option('--since')}`);
+const [command, votes] = argv.filter((arg, index) => !arg.startsWith('--') && !VALUE_OPTIONS.includes(argv[index - 1]));
 const SMALL_RANDOMIZERS = 256;
 const indent = (text) => text.split('\n').map((line) => (line ? `  ${line}` : line)).join('\n');
 const file = (name) => join(EVIDENCE, OUT, name);
@@ -49,7 +62,7 @@ async function commit() {
   const dba = await connect(cfg, 'dba');
   try {
     const apex = await apexSchema(dba);
-    const started = sessionStart() ?? new Date(Date.now() - 24 * 3600 * 1000);
+    const started = SINCE ?? sessionStart() ?? new Date(Date.now() - 24 * 3600 * 1000);
     const tables = await readTables(dba, owner);
     if (tables.key.length !== 1) throw new Error('No election is open.');
     const ballotIds = [...new Set(tables.ballots.map((row) => row.BALLOT_ID))].sort((a, b) => a - b);
@@ -379,6 +392,7 @@ function reveal() {
   });
   const result = {
     revealed: new Date().toISOString(),
+    votes_source: SOURCE,
     committed: record.committed,
     commitment: committed,
     commitment_verified: true,
@@ -399,6 +413,7 @@ function reveal() {
     header('Live session, challenge round: guesses against the real votes', [
       `guesses committed: ${record.committed}`,
       `votes revealed:    ${result.revealed}`,
+      `votes from:        ${SOURCE}`,
       `commitment checked: sha256(guesses.json) = ${committed}, unchanged since it was committed`,
     ]),
     indent(asTable(rows)),
@@ -419,6 +434,59 @@ function reveal() {
   console.log(`Hits: ${hits} of ${total}. By chance, ${hits} or more: ${(100 * chance).toFixed(1)}%. Written to evidence/${OUT}/result.txt`);
 }
 
+// All the rounds of the session. Every guess of every round counts: a round is
+// not dropped because it went well or badly for the DBA.
+function summary() {
+  const cfg = loadConfig();
+  const rounds = readdirSync(join(EVIDENCE, LIVE), { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && existsSync(join(EVIDENCE, LIVE, entry.name, 'result.json')))
+    .map((entry) => ({ folder: entry.name, ...JSON.parse(readFileSync(join(EVIDENCE, LIVE, entry.name, 'result.json'), 'utf8')) }))
+    .sort((a, b) => (a.committed < b.committed ? -1 : 1));
+  if (rounds.length === 0) throw new Error('No round has been revealed yet.');
+  const total = (field) => rounds.reduce((sum, round) => sum + round[field], 0);
+  const ballots = total('ballots');
+  const hits = total('hits');
+  const chance = chanceOfAtLeast(hits, ballots);
+  const percent = (value) => `${(100 * value).toFixed(1)}%`;
+  const rows = rounds.map((round) => ({
+    FOLDER: round.folder,
+    COMMITTED: round.committed,
+    REVEALED: round.revealed,
+    BALLOTS: round.ballots,
+    HITS: round.hits,
+    BY_CHANCE: round.expected_hits_by_chance.toFixed(1),
+    THIS_MANY_OR_MORE: percent(round.chance_of_this_many_or_more),
+    INFORMED_GUESSES: round.informed_guesses,
+    TRACE_DIFFERENCES_THAT_FOLLOW_THE_VOTES: `${round.debug_trace_differences_that_follow_the_votes.length} of ${round.debug_trace_differences}`,
+  }));
+  writeJson(cfg, `${LIVE}/challenge-summary.json`, {
+    rounds: rounds.map((round) => ({ folder: round.folder, commitment: round.commitment, committed: round.committed, revealed: round.revealed, ballots: round.ballots, hits: round.hits, chance_of_this_many_or_more: round.chance_of_this_many_or_more, informed_guesses: round.informed_guesses, guesses: round.guesses, actual: round.actual, votes_source: round.votes_source })),
+    ballots,
+    hits,
+    hit_rate: hits / ballots,
+    expected_hits_by_chance: ballots / 3,
+    chance_of_this_many_or_more: chance,
+    informed_guesses: total('informed_guesses'),
+  });
+  writeText(cfg, `${LIVE}/challenge-summary.txt`, [
+    header('Live session, challenge rounds: all of them', [
+      'one line per round, from the result.json of its folder; the last lines add the rounds up',
+    ]),
+    indent(asTable(rows, { maxWidth: 40 })),
+    ...rounds.map((round) => `${round.folder}: guesses ${round.guesses.join('')}, votes ${round.actual.join('')}; commitment ${round.commitment}`),
+    '',
+    `All rounds: ${hits} hits out of ${ballots} ballots (${(100 * hits / ballots).toFixed(0)}%). Guessing one of three at random gives ${(ballots / 3).toFixed(1)} on average (33%).`,
+    `With no information at all, ${hits} or more hits out of ${ballots} happens in ${percent(chance)} of attempts.`,
+    `Guesses based on something the DBA read: ${total('informed_guesses')} of ${ballots}.`,
+    '',
+    `${ballots} ballots are a demonstration, not a statistical test: the test with thousands of ciphertexts is H3`,
+    '(evidence/h3-indistinguishability).',
+    '',
+  ].join('\n'));
+  console.log(`All rounds: ${hits} of ${ballots}. By chance, ${hits} or more: ${percent(chance)}. Written to evidence/${LIVE}/challenge-summary.txt`);
+}
+
 if (command === 'commit') await commit();
 else if (command === 'reveal') reveal();
-else throw new Error('Usage: node tests/live/challenge.mjs commit | reveal B,A,C,...');
+else if (command === 'summary') summary();
+else throw new Error('Usage: node tests/live/challenge.mjs commit | reveal B,A,C,... | summary');
