@@ -1,0 +1,446 @@
+{
+  "committed": "2026-11-23T15:02:06.601Z",
+  "nonce": "444c8e000b6e36a9a539c5b0ab038587bc038f574c79b31a7da71c9c27c4bb3b",
+  "election_key_sha256": "a50b325a02989069657ab72be6c36f2cc1d29a173a94e8a480f57c526908c9d3",
+  "ciphertexts_sha256": "184f8ad502a6ab5cbaac54175d48050e18f46838bed451c81750623527068c2a",
+  "ballots": 12,
+  "attacks": [
+    {
+      "name": "columns",
+      "looked": "the columns of the three tables: BLIND_BALLOTS.BALLOT_ID, BLIND_BALLOTS.CANDIDATE_ID, BLIND_BALLOTS.VOTE_ENC, ELECTION_KEY.N_HEX, VOTER_ROLL.VOTER_ID, VOTER_ROLL.VOTED_AT",
+      "found": "no column holds a choice, and BLIND_BALLOTS has neither a voter nor a time"
+    },
+    {
+      "name": "degenerate ciphertexts",
+      "looked": "every ciphertext: inside 1..n^2, coprime to n, not of the form 1 + m*n",
+      "found": "none of 36"
+    },
+    {
+      "name": "repeated ciphertexts",
+      "looked": "36 ciphertexts compared with each other",
+      "found": "36 distinct values out of 36"
+    },
+    {
+      "name": "reused randomizers",
+      "looked": "630 pairs: is c1 / c2 of the form 1 + d*n?",
+      "found": "none of 630 pairs"
+    },
+    {
+      "name": "small randomizers",
+      "looked": "r = 1..256: does r^n open a stored ciphertext as Enc(0) or Enc(1)?",
+      "found": "none"
+    },
+    {
+      "name": "APEX session state",
+      "looked": "APEX_260200.WWV_FLOW_DATA for the application",
+      "found": "no page item and no application item has a value (10 report paging positions)"
+    },
+    {
+      "name": "APEX activity log",
+      "looked": "every column of the 33 requests of the application logged since 2026-11-23T14:58:30.000Z",
+      "found": "12 CAST_BALLOT requests with their time and session; the session gives the client address of 0 of them; 0 of 36 ciphertexts and 0 of 12 voter codes appear in the log"
+    },
+    {
+      "name": "APEX login log",
+      "looked": "authentication attempts recorded for the application since the session started",
+      "found": "0 (the pages are public: nobody signs in)"
+    },
+    {
+      "name": "APEX debug trace",
+      "looked": "2481 debug messages of the application since the session started; the traces of the 12 CAST_BALLOT requests among them, compared with each other after removing ciphertexts, voter codes, ids and timings",
+      "found": "0 messages quote a stored ciphertext; the traces have 149 or 150 or 160 or 161 messages; 11 kinds of message occur in some traces more often than in others, and 3 kinds carry numbers that differ (listed below). Without knowing a vote, nothing says that any of them follows the choice; the reveal checks each one"
+    },
+    {
+      "name": "SQL area and captured binds",
+      "looked": "the INSERT statements on BLIND_BALLOTS in V$SQL and the bind values the database captured for them",
+      "found": "1 statement(s), 0 with a ciphertext written as a literal; 3 captured bind values: 0 number, 0 ciphertext, 0 voter code, 3 empty; nothing else"
+    },
+    {
+      "name": "audit trail",
+      "looked": "unified audit records about objects of BLINDFOLD since the session started",
+      "found": "0"
+    },
+    {
+      "name": "row history",
+      "looked": "every version of the BLIND_BALLOTS rows that the undo data still holds (flashback version query)",
+      "found": "36 row versions, by operation: I 36; 0 of them hold a value other than the ciphertext stored now"
+    },
+    {
+      "name": "who cast which ballot",
+      "looked": "VOTER_ROLL ordered by VOTED_AT next to the ballot ids, and the session and client address of the CAST_BALLOT request logged at that moment",
+      "found": "12 of 12 ballots tied to a voter code. This tells who voted when, and from which machine, not what they voted"
+    }
+  ],
+  "debug_trace_differences": {
+    "request_ballots": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "differences": [
+      {
+        "kind": "message",
+        "message": "...Setting session time_zone to -<n>:<n>",
+        "values": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "kind": "message",
+        "message": "reset",
+        "values": [
+          2,
+          3,
+          3,
+          2,
+          3,
+          3,
+          3,
+          3,
+          3,
+          2,
+          3,
+          2
+        ]
+      },
+      {
+        "kind": "message",
+        "message": "Do not flush changes: session state changes occur at end of request",
+        "values": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1
+        ]
+      },
+      {
+        "kind": "message",
+        "message": "Flush session changes",
+        "values": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1
+        ]
+      },
+      {
+        "kind": "message",
+        "message": "flush_changes p_commit=>false,g_change_by_cookie_bits=><n>,g_change_by_id_bits=><n>,g_has_pending_changes=>tru",
+        "values": [
+          2,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          2
+        ]
+      },
+      {
+        "kind": "message",
+        "message": "flush_changes c_deletes_count=><n>,c_merges_count=><n>",
+        "values": [
+          4,
+          0,
+          0,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0,
+          4,
+          0,
+          4
+        ]
+      },
+      {
+        "kind": "message",
+        "message": "no pending changes for wwv_flow_data",
+        "values": [
+          2,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          2
+        ]
+      },
+      {
+        "kind": "message",
+        "message": "no pending changes for wwv_flow_preferences$",
+        "values": [
+          2,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          2
+        ]
+      },
+      {
+        "kind": "message",
+        "message": "g_change_index after flush_changes: Cur Idx: <n> To delete: To merge: ",
+        "values": [
+          2,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          2
+        ]
+      },
+      {
+        "kind": "message",
+        "message": "... idle timeout is recent enough - no update",
+        "values": [
+          0,
+          1,
+          1,
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "kind": "message",
+        "message": "No pending session changes",
+        "values": [
+          0,
+          1,
+          1,
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "kind": "numbers",
+        "message": "APEX Version=<decimal>.<n> SID=<n> USER=APEX_PUBLIC_USER ECID=<ecid> PROXY_USER=ORDS_PUBLIC_USER INSTANCE=<n> ",
+        "values": [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "variants": 2
+      },
+      {
+        "kind": "numbers",
+        "message": "Session Statistics consistent gets : <n> execute count : <n> opened cursors current : <n> parse count (total) ",
+        "values": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "variants": 12
+      },
+      {
+        "kind": "numbers",
+        "message": "Memory Usage (total + top <n>) : <n> WWV_FLOW : <n> WWV_FLOW_THEME : <n> WWV_FLOW_WORKFLOW : <n> WWV_FLOW_PLUG",
+        "values": [
+          1,
+          2,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "variants": 4
+      }
+    ]
+  },
+  "informed_guesses": 0,
+  "guesses": [
+    {
+      "ballot": 1,
+      "voter": "VOTER-0001",
+      "voted_at": "2026-11-23T14:59:17.425Z",
+      "client": null,
+      "guess": "C",
+      "basis": "no signal; fixed rule: the numerically largest of the three ciphertexts"
+    },
+    {
+      "ballot": 2,
+      "voter": "VOTER-0002",
+      "voted_at": "2026-11-23T14:59:24.985Z",
+      "client": null,
+      "guess": "A",
+      "basis": "no signal; fixed rule: the numerically largest of the three ciphertexts"
+    },
+    {
+      "ballot": 3,
+      "voter": "VOTER-0003",
+      "voted_at": "2026-11-23T14:59:32.308Z",
+      "client": null,
+      "guess": "C",
+      "basis": "no signal; fixed rule: the numerically largest of the three ciphertexts"
+    },
+    {
+      "ballot": 4,
+      "voter": "VOTER-0004",
+      "voted_at": "2026-11-23T14:59:38.443Z",
+      "client": null,
+      "guess": "C",
+      "basis": "no signal; fixed rule: the numerically largest of the three ciphertexts"
+    },
+    {
+      "ballot": 5,
+      "voter": "VOTER-0005",
+      "voted_at": "2026-11-23T14:59:42.129Z",
+      "client": null,
+      "guess": "C",
+      "basis": "no signal; fixed rule: the numerically largest of the three ciphertexts"
+    },
+    {
+      "ballot": 6,
+      "voter": "VOTER-0006",
+      "voted_at": "2026-11-23T14:59:44.887Z",
+      "client": null,
+      "guess": "B",
+      "basis": "no signal; fixed rule: the numerically largest of the three ciphertexts"
+    },
+    {
+      "ballot": 7,
+      "voter": "VOTER-0007",
+      "voted_at": "2026-11-23T14:59:47.454Z",
+      "client": null,
+      "guess": "C",
+      "basis": "no signal; fixed rule: the numerically largest of the three ciphertexts"
+    },
+    {
+      "ballot": 8,
+      "voter": "VOTER-0008",
+      "voted_at": "2026-11-23T14:59:50.500Z",
+      "client": null,
+      "guess": "B",
+      "basis": "no signal; fixed rule: the numerically largest of the three ciphertexts"
+    },
+    {
+      "ballot": 9,
+      "voter": "VOTER-0009",
+      "voted_at": "2026-11-23T14:59:54.047Z",
+      "client": null,
+      "guess": "C",
+      "basis": "no signal; fixed rule: the numerically largest of the three ciphertexts"
+    },
+    {
+      "ballot": 10,
+      "voter": "VOTER-0010",
+      "voted_at": "2026-11-23T14:59:56.717Z",
+      "client": null,
+      "guess": "C",
+      "basis": "no signal; fixed rule: the numerically largest of the three ciphertexts"
+    },
+    {
+      "ballot": 11,
+      "voter": "VOTER-0011",
+      "voted_at": "2026-11-23T15:00:10.707Z",
+      "client": null,
+      "guess": "B",
+      "basis": "no signal; fixed rule: the numerically largest of the three ciphertexts"
+    },
+    {
+      "ballot": 12,
+      "voter": "VOTER-0012",
+      "voted_at": "2026-11-23T15:00:13.721Z",
+      "client": null,
+      "guess": "A",
+      "basis": "no signal; fixed rule: the numerically largest of the three ciphertexts"
+    }
+  ]
+}

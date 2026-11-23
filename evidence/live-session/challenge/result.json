@@ -1,0 +1,42 @@
+{
+  "revealed": "2026-11-23T14:30:45.362Z",
+  "votes_source": "read from the receipts shown in the voter's two screen recordings, which the DBA opened only after the commitment was published (the voter kept no notes); the tally the voter then decrypted as authority, A=4 B=3 C=4, has the same counts",
+  "committed": "2026-11-23T14:00:22.355Z",
+  "commitment": "8ff883031bdc0c87c3e553c1916fd210d238cc20355ad190e5cd34de1f53bfa1",
+  "commitment_verified": true,
+  "ballots": 11,
+  "hits": 5,
+  "hit_rate": 0.45454545454545453,
+  "baseline": 0.3333333333333333,
+  "expected_hits_by_chance": 3.6666666666666665,
+  "chance_of_this_many_or_more": 0.2889972734508627,
+  "informed_guesses": 0,
+  "guesses": [
+    "A",
+    "A",
+    "A",
+    "C",
+    "A",
+    "A",
+    "A",
+    "B",
+    "B",
+    "C",
+    "B"
+  ],
+  "actual": [
+    "C",
+    "A",
+    "A",
+    "C",
+    "B",
+    "A",
+    "C",
+    "B",
+    "A",
+    "B",
+    "C"
+  ],
+  "debug_trace_differences": 14,
+  "debug_trace_differences_that_follow_the_votes": []
+}

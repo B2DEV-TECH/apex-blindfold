@@ -1,0 +1,103 @@
+# Live session, challenge round: the guesses of the DBA, written before the reveal
+# generated: 2026-11-23T15:02:06.606Z
+# committed: 2026-11-23T15:02:06.601Z
+# state: 12 ballots, 36 ciphertexts; sha256 of the ciphertexts in table order: 184f8ad502a6ab5cbaac54175d48050e18f46838bed451c81750623527068c2a
+# public key n = a7ef21443d22c013d68328537299ebf9…f18f3776052f
+# passive attack: the DBA account reads and changes nothing
+# commitment: sha256(guesses.json) = 66b32af50e6f9052a6840893a5c54c707876f0cb1bec7f27c451f87e9f6a1710
+
+What was tried
+
+  1. columns
+     looked at: the columns of the three tables: BLIND_BALLOTS.BALLOT_ID, BLIND_BALLOTS.CANDIDATE_ID, BLIND_BALLOTS.VOTE_ENC, ELECTION_KEY.N_HEX, VOTER_ROLL.VOTER_ID, VOTER_ROLL.VOTED_AT
+     found:     no column holds a choice, and BLIND_BALLOTS has neither a voter nor a time
+
+  2. degenerate ciphertexts
+     looked at: every ciphertext: inside 1..n^2, coprime to n, not of the form 1 + m*n
+     found:     none of 36
+
+  3. repeated ciphertexts
+     looked at: 36 ciphertexts compared with each other
+     found:     36 distinct values out of 36
+
+  4. reused randomizers
+     looked at: 630 pairs: is c1 / c2 of the form 1 + d*n?
+     found:     none of 630 pairs
+
+  5. small randomizers
+     looked at: r = 1..256: does r^n open a stored ciphertext as Enc(0) or Enc(1)?
+     found:     none
+
+  6. APEX session state
+     looked at: APEX_260200.WWV_FLOW_DATA for the application
+     found:     no page item and no application item has a value (10 report paging positions)
+
+  7. APEX activity log
+     looked at: every column of the 33 requests of the application logged since 2026-11-23T14:58:30.000Z
+     found:     12 CAST_BALLOT requests with their time and session; the session gives the client address of 0 of them; 0 of 36 ciphertexts and 0 of 12 voter codes appear in the log
+
+  8. APEX login log
+     looked at: authentication attempts recorded for the application since the session started
+     found:     0 (the pages are public: nobody signs in)
+
+  9. APEX debug trace
+     looked at: 2481 debug messages of the application since the session started; the traces of the 12 CAST_BALLOT requests among them, compared with each other after removing ciphertexts, voter codes, ids and timings
+     found:     0 messages quote a stored ciphertext; the traces have 149 or 150 or 160 or 161 messages; 11 kinds of message occur in some traces more often than in others, and 3 kinds carry numbers that differ (listed below). Without knowing a vote, nothing says that any of them follows the choice; the reveal checks each one
+
+  10. SQL area and captured binds
+     looked at: the INSERT statements on BLIND_BALLOTS in V$SQL and the bind values the database captured for them
+     found:     1 statement(s), 0 with a ciphertext written as a literal; 3 captured bind values: 0 number, 0 ciphertext, 0 voter code, 3 empty; nothing else
+
+  11. audit trail
+     looked at: unified audit records about objects of BLINDFOLD since the session started
+     found:     0
+
+  12. row history
+     looked at: every version of the BLIND_BALLOTS rows that the undo data still holds (flashback version query)
+     found:     36 row versions, by operation: I 36; 0 of them hold a value other than the ciphertext stored now
+
+  13. who cast which ballot
+     looked at: VOTER_ROLL ordered by VOTED_AT next to the ballot ids, and the session and client address of the CAST_BALLOT request logged at that moment
+     found:     12 of 12 ballots tied to a voter code. This tells who voted when, and from which machine, not what they voted
+
+Differences between the debug traces of the CAST_BALLOT requests
+  requests in the order they were logged: 1 = ballot 1, 2 = ballot 2, 3 = ballot 3, 4 = ballot 4, 5 = ballot 5, 6 = ballot 6, 7 = ballot 7, 8 = ballot 8, 9 = ballot 9, 10 = ballot 10, 11 = ballot 11, 12 = ballot 12
+
+  Kinds of message that some requests have more often than others (how often, request by request):
+    1 1 0 0 0 0 0 0 0 0 0 0   ...Setting session time_zone to -<n>:<n>
+    2 3 3 2 3 3 3 3 3 2 3 2   reset
+    1 0 0 1 0 0 0 0 0 1 0 1   Do not flush changes: session state changes occur at end of request
+    1 0 0 1 0 0 0 0 0 1 0 1   Flush session changes
+    2 0 0 2 0 0 0 0 0 2 0 2   flush_changes p_commit=>false,g_change_by_cookie_bits=><n>,g_change_by_id_bits=><n>,g_has_pending_changes=>tru
+    4 0 0 4 0 0 0 0 0 4 0 4   flush_changes c_deletes_count=><n>,c_merges_count=><n>
+    2 0 0 2 0 0 0 0 0 2 0 2   no pending changes for wwv_flow_data
+    2 0 0 2 0 0 0 0 0 2 0 2   no pending changes for wwv_flow_preferences$
+    2 0 0 2 0 0 0 0 0 2 0 2   g_change_index after flush_changes: Cur Idx: <n> To delete: To merge: 
+    0 1 1 0 1 1 1 1 1 0 1 0   ... idle timeout is recent enough - no update
+    0 1 1 0 1 1 1 1 1 0 1 0   No pending session changes
+
+  Kinds of message whose numbers differ (which variant each request has, request by request):
+    1 2 2 2 2 2 2 2 2 2 2 2   APEX Version=<decimal>.<n> SID=<n> USER=APEX_PUBLIC_USER ECID=<ecid> PROXY_USER=ORDS_PUBLIC_USER INSTANCE=<n> 
+    1 2 3 4 5 6 7 8 9 10 11 12   Session Statistics consistent gets : <n> execute count : <n> opened cursors current : <n> parse count (total) 
+    1 2 3 4 4 4 4 4 4 4 4 4   Memory Usage (total + top <n>) : <n> WWV_FLOW : <n> WWV_FLOW_THEME : <n> WWV_FLOW_WORKFLOW : <n> WWV_FLOW_PLUG
+
+Guesses (0 of 12 based on something read; the others follow the fixed rule and are worth a coin with three sides)
+
+  BALLOT  VOTER       VOTED_AT                  CLIENT  GUESS  BASIS
+  ------  ----------  ------------------------  ------  -----  -----------------------------------------------------------------------
+  1       VOTER-0001  2026-11-23T14:59:17.425Z          C      no signal; fixed rule: the numerically largest of the three ciphertexts
+  2       VOTER-0002  2026-11-23T14:59:24.985Z          A      no signal; fixed rule: the numerically largest of the three ciphertexts
+  3       VOTER-0003  2026-11-23T14:59:32.308Z          C      no signal; fixed rule: the numerically largest of the three ciphertexts
+  4       VOTER-0004  2026-11-23T14:59:38.443Z          C      no signal; fixed rule: the numerically largest of the three ciphertexts
+  5       VOTER-0005  2026-11-23T14:59:42.129Z          C      no signal; fixed rule: the numerically largest of the three ciphertexts
+  6       VOTER-0006  2026-11-23T14:59:44.887Z          B      no signal; fixed rule: the numerically largest of the three ciphertexts
+  7       VOTER-0007  2026-11-23T14:59:47.454Z          C      no signal; fixed rule: the numerically largest of the three ciphertexts
+  8       VOTER-0008  2026-11-23T14:59:50.500Z          B      no signal; fixed rule: the numerically largest of the three ciphertexts
+  9       VOTER-0009  2026-11-23T14:59:54.047Z          C      no signal; fixed rule: the numerically largest of the three ciphertexts
+  10      VOTER-0010  2026-11-23T14:59:56.717Z          C      no signal; fixed rule: the numerically largest of the three ciphertexts
+  11      VOTER-0011  2026-11-23T15:00:10.707Z          B      no signal; fixed rule: the numerically largest of the three ciphertexts
+  12      VOTER-0012  2026-11-23T15:00:13.721Z          A      no signal; fixed rule: the numerically largest of the three ciphertexts
+
+  12 rows selected
+
+In ballot order: C,A,C,C,C,B,C,B,C,C,B,A

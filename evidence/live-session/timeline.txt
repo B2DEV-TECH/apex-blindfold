@@ -1,0 +1,42 @@
+# Live session: what changed in the database, and when
+# time (UTC)                snapshot  change
+2026-11-23T13:07:23.810Z  00        watch started
+2026-11-23T13:52:53.476Z  01        new election opened: public key 970e0edd0f48…0eb647, 12 voters registered
+2026-11-23T13:54:32.338Z  02        new election opened: public key c03626bf9809…6e9a3b, 12 voters registered
+2026-11-23T13:56:19.248Z  03        ballot 1 stored (+3 rows); voters marked as voted: 0 -> 1 of 12
+2026-11-23T13:58:08.131Z  04        ballot 2 stored (+3 rows); voters marked as voted: 1 -> 2 of 12
+2026-11-23T13:58:14.571Z  05        ballot 3 stored (+3 rows); voters marked as voted: 2 -> 3 of 12
+2026-11-23T13:58:18.997Z  06        ballot 4 stored (+3 rows); voters marked as voted: 3 -> 4 of 12
+2026-11-23T13:58:23.448Z  07        ballot 5 stored (+3 rows); voters marked as voted: 4 -> 5 of 12
+2026-11-23T13:58:25.863Z  08        ballot 6 stored (+3 rows); voters marked as voted: 5 -> 6 of 12
+2026-11-23T13:58:30.297Z  09        ballot 7 stored (+3 rows); voters marked as voted: 6 -> 7 of 12
+2026-11-23T13:58:32.729Z  10        ballot 8 stored (+3 rows); voters marked as voted: 7 -> 8 of 12
+2026-11-23T13:58:35.150Z  11        ballot 9 stored (+3 rows); voters marked as voted: 8 -> 9 of 12
+2026-11-23T13:58:37.564Z  12        ballot 10 stored (+3 rows); voters marked as voted: 9 -> 10 of 12
+2026-11-23T13:58:42.001Z  13        ballot 11 stored (+3 rows); voters marked as voted: 10 -> 11 of 12
+2026-11-23T13:59:50.719Z  14        eleven ballots cast by Geraldo, before the challenge
+2026-11-23T14:30:36.442Z  15        honest tally decrypted by the authority in his browser: A=4 B=3 C=4, 11 votes from 11 voters (his screenshot)
+2026-11-23T14:33:53.507Z  16        Geraldo ran the five statements of dba-select.sql himself, as SYSTEM in his own SQL tool (his screenshots, 11:31 to 11:32 local time)
+2026-11-23T14:46:49.160Z  17        first console attempt: the snippet was pasted on the Tally page, which has no CAST_BALLOT callback; the request (14:45:44Z) came back empty and nothing was stored
+2026-11-23T14:48:26.601Z  18        ballot 12 stored (+3 rows); voters marked as voted: 11 -> 12 of 12
+2026-11-23T14:51:10.151Z  19        ballot stuffing by Geraldo from the browser console of the Vote page: VOTER-0012, weights [1000, 0, 0], accepted as ballot 12 (his screenshot and recording)
+2026-11-23T14:58:37.542Z  20        new election opened: public key a7ef21443d22…76052f, 12 voters registered
+2026-11-23T14:59:18.111Z  21        ballot 1 stored (+3 rows); voters marked as voted: 0 -> 1 of 12
+2026-11-23T14:59:26.577Z  22        ballot 2 stored (+3 rows); voters marked as voted: 1 -> 2 of 12
+2026-11-23T14:59:33.023Z  23        ballot 3 stored (+3 rows); voters marked as voted: 2 -> 3 of 12
+2026-11-23T14:59:39.443Z  24        ballot 4 stored (+3 rows); voters marked as voted: 3 -> 4 of 12
+2026-11-23T14:59:43.883Z  25        ballot 5 stored (+3 rows); voters marked as voted: 4 -> 5 of 12
+2026-11-23T14:59:46.297Z  26        ballot 6 stored (+3 rows); voters marked as voted: 5 -> 6 of 12
+2026-11-23T14:59:48.711Z  27        ballot 7 stored (+3 rows); voters marked as voted: 6 -> 7 of 12
+2026-11-23T14:59:51.137Z  28        ballot 8 stored (+3 rows); voters marked as voted: 7 -> 8 of 12
+2026-11-23T14:59:55.561Z  29        ballot 9 stored (+3 rows); voters marked as voted: 8 -> 9 of 12
+2026-11-23T14:59:57.972Z  30        ballot 10 stored (+3 rows); voters marked as voted: 9 -> 10 of 12
+2026-11-23T15:00:12.450Z  31        ballot 11 stored (+3 rows); voters marked as voted: 10 -> 11 of 12
+2026-11-23T15:00:14.880Z  32        ballot 12 stored (+3 rows); voters marked as voted: 11 -> 12 of 12
+2026-11-23T15:01:35.529Z  33        new election (key a7ef2144...): twelve ballots cast by Geraldo, before the second challenge
+2026-11-23T15:02:45.913Z  34        no change in the election tables
+2026-11-23T15:02:46.040Z  35        two voter codes (VOTER-0013, VOTER-0014) added to VOTER_ROLL by the lab's schema owner, after the guesses were committed: Geraldo had used all twelve codes for honest ballots and the stuffing attack needs an unused one
+2026-11-23T15:04:32.684Z  36        ballot 13 stored (+3 rows); voters marked as voted: 12 -> 13 of 14
+2026-11-23T15:06:17.562Z  37        ballot 14 stored (+3 rows); voters marked as voted: 13 -> 14 of 14
+2026-11-23T15:09:04.063Z  38        final state of the second election: 12 honest ballots, ballot 13 with weights [1000, 0, 0] and ballot 14 with weights [3, -2, 0]; the authority decrypted A=1006 B=3 C=3 after ballot 13 and A=1009 B=1 C=3 after ballot 14 (his screenshots)
+2026-11-23T15:18:19.966Z  39        live session over: the recorder is stopped after this snapshot

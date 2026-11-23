@@ -1,0 +1,28 @@
+# Live session: database state 00
+# generated: 2026-11-23T13:07:23.825Z
+# watch started
+# read as the account with the DBA role; nothing is written to the database
+# complete values: 00-watch-started.json
+
+ELECTION_KEY: 0 rows
+  no public key: no election is open
+
+VOTER_ROLL: 0 registered, 0 voted
+
+  no rows selected
+
+BLIND_BALLOTS: 0 rows, 0 ballots
+
+  no rows selected
+
+APEX session state of the application (APEX_260200.WWV_FLOW_DATA): 0 page or application items with a value,
+6 report paging positions
+
+APEX activity log of the application since the session started (2026-11-23T13:07:23.810Z): 0 requests
+
+  no rows selected
+
+
+PAGE, KIND and REQUEST are the STEP_ID, PAGE_VIEW_TYPE and REQUEST_VALUE columns of the log. CLIENT is the logged address,
+renamed: this-pc is the machine that runs the database, device-2 and so on are other machines. APEX logged an address on
+0 of the 0 requests; the session column ties the others to one of them.

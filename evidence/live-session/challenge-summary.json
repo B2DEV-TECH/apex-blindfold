@@ -1,0 +1,86 @@
+{
+  "rounds": [
+    {
+      "folder": "challenge",
+      "commitment": "8ff883031bdc0c87c3e553c1916fd210d238cc20355ad190e5cd34de1f53bfa1",
+      "committed": "2026-11-23T14:00:22.355Z",
+      "revealed": "2026-11-23T14:30:45.362Z",
+      "ballots": 11,
+      "hits": 5,
+      "chance_of_this_many_or_more": 0.2889972734508627,
+      "informed_guesses": 0,
+      "guesses": [
+        "A",
+        "A",
+        "A",
+        "C",
+        "A",
+        "A",
+        "A",
+        "B",
+        "B",
+        "C",
+        "B"
+      ],
+      "actual": [
+        "C",
+        "A",
+        "A",
+        "C",
+        "B",
+        "A",
+        "C",
+        "B",
+        "A",
+        "B",
+        "C"
+      ],
+      "votes_source": "read from the receipts shown in the voter's two screen recordings, which the DBA opened only after the commitment was published (the voter kept no notes); the tally the voter then decrypted as authority, A=4 B=3 C=4, has the same counts"
+    },
+    {
+      "folder": "challenge-round-2",
+      "commitment": "66b32af50e6f9052a6840893a5c54c707876f0cb1bec7f27c451f87e9f6a1710",
+      "committed": "2026-11-23T15:02:06.601Z",
+      "revealed": "2026-11-23T15:09:03.145Z",
+      "ballots": 12,
+      "hits": 5,
+      "chance_of_this_many_or_more": 0.3684792855650954,
+      "informed_guesses": 0,
+      "guesses": [
+        "C",
+        "A",
+        "C",
+        "C",
+        "C",
+        "B",
+        "C",
+        "B",
+        "C",
+        "C",
+        "B",
+        "A"
+      ],
+      "actual": [
+        "B",
+        "A",
+        "A",
+        "C",
+        "B",
+        "B",
+        "A",
+        "A",
+        "A",
+        "C",
+        "C",
+        "A"
+      ],
+      "votes_source": "read from the receipts shown in the voter's screen recording of the vote, which the DBA opened only after the commitment was published; the tally the voter then decrypted as authority after one stuffed ballot of [1000, 0, 0], A=1006 B=3 C=3, has the same counts once the thousand is taken off"
+    }
+  ],
+  "ballots": 23,
+  "hits": 10,
+  "hit_rate": 0.43478260869565216,
+  "expected_hits_by_chance": 7.666666666666667,
+  "chance_of_this_many_or_more": 0.20642892850168335,
+  "informed_guesses": 0
+}

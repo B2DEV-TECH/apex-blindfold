@@ -1,0 +1,20 @@
+# Live session, challenge rounds: all of them
+# generated: 2026-11-23T15:30:24.751Z
+# one line per round, from the result.json of its folder; the last lines add the rounds up
+
+  FOLDER             COMMITTED                 REVEALED                  BALLOTS  HITS  BY_CHANCE  THIS_MANY_OR_MORE  INFORMED_GUESSES  TRACE_DIFFERENCES_THAT_FOLLOW_THE_VOTES
+  -----------------  ------------------------  ------------------------  -------  ----  ---------  -----------------  ----------------  ---------------------------------------
+  challenge          2026-11-23T14:00:22.355Z  2026-11-23T14:30:45.362Z  11       5     3.7        28.9%              0                 0 of 14
+  challenge-round-2  2026-11-23T15:02:06.601Z  2026-11-23T15:09:03.145Z  12       5     4.0        36.8%              0                 0 of 14
+
+  2 rows selected
+
+challenge: guesses AAACAAABBCB, votes CAACBACBABC; commitment 8ff883031bdc0c87c3e553c1916fd210d238cc20355ad190e5cd34de1f53bfa1
+challenge-round-2: guesses CACCCBCBCCBA, votes BAACBBAAACCA; commitment 66b32af50e6f9052a6840893a5c54c707876f0cb1bec7f27c451f87e9f6a1710
+
+All rounds: 10 hits out of 23 ballots (43%). Guessing one of three at random gives 7.7 on average (33%).
+With no information at all, 10 or more hits out of 23 happens in 20.6% of attempts.
+Guesses based on something the DBA read: 0 of 23.
+
+23 ballots are a demonstration, not a statistical test: the test with thousands of ciphertexts is H3
+(evidence/h3-indistinguishability).

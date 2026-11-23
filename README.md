@@ -21,6 +21,7 @@
   <a href="#how-it-works">How it works</a> ·
   <a href="#verdicts">Verdicts</a> ·
   <a href="#what-breaks-it">What breaks it</a> ·
+  <a href="#live-session">Live session</a> ·
   <a href="#what-it-costs">What it costs</a> ·
   <a href="#reproduce-it">Reproduce it</a> ·
   <a href="#what-this-is-not">What this is NOT</a>
@@ -146,12 +147,12 @@ attack works.
 |---|---|---|---|---|
 | H1 | Correctness | **CONFIRMED** | The decrypted tally equals the true tally in 100/100 randomized elections (10 to 5000 voters, 82874 ballots), and JavaScript, Java and Python agree on every value compared. | [elections.txt](evidence/h1-correctness/elections.txt) |
 | H2 | Blindness | **CONFIRMED** | Knowing the private key and the randomizer of all 27 ciphertexts, the test found none of them, whole or in part, in 21 sources: 231 HTTP requests and their responses, 4 tables, APEX session state (0 page items; 2 report paging positions), 4423 LEVEL9 debug messages, the activity and access logs, 172 SQL statements, captured binds, audit trail, alert log, and the storage of both tabs. Ballot requests differ only in the voter code and three ciphertexts. ORDS log files were not read. | [scan-summary.txt](evidence/h2-blindness/scan-summary.txt) |
-| H3 | Indistinguishability | **CONFIRMED** | All 6000 stored ciphertexts are distinct, and none of 13 distinguishers separates Enc(0) from Enc(1) on 4000 labelled ciphertexts (classifier accuracy 51.5%). Indistinguishability itself rests on the DCR assumption, which a test cannot prove. | [distinguishers.txt](evidence/h3-indistinguishability/distinguishers.txt) |
+| H3 | Indistinguishability | **CONFIRMED** | All 6000 stored ciphertexts are distinct, and none of 13 distinguishers separates Enc(0) from Enc(1) on 4000 labelled ciphertexts (classifier accuracy 51.4%). Indistinguishability itself rests on the DCR assumption, which a test cannot prove. | [distinguishers.txt](evidence/h3-indistinguishability/distinguishers.txt) |
 | H4 | Ballot stuffing | **CONFIRMED** | The tally accepted a ballot encrypting 1000 (A=4 B=3 C=2 became A=1004 B=3 C=2). A balanced ballot of [3, -2, 0] changed the result (A=7 B=1 C=2) while the totals still added up to the turnout. | [stuffing.txt](evidence/h4-ballot-stuffing/stuffing.txt) |
-| H5 | Other limits | **CONFIRMED** | All three limits hold: a DBA with the public key moved 5 votes with two UPDATEs and the totals still matched the turnout; the key holder read 24/24 individual ballots; ordering by voted_at and ballot_id re-linked 24/24 voters arriving one at a time (44/200 exactly, 200/200 within 7 positions, when 8 sessions vote at once). | [a-dba-adds-votes.txt](evidence/h5-limits/a-dba-adds-votes.txt) |
-| H6 | Cost | **CONFIRMED** | Measured: casting a ballot takes a median 282 ms in the browser; tallying 10000 voters takes 4.8 s against 1.039 ms for a plaintext COUNT (4654x); a ballot stores 3087 bytes against 5. | [summary.txt](evidence/h6-cost/summary.txt) |
+| H5 | Other limits | **CONFIRMED** | All three limits hold: a DBA with the public key moved 5 votes with two UPDATEs and the totals still matched the turnout; the key holder read 24/24 individual ballots; ordering by voted_at and ballot_id re-linked 24/24 voters arriving one at a time (59/200 exactly, 199/200 within 7 positions, when 8 sessions vote at once). | [a-dba-adds-votes.txt](evidence/h5-limits/a-dba-adds-votes.txt) |
+| H6 | Cost | **CONFIRMED** | Measured: casting a ballot takes a median 289 ms in the browser; tallying 10000 voters takes 4.9 s against 1.074 ms for a plaintext COUNT (4584x); a ballot stores 3087 bytes against 5. | [summary.txt](evidence/h6-cost/summary.txt) |
 
-One run from a clean schema: 2026-11-23, full mode, seed 20261123, 17 minutes.
+One run from a clean schema: 2026-11-23, full mode, seed 20261123, 19 minutes.
 Each row is the sentence the test itself wrote into its `result.json`. The same table, with the
 time of every step, is in [`evidence/summary.md`](evidence/summary.md).
 <!-- verdicts:end -->
@@ -197,8 +198,9 @@ against the running application.
 | **Stuff it quietly.** Encrypt `[3, -2, 0]`, which still adds up to one vote. | A registered voter, from the browser console | A=4 B=3 C=2 became **A=7 B=1 C=2** | No. 10 votes from 10 voters. | [stuffing.txt](evidence/h4-ballot-stuffing/stuffing.txt) |
 | **Move votes.** Multiply one stored ciphertext by `Enc(5)` and another by `Enc(-5)`. | A DBA with the public key and two `UPDATE` statements | A=6 B=7 C=7 became **A=1 B=12 C=7** | No. 20 votes from 20 voters, and the same number of rows. | [a-dba-adds-votes.txt](evidence/h5-limits/a-dba-adds-votes.txt) |
 | **Open single ballots.** Decrypt rows of the table, not the three totals. | Whoever holds the private key | **24 of 24** ballots read | No. | [b-key-holder-reads-ballots.txt](evidence/h5-limits/b-key-holder-reads-ballots.txt) |
-| **Re-link voters to ballots.** Sort `VOTER_ROLL` by `voted_at` and the ballots by `ballot_id`. | Anyone who reads both tables | **24 of 24** voters paired with their own ballot when they vote one at a time. With 8 sessions voting at once: 44 of 200 exactly, 200 of 200 within 7 positions. | No. | [c-relinking.txt](evidence/h5-limits/c-relinking.txt) |
+| **Re-link voters to ballots.** Sort `VOTER_ROLL` by `voted_at` and the ballots by `ballot_id`. | Anyone who reads both tables | **24 of 24** voters paired with their own ballot when they vote one at a time. With 8 sessions voting at once: 59 of 200 exactly, 199 of 200 within 8 positions. | No. | [c-relinking.txt](evidence/h5-limits/c-relinking.txt) |
 | **Swap the public key** while voters are voting. An extra, not one of the hypotheses. | A DBA who can write to the tables | **4 of 4** ballots cast under the swapped key were read, and the tally the authority decrypted was still correct | No. | [extra-key-substitution.txt](evidence/h5-limits/extra-key-substitution.txt) |
+| **Lose the key.** Reload the browser tab that holds the private key. An extra, found in the live session. | The authority, by accident | A=1 B=2 C=0 was decrypted while the tab was alive. After a reload the encrypted totals could still be fetched and **could not be decrypted** | It asks first, through the browser, whose question mentions unsaved information and no key. | [extra-key-loss.txt](evidence/h5-limits/extra-key-loss.txt) |
 <!-- attacks:end -->
 
 <p align="center">
@@ -219,23 +221,54 @@ table keeps no history, the voter receives the public key from the server and ha
 it with, and the order of arrival survives in more places than the two columns the test used. The
 lab shows these and stops there.
 
+## Live session
+
+Everything above was run by the hands that built the lab. On 23 November 2026 the lab was put in
+front of its author instead. Geraldo generated the keys and voted in his own browsers. The AI
+assistant that wrote the code under his supervision played the DBA: full DBA access, no view of his
+screen.
+
+<p align="center">
+  <img src="assets/readme/live-stuffed-tally.gif" width="880" alt="Screen recording of the Tally page in the live session. The authority presses Tally encrypted ballots and Decrypt three totals. Option A shows 1,006 votes, the other two show 3 each, and a warning says that these totals cannot come from honest ballots.">
+</p>
+<p align="center"><sub>His recording of the moment the stuffed election is counted, cut to the page and reduced. The full segment is <a href="evidence/live-session/video/07-election-b-stuffed-tally.mp4">07-election-b-stuffed-tally.mp4</a>.</sub></p>
+
+<!-- live:start -->
+| What was tried | What happened | Evidence |
+|---|---|---|
+| **The DBA guesses every vote**, with full DBA access and no view of the voter's screen. | 2 rounds, 23 ballots. The guesses were committed, and their hash pushed to this repository, before each reveal. **10 hits**, where blind guessing gives 7.7; 10 or more come up by luck in 20.6% of attempts. Guesses that came from something the DBA had read: 0. | [challenge-summary.txt](evidence/live-session/challenge-summary.txt) |
+| **The authority counts the honest election.** | 11 ballots, decrypted in his browser as **A=4 B=3 C=4**: the counts of his 11 receipts. | [screenshot](evidence/live-session/screenshots/03-honest-tally-decrypted.png) |
+| **The voter looks for his own vote.** He runs the `SELECT` statements himself, as `SYSTEM`, knowing how he voted. | Asked whether he could point to his own vote in those rows, he answered that he could not. | [his five queries](evidence/live-session/screenshots/04-dba-select-1-ballots.png) |
+| **The voter stuffs the ballot box**, with one snippet in the browser console. | The database accepted a ballot worth 1,000 votes. His 12 honest ballots, A=6 B=3 C=3, were tallied as **A=1006 B=3 C=3**. A ballot of `[3, -2, 0]` then made it A=1009 B=1 C=3. | [the console](evidence/live-session/video/06-election-b-ballot-of-a-thousand.mp4), [the tally](evidence/live-session/video/07-election-b-stuffed-tally.mp4) |
+| **The authority keeps the key**, which lives in the memory of one browser tab. | He lost it twice: once before any ballot, once after the honest tally above. From then on neither election could be counted. The second time is on his recording: the browser asked whether to leave the page, and the answer was yes. | [the recording](evidence/live-session/video/04-leave-page-question.mp4) |
+<!-- live:end -->
+
+The last row was not in the script, and it is the result nobody had planned for. The page did ask
+before letting go of the key. The browser words that question itself, and its text mentions unsaved
+information, not a key. Since then the links of the Tally page open in a new tab once it holds a key,
+and the automated run reproduces the loss as part of H5.
+
+Screenshots, eight segments of his screen recordings and the state of the database after every step
+are in [`evidence/live-session`](evidence/live-session/README.md), together with everything that went
+wrong.
+
 ## What it costs
 
 <!-- cost:start -->
 | In the browser | Where | Median | Fastest and slowest | Samples |
 |---|---|---:|---:|---:|
-| Generate the 2048-bit key pair | authority's browser | **182 ms** | 76.3 ms to 344 ms | 20 |
-| Encrypt one ballot (three ciphertexts) | voter's browser | **218 ms** | 201 ms to 236 ms | 30 |
-| Cast one ballot, from the click to the receipt | voter's browser and database | **282 ms** | 273 ms to 328 ms | 30 |
-| Decrypt one total | authority's browser | **31.3 ms** | 30.9 ms to 32.2 ms | 30 |
+| Generate the 2048-bit key pair | authority's browser | **176 ms** | 80.8 ms to 349 ms | 20 |
+| Encrypt one ballot (three ciphertexts) | voter's browser | **224 ms** | 206 ms to 244 ms | 30 |
+| Cast one ballot, from the click to the receipt | voter's browser and database | **289 ms** | 279 ms to 410 ms | 30 |
+| Decrypt one total | authority's browser | **31.5 ms** | 31.2 ms to 31.8 ms | 30 |
 
 | Voters | Blind tally | Plaintext `COUNT` | Ratio | Stored per ballot | Plaintext per ballot |
 |---:|---:|---:|---:|---:|---:|
-| 100 | **60.4 ms** | 0.484 ms | 125x | 3,084 bytes | 4.0 bytes |
-| 1,000 | **498 ms** | 0.467 ms | 1,066x | 3,087 bytes | 4.9 bytes |
-| 10,000 | **4,835 ms** | 1.039 ms | 4,654x | 3,087 bytes | 5.0 bytes |
+| 100 | **61.3 ms** | 0.504 ms | 122x | 3,084 bytes | 4.0 bytes |
+| 1,000 | **504 ms** | 0.49 ms | 1,028x | 3,087 bytes | 4.9 bytes |
+| 10,000 | **4,924 ms** | 1.074 ms | 4,584x | 3,087 bytes | 5.0 bytes |
 
-- The tally time is the median of repeated runs of one statement, seen from the client. The first tally of a new database session, which starts its Java virtual machine, took 135 ms, 596 ms and 5,141 ms.
+- The tally time is the median of repeated runs of one statement, seen from the client. The first tally of a new database session, which starts its Java virtual machine, took 133 ms, 607 ms and 5,301 ms.
 - One ballot travels as a request body of 3,284 bytes. Storage is the size of the column values, without block or index overhead.
 - Browser, ORDS and database ran on the same machine: Intel Core i7-9700KF CPU @ 3.60GHz, 8 logical cores, msedge 158.0.4370.33 (headless).
 - Raw measurements: [timings.json](evidence/h6-cost/timings.json). Summary: [summary.txt](evidence/h6-cost/summary.txt).
@@ -300,7 +333,8 @@ step crashes or leaves no result.
 The automated tests know every secret, which is what lets them search for one. The opposite
 experiment needs two people: one votes, the other has full DBA access and tries to tell how.
 [`tests/live/RUNBOOK.md`](tests/live/RUNBOOK.md) is the script of that session. The DBA writes the
-guesses to a file and publishes its hash before the voter reveals anything.
+guesses to a file and publishes its hash before the voter reveals anything. The script was corrected
+after its first use, which is the [live session](#live-session) above.
 
 ## What this is NOT
 
@@ -332,9 +366,9 @@ The write-up of this lab will be linked here when it is published.
 | [`app`](app) | the APEX application: APEXlang source in `app/apexlang`, SQL export in `app/f2620.sql` |
 | [`db`](db) | tables, the Java tally, the PL/SQL packages, install and uninstall scripts |
 | [`tests`](tests) | unit tests, one script per hypothesis, the runner, the tools of the live session |
-| [`evidence`](evidence) | the output of one full run, in one folder per hypothesis |
+| [`evidence`](evidence) | the output of one full run, in one folder per hypothesis, and the record of the live session in [`evidence/live-session`](evidence/live-session/README.md) |
 | [`scripts`](scripts) | installation, the scan that runs before a push, the generators of this README |
-| [`assets`](assets) | logo, and the README images cropped from the evidence |
+| [`assets`](assets) | logo, and the README images and animation made from the evidence |
 
 ## References
 

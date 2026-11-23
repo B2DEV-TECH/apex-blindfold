@@ -1,0 +1,61 @@
+# Segments cut from screen recordings by tests/live/clip-video.mjs
+# The recordings themselves are not published: they show a whole desktop. Each segment keeps one area
+# of the picture, has the listed areas painted over, has no sound, and is encoded again, so its hash is
+# not the hash of the recording. Times are seconds of the recording; areas are x,y,width,height in
+# pixels of the recording.
+01-key-generation.mp4
+  from:     2026-11-23 10-54-27.mkv, sha256 bdf58fdb50258abb51060d1d9cd63d344422770b143f42aa078da66c0a60d820
+  seconds:  0 to 29.5
+  kept:     0,86,1920,914
+  painted:  nothing
+  note:     election A: the page says that the first key is lost, then a new key pair is generated
+  result:   331185 bytes, sha256 4dbbf16cab5e8797d142a7b1996644e6b6a43ce9cd27d9e4c159b87a0a3822d0
+02-ballot-1.mp4
+  from:     2026-11-23 10-54-27.mkv, sha256 bdf58fdb50258abb51060d1d9cd63d344422770b143f42aa078da66c0a60d820
+  seconds:  100 to 124
+  kept:     0,86,1920,914
+  painted:  nothing
+  note:     election A: ballot 1 and its receipt
+  result:   271819 bytes, sha256 723fafd5bcb74680ca8d62b843c37b7819c2f8255342630a4f79e83395c56e23
+03-ballots-2-to-11.mp4
+  from:     2026-11-23 10-58-00.mkv, sha256 f39885fe9eb7163d075401d24c56158246c71cf6037a489b695c09a9ef79aa5f
+  seconds:  0 to 42.8
+  kept:     0,86,1920,914
+  painted:  nothing
+  note:     election A: ballots 2 to 11 and their receipts; the whole recording
+  result:   1069847 bytes, sha256 2a8cb604f6de1a0a1287e276ad6a660f859b6e1c126b5418a576de55b66720f9
+04-leave-page-question.mp4
+  from:     2026-11-23 11-48-04.mkv, sha256 3ebd154df10b5deb39ed5ad9bec853a8ff8bf0b2dec7cb93b1fc2d8d42f19d25
+  seconds:  0 to 7.5
+  kept:     0,86,1920,914
+  painted:  796,498,124,40@2.15-3.8
+  note:     election A: the tab that holds the key follows the Vote link; the browser asks; the key is lost. The painted area is the heading of the browser's dialog, which names the host
+  result:   284459 bytes, sha256 9fb400fbbaabb000a27903383d10b224f352d99cfa279881f68ae159749fd5d5
+05-election-b-twelve-ballots.mp4
+  from:     2026-11-23 11-58-21.mkv, sha256 7ef4a1bb5b48b5971b300d4c82082815e34d785649397b5e773d7d793265f9ec
+  seconds:  50 to 116
+  kept:     0,86,1920,914
+  painted:  nothing
+  note:     election B: twelve ballots and their receipts; after ballot 10 the voter looks at the authority's window and comes back
+  result:   1794583 bytes, sha256 34c65c1dbbc032aabe08dc5537240e117baa60c54f9947d64d3381c6da5d6755
+06-election-b-ballot-of-a-thousand.mp4
+  from:     2026-11-23 12-04-08.mkv, sha256 7656ec3a1c8e662c43b2c7c6dfb87cd0cc76e44eb8412789ff2587d794cc8e4f
+  seconds:  19 to 39.8
+  kept:     0,86,1920,914
+  painted:  84,714,500,22  84,756,500,22
+  note:     election B: the snippet in the browser console; the two painted areas are the addresses of the requests (host and session identifier)
+  result:   278605 bytes, sha256 ab4f9d2591a5e8f30d9291c5579358f936d43e40e31c3f2c1753a8f1f2982ad4
+07-election-b-stuffed-tally.mp4
+  from:     2026-11-23 12-04-08.mkv, sha256 7656ec3a1c8e662c43b2c7c6dfb87cd0cc76e44eb8412789ff2587d794cc8e4f
+  seconds:  81 to 94
+  kept:     0,86,1920,914
+  painted:  nothing
+  note:     election B: the authority tallies and decrypts after the ballot of a thousand
+  result:   542085 bytes, sha256 134752d5f2883937678b807e5c774324f1ceb7fff27e34a64017d749541e1676
+08-election-b-final-tally.mp4
+  from:     2026-11-23 12-04-08.mkv, sha256 7656ec3a1c8e662c43b2c7c6dfb87cd0cc76e44eb8412789ff2587d794cc8e4f
+  seconds:  142.3 to 156.3
+  kept:     0,86,1920,914
+  painted:  nothing
+  note:     election B: the authority tallies and decrypts after the ballot of [3, -2, 0]
+  result:   615091 bytes, sha256 9ba5c60b3a01b0f799b95d5878beca9f5667f0e38ee8c397f1aabb538b8ba5d2

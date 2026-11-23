@@ -1,0 +1,33 @@
+# Live session, challenge round: guesses against the real votes
+# generated: 2026-11-23T15:09:03.157Z
+# guesses committed: 2026-11-23T15:02:06.601Z
+# votes revealed:    2026-11-23T15:09:03.145Z
+# votes from:        read from the receipts shown in the voter's screen recording of the vote, which the DBA opened only after the commitment was published; the tally the voter then decrypted as authority after one stuffed ballot of [1000, 0, 0], A=1006 B=3 C=3, has the same counts once the thousand is taken off
+# commitment checked: sha256(guesses.json) = 66b32af50e6f9052a6840893a5c54c707876f0cb1bec7f27c451f87e9f6a1710, unchanged since it was committed
+
+  BALLOT  VOTER       GUESS  ACTUAL  HIT
+  ------  ----------  -----  ------  ---
+  1       VOTER-0001  C      B       no
+  2       VOTER-0002  A      A       yes
+  3       VOTER-0003  C      A       no
+  4       VOTER-0004  C      C       yes
+  5       VOTER-0005  C      B       no
+  6       VOTER-0006  B      B       yes
+  7       VOTER-0007  C      A       no
+  8       VOTER-0008  B      A       no
+  9       VOTER-0009  C      A       no
+  10      VOTER-0010  C      C       yes
+  11      VOTER-0011  B      C       no
+  12      VOTER-0012  A      A       yes
+
+  12 rows selected
+
+Hits: 5 of 12 (42%). Guessing one of three at random gives 4.0 on average (33%).
+With no information at all, 5 or more hits out of 12 happens in 36.8% of attempts.
+Guesses based on something the DBA read: 0 of 12.
+
+Debug trace, checked after the reveal: of the 14 differences between the traces of the ballot requests listed in guesses.txt,
+0 follow the votes (the same value for every ballot of an option, and not the same for all options).
+
+12 ballots are a demonstration, not a statistical test: the test with thousands of ciphertexts is H3
+(evidence/h3-indistinguishability).
