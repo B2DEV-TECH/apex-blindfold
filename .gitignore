@@ -1,0 +1,39 @@
+# Local configuration and credentials: never commit.
+.local/
+.env
+.env.*
+*.env
+db.json
+oracle.json
+
+# Oracle wallets and key material
+wallet/
+wallets/
+Wallet_*/
+*.sso
+*.p12
+*.jks
+*.pem
+*.key
+cwallet.*
+ewallet.*
+tnsnames.ora
+sqlnet.ora
+
+# Tooling output
+node_modules/
+__pycache__/
+*.pyc
+*.log
+.DS_Store
+Thumbs.db
+
+# Unmasked captures stay local. Only masked evidence is committed.
+evidence/**/raw/
+evidence/**/*.raw.har
+evidence/**/*.unmasked.*
+playwright-report/
+test-results/
+
+# Article draft is not part of the public repository.
+article/

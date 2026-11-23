@@ -1,0 +1,7 @@
+# One line ending everywhere, so that file hashes in /evidence match on every machine.
+* text=auto eol=lf
+
+*.png   binary
+*.woff2 binary
+*.har   text eol=lf
+*.svg   text eol=lf

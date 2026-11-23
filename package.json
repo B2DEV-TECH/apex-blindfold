@@ -1,0 +1,23 @@
+{
+  "name": "apex-blindfold",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A tally the database cannot read: Paillier homomorphic voting in Oracle APEX.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "lab": "node tests/run-all.mjs",
+    "lab:quick": "node tests/run-all.mjs --quick",
+    "test:crypto": "node --test tests/unit/paillier.test.mjs",
+    "readme": "node scripts/readme-sync.mjs && node scripts/readme-images.mjs",
+    "readme:check": "node scripts/readme-sync.mjs --check",
+    "scan": "node scripts/prepush-scan.mjs"
+  },
+  "devDependencies": {
+    "oracledb": "6.10.0",
+    "playwright": "1.56.1"
+  }
+}

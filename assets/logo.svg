@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" role="img" aria-label="APEX Blindfold">
+<rect width="320" height="200" fill="#0A0A0A"/>
+<path d="M 30 100 Q 160 4 290 100 Q 160 196 30 100 Z" fill="none" stroke="#F2EFE8" stroke-width="11" stroke-linejoin="round"/>
+<circle cx="160" cy="100" r="40" fill="none" stroke="#F2EFE8" stroke-width="11"/>
+<g transform="rotate(-7 160 100)">
+<rect x="6" y="74" width="308" height="52" rx="4" fill="#E8B339"/>
+<rect x="154" y="84" width="12" height="32" fill="#0A0A0A"/>
+<rect x="144" y="94" width="32" height="12" fill="#0A0A0A"/>
+</g>
+</svg>
