@@ -1,0 +1,104 @@
+# H9: integrity
+# generated: 2026-11-24T15:03:47.796Z
+# Election 116, 6 honest ballots, 2048-bit key. Tables: BLIND_BALLOTS and BALLOT_SEALS, blockchain tables.
+# The DBA here is an account with the DBA role. Dropping the tables, replacing a voter key or the
+# verifier, SYSDBA and operating system access are measured or discussed in H10.
+
+As the owner of the tables:
+  change a ciphertext (the attack of H5)
+    update blind_ballots set vote_enc = :c where election_id = :e and ballot_id = 1 and candidate_id = 1
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+  move a vote to another option
+    update blind_ballots set candidate_id = 3 where election_id = :e and ballot_id = 1 and candidate_id = 1
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+  move a ballot to another voter
+    update ballot_seals set voter_id = 'VOTER-0009' where election_id = :e and ballot_id = 1
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+  replace a signature
+    update ballot_seals set signature = signature where election_id = :e and ballot_id = 1
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+  delete one ballot
+    delete from blind_ballots where election_id = :e and ballot_id = 1
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+  delete one seal
+    delete from ballot_seals where election_id = :e and ballot_id = 1
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+  delete every ballot
+    delete from blind_ballots
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+  truncate the ballot table
+    truncate table blind_ballots
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+  truncate the seal table
+    truncate table ballot_seals
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+  merge into the ballot table
+    merge into blind_ballots b using (select 1 as id from dual) s on (b.election_id = :e and b.ballot_id = s.id and b.candidate_id = 1) when matched then update set b.bit_proof = b.bit_proof
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+
+As the DBA (an account with the DBA role):
+  change a ciphertext (the attack of H5)
+    update <owner>.blind_ballots set vote_enc = :c where election_id = :e and ballot_id = 1 and candidate_id = 1
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+  move a vote to another option
+    update <owner>.blind_ballots set candidate_id = 3 where election_id = :e and ballot_id = 1 and candidate_id = 1
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+  move a ballot to another voter
+    update <owner>.ballot_seals set voter_id = 'VOTER-0009' where election_id = :e and ballot_id = 1
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+  replace a signature
+    update <owner>.ballot_seals set signature = signature where election_id = :e and ballot_id = 1
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+  delete one ballot
+    delete from <owner>.blind_ballots where election_id = :e and ballot_id = 1
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+  delete one seal
+    delete from <owner>.ballot_seals where election_id = :e and ballot_id = 1
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+  delete every ballot
+    delete from <owner>.blind_ballots
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+  truncate the ballot table
+    truncate table <owner>.blind_ballots
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+  truncate the seal table
+    truncate table <owner>.ballot_seals
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+  merge into the ballot table
+    merge into <owner>.blind_ballots b using (select 1 as id from dual) s on (b.election_id = :e and b.ballot_id = s.id and b.candidate_id = 1) when matched then update set b.bit_proof = b.bit_proof
+    -> ORA-05715: operation not allowed on the blockchain or immutable table
+
+Negative control, owner: the same UPDATE and DELETE on BF_CONTROL_BALLOTS, an ordinary copy of the table
+    -> update: accepted; delete: accepted
+Negative control, DBA: the same UPDATE and DELETE on BF_CONTROL_BALLOTS, an ordinary copy of the table
+    -> update: accepted; delete: accepted
+
+Forged or unsigned ballots, through bf_election.cast_ballot:
+  no signature
+    -> ORA-20007: Unsigned ballot.
+  a signature with one digit changed
+    -> ORA-20007: Ballot rejected, signature: the signature does not match the ballot.
+  a signature made with another key
+    -> ORA-20007: Ballot rejected, signature: the signature does not match the ballot.
+  the voter signature of another ballot (same voter, same number, another choice)
+    -> ORA-20007: Ballot rejected, signature: the signature does not match the ballot.
+  a valid ballot in the name of a voter who registered no key
+    -> ORA-20007: Unsigned ballot: this voter code has no registered key.
+
+Ballots inserted directly by the DBA (INSERT into the two blockchain tables):
+  ballot 9001: five votes for A, no proof, no voter
+    -> insert: accepted
+    -> tally:  not counted: ciphertext rows with no voter and no signature
+  ballot 9002: a valid ballot in the name of a voter who never registered a key
+    -> insert: accepted
+    -> tally:  not counted: the voter has no registered public key
+  ballot 9003: a valid ballot in the name of a voter who registered and did not vote
+    -> insert: accepted
+    -> tally:  not counted: the signature does not match the ballot
+  ballot 9004: a second ballot in the name of a voter who voted
+    -> insert: ORA-00001: unique constraint (BLINDFOLD.BALLOT_SEALS_VOTER_UK) violated on table BLINDFOLD.BALLOT_SEALS columns (ELECTION_ID, VOTER_ID)
+    -> tally:  nothing to count
+
+Chain verification: 1651 ciphertext rows and 549 seals verified (all elections stored in the tables).
+Tally of election 116: 6 ballots counted, 3 rejected.
+True result 2/3/1, decrypted 2/3/1.

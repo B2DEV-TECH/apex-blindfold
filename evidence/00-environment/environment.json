@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-23T15:29:35.246Z",
+  "generated": "2026-11-24T14:35:48.618Z",
   "environment": {
     "database": "Oracle AI Database 26ai Free Release 23.26.3.0.0 - Develop, Learn, and Run for Free Version 23.26.3.0.0",
     "database_platform": "Microsoft Windows x86 64-bit",
@@ -19,7 +19,7 @@
     "first_stage_that_works": null,
     "compile_errors_with_all_privileges": [
       "MLE MODULE BF_PROBE_MOD: MLE is not available on this platform",
-      "FUNCTION BF_PROBE_MODPOW: PLS-00905: object BF_PROBE_F620E3.BF_PROBE_MOD is invalid",
+      "FUNCTION BF_PROBE_MODPOW: PLS-00905: object BF_PROBE_0EC4B8.BF_PROBE_MOD is invalid",
       "FUNCTION BF_PROBE_MODPOW: PL/SQL: Compilation unit analysis terminated"
     ],
     "privileges_tried": [
@@ -33,7 +33,7 @@
     "first_stage_that_works": "+ CREATE PROCEDURE"
   },
   "tally_engine": "java",
-  "tally_engine_reason": "MLE JavaScript is not available in this database (MLE MODULE BF_PROBE_MOD: MLE is not available on this platform; FUNCTION BF_PROBE_MODPOW: PLS-00905: object BF_PROBE_F620E3.BF_PROBE_MOD is invalid; FUNCTION BF_PROBE_MODPOW: PL/SQL: Compilation unit analysis terminated). Fallback: Java stored procedure with java.math.BigInteger.",
+  "tally_engine_reason": "MLE JavaScript is not available in this database (MLE MODULE BF_PROBE_MOD: MLE is not available on this platform; FUNCTION BF_PROBE_MODPOW: PLS-00905: object BF_PROBE_0EC4B8.BF_PROBE_MOD is invalid; FUNCTION BF_PROBE_MODPOW: PL/SQL: Compilation unit analysis terminated). Fallback: Java stored procedure with java.math.BigInteger.",
   "privilege_probe": [
     {
       "stage": "CREATE SESSION only",
@@ -93,7 +93,7 @@
         ],
         "compile_errors": [
           "MLE MODULE BF_PROBE_MOD: MLE is not available on this platform",
-          "FUNCTION BF_PROBE_MODPOW: PLS-00905: object BF_PROBE_F620E3.BF_PROBE_MOD is invalid",
+          "FUNCTION BF_PROBE_MODPOW: PLS-00905: object BF_PROBE_0EC4B8.BF_PROBE_MOD is invalid",
           "FUNCTION BF_PROBE_MODPOW: PL/SQL: Compilation unit analysis terminated"
         ],
         "execute": "ORA-06575: Package or function BF_PROBE_MODPOW is in an invalid state",
@@ -123,7 +123,7 @@
         ],
         "compile_errors": [
           "MLE MODULE BF_PROBE_MOD: MLE is not available on this platform",
-          "FUNCTION BF_PROBE_MODPOW: PLS-00905: object BF_PROBE_F620E3.BF_PROBE_MOD is invalid",
+          "FUNCTION BF_PROBE_MODPOW: PLS-00905: object BF_PROBE_0EC4B8.BF_PROBE_MOD is invalid",
           "FUNCTION BF_PROBE_MODPOW: PL/SQL: Compilation unit analysis terminated"
         ],
         "execute": "ORA-06575: Package or function BF_PROBE_MODPOW is in an invalid state",
@@ -161,8 +161,8 @@
         "modulus_bits": 4096,
         "database_equals_python": true,
         "database_equals_node": true,
-        "result_bits": 4096,
-        "result_prefix": "9006b5a46367c3d80a9963ec…"
+        "result_bits": 4094,
+        "result_prefix": "23f0dc3501010c1de9cc2fc4…"
       },
       {
         "vector": 1,
@@ -172,7 +172,7 @@
         "database_equals_python": true,
         "database_equals_node": true,
         "result_bits": 4096,
-        "result_prefix": "bcf53efe88bfe05783d224e0…"
+        "result_prefix": "ca746ca02a9cf99e9ebc3457…"
       },
       {
         "vector": 2,
@@ -181,8 +181,8 @@
         "modulus_bits": 4096,
         "database_equals_python": true,
         "database_equals_node": true,
-        "result_bits": 4093,
-        "result_prefix": "151669b1a690754b8a626a64…"
+        "result_bits": 4095,
+        "result_prefix": "6f0c6a06e4a4625921320f58…"
       },
       {
         "vector": 3,
@@ -191,8 +191,8 @@
         "modulus_bits": 4096,
         "database_equals_python": true,
         "database_equals_node": true,
-        "result_bits": 4096,
-        "result_prefix": "86a959eef0475bc376a180dd…"
+        "result_bits": 4095,
+        "result_prefix": "6e5db0afa71a36c712a60309…"
       },
       {
         "vector": 4,
@@ -201,8 +201,8 @@
         "modulus_bits": 4096,
         "database_equals_python": true,
         "database_equals_node": true,
-        "result_bits": 4096,
-        "result_prefix": "afea7d58e4120d8bc4b8d422…"
+        "result_bits": 4091,
+        "result_prefix": "632c6158f986c00926357e90…"
       },
       {
         "vector": 5,
@@ -211,8 +211,8 @@
         "modulus_bits": 4096,
         "database_equals_python": true,
         "database_equals_node": true,
-        "result_bits": 4094,
-        "result_prefix": "2a6f4b9b409f81709a1fd780…"
+        "result_bits": 4091,
+        "result_prefix": "6623726750596eb41e86548d…"
       },
       {
         "vector": 6,
@@ -221,8 +221,8 @@
         "modulus_bits": 4096,
         "database_equals_python": true,
         "database_equals_node": true,
-        "result_bits": 4096,
-        "result_prefix": "ba0e40daa81e90140582eda4…"
+        "result_bits": 4095,
+        "result_prefix": "4269a71a273f8133202fdd56…"
       },
       {
         "vector": 7,
@@ -232,7 +232,7 @@
         "database_equals_python": true,
         "database_equals_node": true,
         "result_bits": 4095,
-        "result_prefix": "77faad6619b4a2bbaa86ab6b…"
+        "result_prefix": "4059cb8058e162fefd9c47ff…"
       }
     ],
     "timing": {
@@ -240,38 +240,38 @@
         "reps_per_call": 20,
         "ms_per_modexp": {
           "n": 7,
-          "min": 83.132,
-          "median": 83.548,
-          "mean": 83.61,
-          "max": 84.202
+          "min": 82.601,
+          "median": 82.94,
+          "mean": 82.981,
+          "max": 83.247
         },
         "raw_ms_per_modexp": [
-          83.54805,
-          83.85164999999999,
-          83.54595,
-          84.20214999999999,
-          83.70895,
-          83.13165000000001,
-          83.28465
+          82.9398,
+          83.2473,
+          83.1005,
+          83.19765,
+          82.6006,
+          82.89745,
+          82.88075
         ]
       },
       "base_4096_exponent_4096_modulus_4096": {
         "reps_per_call": 20,
         "ms_per_modexp": {
           "n": 7,
-          "min": 162.004,
-          "median": 162.376,
-          "mean": 162.398,
-          "max": 162.928
+          "min": 163.52,
+          "median": 163.683,
+          "mean": 163.78,
+          "max": 164.303
         },
         "raw_ms_per_modexp": [
-          162.9284,
-          162.5171,
-          162.376,
-          162.0039,
-          162.37574999999998,
-          162.22345,
-          162.36485
+          163.7267,
+          163.60174999999998,
+          164.3032,
+          163.5204,
+          163.66745,
+          163.68305,
+          163.95589999999999
         ]
       }
     }

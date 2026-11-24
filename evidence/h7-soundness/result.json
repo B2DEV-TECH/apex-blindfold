@@ -1,0 +1,220 @@
+{
+  "id": "H7",
+  "hypothesis": "Soundness: a ballot that is not an honest one is rejected (the stuffed ballot of H4, negative values, two options set to 1, a replayed proof)",
+  "verdict": "CONFIRMED",
+  "statement": "The database rejected 8 of 8 dishonest ballots pasted in the browser console, among them the ballot of 1000 votes and the balanced [3, -2, 0] that Layer 1 accepted, 3 of 3 replays, and 100 of 100 valid ballots with one digit changed. The tally stayed A=5  B=3  C=2: the honest ballots and the control.",
+  "numbers": {
+    "honest": [
+      4,
+      3,
+      2
+    ],
+    "control_accepted": true,
+    "attempts": 8,
+    "attempts_rejected": 8,
+    "outcomes": [
+      {
+        "name": "the Layer 1 snippet, unchanged: a thousand votes, no proof",
+        "weights": [
+          1000,
+          0,
+          0
+        ],
+        "snippet": "ballot-stuffing.js",
+        "rejected": true,
+        "answer": "A ballot must carry exactly three ciphertexts and three bit proofs."
+      },
+      {
+        "name": "a thousand votes for A, with forged proofs",
+        "weights": [
+          1000,
+          0,
+          0
+        ],
+        "snippet": "ballot-stuffing-layer2.js",
+        "rejected": true,
+        "answer": "Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash."
+      },
+      {
+        "name": "three for A, minus two for B: the plaintexts add up to 1",
+        "weights": [
+          3,
+          -2,
+          0
+        ],
+        "snippet": "ballot-stuffing-layer2.js",
+        "rejected": true,
+        "answer": "Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash."
+      },
+      {
+        "name": "a negative value",
+        "weights": [
+          -1,
+          1,
+          1
+        ],
+        "snippet": "ballot-stuffing-layer2.js",
+        "rejected": true,
+        "answer": "Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash."
+      },
+      {
+        "name": "two options set to 1",
+        "weights": [
+          1,
+          1,
+          0
+        ],
+        "snippet": "ballot-stuffing-layer2.js",
+        "rejected": true,
+        "answer": "Ballot rejected, invalid proof: sum: the challenge is not the hash."
+      },
+      {
+        "name": "all three options set to 1",
+        "weights": [
+          1,
+          1,
+          1
+        ],
+        "snippet": "ballot-stuffing-layer2.js",
+        "rejected": true,
+        "answer": "Ballot rejected, invalid proof: sum: the challenge is not the hash."
+      },
+      {
+        "name": "a blank ballot",
+        "weights": [
+          0,
+          0,
+          0
+        ],
+        "snippet": "ballot-stuffing-layer2.js",
+        "rejected": true,
+        "answer": "Ballot rejected, invalid proof: sum: the challenge is not the hash."
+      },
+      {
+        "name": "two votes for one option",
+        "weights": [
+          2,
+          0,
+          0
+        ],
+        "snippet": "ballot-stuffing-layer2.js",
+        "rejected": true,
+        "answer": "Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash."
+      }
+    ],
+    "tally_before": [
+      4,
+      3,
+      2
+    ],
+    "replays": 3,
+    "replays_rejected": 3,
+    "damaged": 100,
+    "damaged_rejected": 100,
+    "tally_after": [
+      5,
+      3,
+      2
+    ],
+    "replay_key_bits": 2048,
+    "browser": "msedge 158.0.4370.33"
+  },
+  "mode": {
+    "quick": false,
+    "seed": 20261123
+  },
+  "checks": [
+    {
+      "name": "before the attacks the tally is the honest one",
+      "pass": true,
+      "detail": "A=4  B=3  C=2"
+    },
+    {
+      "name": "negative control: the Layer 2 snippet with an honest ballot [1, 0, 0] is accepted",
+      "pass": true,
+      "detail": "{\"ok\":true,\"ballot_id\":10}"
+    },
+    {
+      "name": "rejected: the Layer 1 snippet, unchanged: a thousand votes, no proof",
+      "pass": true,
+      "detail": "[1000, 0, 0] -> A ballot must carry exactly three ciphertexts and three bit proofs."
+    },
+    {
+      "name": "rejected: a thousand votes for A, with forged proofs",
+      "pass": true,
+      "detail": "[1000, 0, 0] -> Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash."
+    },
+    {
+      "name": "rejected: three for A, minus two for B: the plaintexts add up to 1",
+      "pass": true,
+      "detail": "[3, -2, 0] -> Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash."
+    },
+    {
+      "name": "rejected: a negative value",
+      "pass": true,
+      "detail": "[-1, 1, 1] -> Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash."
+    },
+    {
+      "name": "rejected: two options set to 1",
+      "pass": true,
+      "detail": "[1, 1, 0] -> Ballot rejected, invalid proof: sum: the challenge is not the hash."
+    },
+    {
+      "name": "rejected: all three options set to 1",
+      "pass": true,
+      "detail": "[1, 1, 1] -> Ballot rejected, invalid proof: sum: the challenge is not the hash."
+    },
+    {
+      "name": "rejected: a blank ballot",
+      "pass": true,
+      "detail": "[0, 0, 0] -> Ballot rejected, invalid proof: sum: the challenge is not the hash."
+    },
+    {
+      "name": "rejected: two votes for one option",
+      "pass": true,
+      "detail": "[2, 0, 0] -> Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash."
+    },
+    {
+      "name": "no attack left a row in BLIND_BALLOTS",
+      "pass": true,
+      "detail": "30 rows before the attacks, 30 after"
+    },
+    {
+      "name": "after the attacks the tally is the honest one plus the control vote",
+      "pass": true,
+      "detail": "A=5  B=3  C=2; page says \"Decrypted in 293 ms. 10 votes from 10 verified ballots.\""
+    },
+    {
+      "name": "rejected: a ballot of an earlier election replayed in this one, same key, same ballot number",
+      "pass": true,
+      "detail": "election 13 ballot 1 -> election 14 ballot 1: ORA-20006: Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash."
+    },
+    {
+      "name": "rejected: the stored ballot of another voter, copied from the table under another ballot number",
+      "pass": true,
+      "detail": "ballot 2 -> ballot 3: ORA-20006: Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash."
+    },
+    {
+      "name": "rejected: a ballot under the number reserved for another voter",
+      "pass": true,
+      "detail": "ORA-20006: Ballot rejected: this is not the ballot number reserved for this voter code."
+    },
+    {
+      "name": "negative control: the verifier accepts the valid ballot that is about to be damaged",
+      "pass": true,
+      "detail": "OK"
+    },
+    {
+      "name": "rejected: every one of 100 valid ballots with one hexadecimal digit changed",
+      "pass": true,
+      "detail": "100/100 rejected"
+    }
+  ],
+  "notes": [],
+  "evidence": [
+    "h7-soundness/01-tally-after-the-attacks.png",
+    "h7-soundness/attempts.txt"
+  ],
+  "started": "2026-11-24T14:36:05.882Z",
+  "finished": "2026-11-24T14:37:54.737Z"
+}

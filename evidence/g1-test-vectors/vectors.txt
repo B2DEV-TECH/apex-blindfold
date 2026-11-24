@@ -1,0 +1,180 @@
+# G1: cross-implementation test vectors
+# generated: 2026-11-24T14:36:05.187Z
+# Vector file: tests/vectors/layer2-vectors.json, exported by msedge 158.0.4370.33, reproduced by node v22.16.0.
+# Left side of every comparison: the file. Right side: the Java stored procedure BlindfoldValidity in the database.
+# A challenge hash is the SHA-256 of the framed fields; the challenge is its first 128 bits.
+
+Key of 512 bits, seed 20261124
+
+  honest ballot for A
+    plaintexts [1, 0, 0], made for election 7 ballot 1, presented as election 7 ballot 1
+    challenge hashes equal, browser and database: 9/9
+      sum proof, as the prover hashed it:  browser  1294b7d35695cd5c3919c682b125435fc391c24f64afa4b2467260de1ac0feb3
+                                           database 1294b7d35695cd5c3919c682b125435fc391c24f64afa4b2467260de1ac0feb3
+    verdict: browser OK
+             database OK
+    signature: database OK
+
+  honest ballot for B
+    plaintexts [0, 1, 0], made for election 7 ballot 2, presented as election 7 ballot 2
+    challenge hashes equal, browser and database: 9/9
+      sum proof, as the prover hashed it:  browser  8ddd2814b7da1eaabb9d371ceb9babd16dda64e0e589b2298bb410bd1910a1d9
+                                           database 8ddd2814b7da1eaabb9d371ceb9babd16dda64e0e589b2298bb410bd1910a1d9
+    verdict: browser OK
+             database OK
+    signature: database OK
+
+  honest ballot for C
+    plaintexts [0, 0, 1], made for election 7 ballot 3, presented as election 7 ballot 3
+    challenge hashes equal, browser and database: 9/9
+      sum proof, as the prover hashed it:  browser  d9770470fb94e91633819cc3e45d4cac2725103a7269bfcf8791bc7db0e842db
+                                           database d9770470fb94e91633819cc3e45d4cac2725103a7269bfcf8791bc7db0e842db
+    verdict: browser OK
+             database OK
+    signature: database OK
+
+  stuffed: a thousand votes for A
+    plaintexts [1000, 0, 0], made for election 7 ballot 4, presented as election 7 ballot 4
+    challenge hashes equal, browser and database: 9/9
+      sum proof, as the prover hashed it:  browser  b83b9038cb65b15f8c714dfaa656f3f62afe1f07d9306704b18ebb380b4be490
+                                           database b83b9038cb65b15f8c714dfaa656f3f62afe1f07d9306704b18ebb380b4be490
+    verdict: browser FAIL option 1: the challenges do not add up to the hash
+             database FAIL option 1: the challenges do not add up to the hash
+    signature: database OK
+
+  balanced: three for A, minus two for B
+    plaintexts [3, -2, 0], made for election 7 ballot 5, presented as election 7 ballot 5
+    challenge hashes equal, browser and database: 9/9
+      sum proof, as the prover hashed it:  browser  324ac15ca05850bf24635c2f743f0fdf959cbfed9f701a0d5d2414c6ff4c0341
+                                           database 324ac15ca05850bf24635c2f743f0fdf959cbfed9f701a0d5d2414c6ff4c0341
+    verdict: browser FAIL option 1: the challenges do not add up to the hash
+             database FAIL option 1: the challenges do not add up to the hash
+    signature: database OK
+
+  two options set to 1
+    plaintexts [1, 1, 0], made for election 7 ballot 6, presented as election 7 ballot 6
+    challenge hashes equal, browser and database: 9/9
+      sum proof, as the prover hashed it:  browser  9c130dfe382d98fd2428f77a07d530c3b1b2679e5f9ce84adf206b3d208b0b61
+                                           database 9c130dfe382d98fd2428f77a07d530c3b1b2679e5f9ce84adf206b3d208b0b61
+    verdict: browser FAIL sum: the challenge is not the hash
+             database FAIL sum: the challenge is not the hash
+    signature: database OK
+
+  blank ballot
+    plaintexts [0, 0, 0], made for election 7 ballot 7, presented as election 7 ballot 7
+    challenge hashes equal, browser and database: 9/9
+      sum proof, as the prover hashed it:  browser  af25ce9c9f2fa569e352abbf4ea0d425b329e89ca0a680da3a1cdb2add337ad6
+                                           database af25ce9c9f2fa569e352abbf4ea0d425b329e89ca0a680da3a1cdb2add337ad6
+    verdict: browser FAIL sum: the challenge is not the hash
+             database FAIL sum: the challenge is not the hash
+    signature: database OK
+
+  replay: an honest ballot presented under another ballot number
+    plaintexts [0, 1, 0], made for election 7 ballot 8, presented as election 7 ballot 9
+    challenge hashes equal, browser and database: 9/9
+      sum proof, as the prover hashed it:  browser  5c316d45f048122e7a1006b82a00adb78dc374794e5cdf4d7895bdeadef9fec8
+                                           database 5c316d45f048122e7a1006b82a00adb78dc374794e5cdf4d7895bdeadef9fec8
+    verdict: browser FAIL option 1: the challenges do not add up to the hash
+             database FAIL option 1: the challenges do not add up to the hash
+    signature: database OK
+
+  replay: an honest ballot presented in another election
+    plaintexts [0, 0, 1], made for election 7 ballot 10, presented as election 8 ballot 10
+    challenge hashes equal, browser and database: 9/9
+      sum proof, as the prover hashed it:  browser  9e6f1f8aca6db28825b070192bb2731b7613150cb2a6b7a6282b7e164fc217d3
+                                           database 9e6f1f8aca6db28825b070192bb2731b7613150cb2a6b7a6282b7e164fc217d3
+    verdict: browser FAIL option 1: the challenges do not add up to the hash
+             database FAIL option 1: the challenges do not add up to the hash
+    signature: database OK
+
+Key of 2048 bits, seed 20261124
+
+  honest ballot for A
+    plaintexts [1, 0, 0], made for election 7 ballot 1, presented as election 7 ballot 1
+    challenge hashes equal, browser and database: 9/9
+      sum proof, as the prover hashed it:  browser  25547a96e8fbdd623f0f1b53056071938307782e0fd269c42ebac51c55f9b9c0
+                                           database 25547a96e8fbdd623f0f1b53056071938307782e0fd269c42ebac51c55f9b9c0
+    verdict: browser OK
+             database OK
+    signature: database OK
+
+  honest ballot for B
+    plaintexts [0, 1, 0], made for election 7 ballot 2, presented as election 7 ballot 2
+    challenge hashes equal, browser and database: 9/9
+      sum proof, as the prover hashed it:  browser  84ee521cb445253d1612d320420d7193ab738bed1559c3ff901151f65e893096
+                                           database 84ee521cb445253d1612d320420d7193ab738bed1559c3ff901151f65e893096
+    verdict: browser OK
+             database OK
+    signature: database OK
+
+  honest ballot for C
+    plaintexts [0, 0, 1], made for election 7 ballot 3, presented as election 7 ballot 3
+    challenge hashes equal, browser and database: 9/9
+      sum proof, as the prover hashed it:  browser  2540eff271b29141155008b2c7ad029926ad8c852d6f590c6fae9c8b524bd4fb
+                                           database 2540eff271b29141155008b2c7ad029926ad8c852d6f590c6fae9c8b524bd4fb
+    verdict: browser OK
+             database OK
+    signature: database OK
+
+  stuffed: a thousand votes for A
+    plaintexts [1000, 0, 0], made for election 7 ballot 4, presented as election 7 ballot 4
+    challenge hashes equal, browser and database: 9/9
+      sum proof, as the prover hashed it:  browser  61b38b92f5316fd0e531984f25be81adfa5a55ddfd33c7a40b5d0074879358d9
+                                           database 61b38b92f5316fd0e531984f25be81adfa5a55ddfd33c7a40b5d0074879358d9
+    verdict: browser FAIL option 1: the challenges do not add up to the hash
+             database FAIL option 1: the challenges do not add up to the hash
+    signature: database OK
+
+  balanced: three for A, minus two for B
+    plaintexts [3, -2, 0], made for election 7 ballot 5, presented as election 7 ballot 5
+    challenge hashes equal, browser and database: 9/9
+      sum proof, as the prover hashed it:  browser  d45283903dca49ad4dc1512429dfd1955538622ec1db13d69f7ebbe15e094bb1
+                                           database d45283903dca49ad4dc1512429dfd1955538622ec1db13d69f7ebbe15e094bb1
+    verdict: browser FAIL option 1: the challenges do not add up to the hash
+             database FAIL option 1: the challenges do not add up to the hash
+    signature: database OK
+
+  two options set to 1
+    plaintexts [1, 1, 0], made for election 7 ballot 6, presented as election 7 ballot 6
+    challenge hashes equal, browser and database: 9/9
+      sum proof, as the prover hashed it:  browser  66ae7cbcb5368a9fea07a11b4eec1499e37436301485bcf31ab97576e83471d1
+                                           database 66ae7cbcb5368a9fea07a11b4eec1499e37436301485bcf31ab97576e83471d1
+    verdict: browser FAIL sum: the challenge is not the hash
+             database FAIL sum: the challenge is not the hash
+    signature: database OK
+
+  blank ballot
+    plaintexts [0, 0, 0], made for election 7 ballot 7, presented as election 7 ballot 7
+    challenge hashes equal, browser and database: 9/9
+      sum proof, as the prover hashed it:  browser  698f1f5a0955f460268c88825670a1c1ec1f3346f8af9bedde7efc734bfbf7de
+                                           database 698f1f5a0955f460268c88825670a1c1ec1f3346f8af9bedde7efc734bfbf7de
+    verdict: browser FAIL sum: the challenge is not the hash
+             database FAIL sum: the challenge is not the hash
+    signature: database OK
+
+  replay: an honest ballot presented under another ballot number
+    plaintexts [0, 1, 0], made for election 7 ballot 8, presented as election 7 ballot 9
+    challenge hashes equal, browser and database: 9/9
+      sum proof, as the prover hashed it:  browser  e6fea5ad9b7bcb66e930d0fadd674b43883e807b94e2325b8a87dc54e676b108
+                                           database e6fea5ad9b7bcb66e930d0fadd674b43883e807b94e2325b8a87dc54e676b108
+    verdict: browser FAIL option 1: the challenges do not add up to the hash
+             database FAIL option 1: the challenges do not add up to the hash
+    signature: database OK
+
+  replay: an honest ballot presented in another election
+    plaintexts [0, 0, 1], made for election 7 ballot 10, presented as election 8 ballot 10
+    challenge hashes equal, browser and database: 9/9
+      sum proof, as the prover hashed it:  browser  20e3572e329954a58d9600167237c6c7449616bb539e6e7e75037fd9c596e59f
+                                           database 20e3572e329954a58d9600167237c6c7449616bb539e6e7e75037fd9c596e59f
+    verdict: browser FAIL option 1: the challenges do not add up to the hash
+             database FAIL option 1: the challenges do not add up to the hash
+    signature: database OK
+
+Negative controls: the same comparisons on vectors altered on purpose
+
+  one digit of a ciphertext changed, the recorded hashes no longer match: caught (5 of 9 hashes differ; ballot: FAIL option 1: the challenges do not add up to the hash; signature: FAIL the signature does not match the ballot)
+  one digit of a response changed, the ballot is rejected: caught (2 of 9 hashes differ; ballot: FAIL option 1: the challenges do not add up to the hash)
+  the ballot number changed, the hashes change: caught (9 of 9 hashes differ; ballot: FAIL option 1: the challenges do not add up to the hash)
+  one digit of the signature changed, the signature is rejected: caught (signature: FAIL the signature does not match the ballot; ballot: OK)
+  the signature presented with another voter code is rejected: caught (signature: FAIL the signature does not match the ballot; ballot: OK)
+  the signature checked against another voter key is rejected: caught (signature: FAIL the signature does not match the ballot)

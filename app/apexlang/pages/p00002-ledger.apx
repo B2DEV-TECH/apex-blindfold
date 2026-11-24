@@ -45,12 +45,13 @@ page 2 (
                   <div class="bf-table-head">
                     <div>
                       <h2>BLIND_BALLOTS</h2>
-                      <p>One ciphertext per option per ballot: Enc(1) for the choice, Enc(0) for the others. No voter, no timestamp.</p>
+                      <p>One ciphertext per option per ballot: Enc(1) for the choice, Enc(0) for the others, each with a proof that it holds 0 or 1. A blockchain table: no row can be changed or removed. The voter and the signature of each ballot are in BALLOT_SEALS.</p>
                     </div>
                     <button class="bf-button bf-button--ghost" id="bf-refresh" type="button">Refresh</button>
                   </div>
                   <code class="bf-sql">select ballot_id, candidate_id, vote_enc
   from blind_ballots
+ where election_id = (select max(election_id) from election_key)
  order by ballot_id, candidate_id</code>
                 </div>
                 ```
@@ -67,6 +68,7 @@ page 2 (
                 ```sql
                 select ballot_id, candidate_id, vote_enc
                   from blind_ballots
+                 where election_id = (select max(election_id) from election_key)
                  order by ballot_id, candidate_id
                 ```
         }

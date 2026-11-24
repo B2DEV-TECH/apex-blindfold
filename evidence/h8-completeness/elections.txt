@@ -1,0 +1,112 @@
+# H8: completeness
+# generated: 2026-11-24T15:03:17.426Z
+# 100 elections, seed 20261123, 2048-bit keys, a new key pair every 10 elections.
+# Each ballot: voter key, registration, ballot number, encryption, proofs, signature, cast_ballot, tally.
+# true / decrypted: votes for A/B/C.
+
+  1  election   15  registered 10  ballots  8  accepted  8  counted  8  true 3/4/1    decrypted 3/4/1    equal
+  2  election   16  registered 10  ballots  8  accepted  8  counted  8  true 5/2/1    decrypted 5/2/1    equal
+  3  election   17  registered 10  ballots  9  accepted  9  counted  9  true 2/4/3    decrypted 2/4/3    equal
+  4  election   18  registered 10  ballots  7  accepted  7  counted  7  true 2/2/3    decrypted 2/2/3    equal
+  5  election   19  registered  9  ballots  7  accepted  7  counted  7  true 3/2/2    decrypted 3/2/2    equal
+  6  election   20  registered  9  ballots  7  accepted  7  counted  7  true 2/4/1    decrypted 2/4/1    equal
+  7  election   21  registered 10  ballots  9  accepted  9  counted  9  true 2/5/2    decrypted 2/5/2    equal
+  8  election   22  registered  8  ballots  6  accepted  6  counted  6  true 3/2/1    decrypted 3/2/1    equal
+  9  election   23  registered  7  ballots  3  accepted  3  counted  3  true 2/1/0    decrypted 2/1/0    equal
+ 10  election   24  registered  3  ballots  3  accepted  3  counted  3  true 2/1/0    decrypted 2/1/0    equal
+ 11  election   25  registered  9  ballots  9  accepted  9  counted  9  true 5/2/2    decrypted 5/2/2    equal
+ 12  election   26  registered  3  ballots  2  accepted  2  counted  2  true 0/1/1    decrypted 0/1/1    equal
+ 13  election   27  registered  8  ballots  7  accepted  7  counted  7  true 1/4/2    decrypted 1/4/2    equal
+ 14  election   28  registered  3  ballots  3  accepted  3  counted  3  true 1/1/1    decrypted 1/1/1    equal
+ 15  election   29  registered  9  ballots  9  accepted  9  counted  9  true 6/2/1    decrypted 6/2/1    equal
+ 16  election   30  registered  5  ballots  5  accepted  5  counted  5  true 2/0/3    decrypted 2/0/3    equal
+ 17  election   31  registered  2  ballots  2  accepted  2  counted  2  true 0/2/0    decrypted 0/2/0    equal
+ 18  election   32  registered  8  ballots  8  accepted  8  counted  8  true 4/2/2    decrypted 4/2/2    equal
+ 19  election   33  registered  6  ballots  6  accepted  6  counted  6  true 1/2/3    decrypted 1/2/3    equal
+ 20  election   34  registered 10  ballots  7  accepted  7  counted  7  true 1/4/2    decrypted 1/4/2    equal
+ 21  election   35  registered  2  ballots  2  accepted  2  counted  2  true 1/1/0    decrypted 1/1/0    equal
+ 22  election   36  registered  4  ballots  3  accepted  3  counted  3  true 1/2/0    decrypted 1/2/0    equal
+ 23  election   37  registered  3  ballots  2  accepted  2  counted  2  true 0/0/2    decrypted 0/0/2    equal
+ 24  election   38  registered  9  ballots  6  accepted  6  counted  6  true 3/1/2    decrypted 3/1/2    equal
+ 25  election   39  registered  6  ballots  4  accepted  4  counted  4  true 3/0/1    decrypted 3/0/1    equal
+ 26  election   40  registered  6  ballots  4  accepted  4  counted  4  true 1/2/1    decrypted 1/2/1    equal
+ 27  election   41  registered  7  ballots  5  accepted  5  counted  5  true 3/2/0    decrypted 3/2/0    equal
+ 28  election   42  registered  2  ballots  2  accepted  2  counted  2  true 1/0/1    decrypted 1/0/1    equal
+ 29  election   43  registered  6  ballots  6  accepted  6  counted  6  true 4/1/1    decrypted 4/1/1    equal
+ 30  election   44  registered  6  ballots  4  accepted  4  counted  4  true 3/0/1    decrypted 3/0/1    equal
+ 31  election   45  registered 10  ballots  7  accepted  7  counted  7  true 1/3/3    decrypted 1/3/3    equal
+ 32  election   46  registered  4  ballots  1  accepted  1  counted  1  true 0/0/1    decrypted 0/0/1    equal
+ 33  election   47  registered  9  ballots  9  accepted  9  counted  9  true 2/2/5    decrypted 2/2/5    equal
+ 34  election   48  registered 10  ballots  7  accepted  7  counted  7  true 1/3/3    decrypted 1/3/3    equal
+ 35  election   49  registered  2  ballots  2  accepted  2  counted  2  true 1/1/0    decrypted 1/1/0    equal
+ 36  election   50  registered  7  ballots  6  accepted  6  counted  6  true 2/1/3    decrypted 2/1/3    equal
+ 37  election   51  registered  9  ballots  8  accepted  8  counted  8  true 3/2/3    decrypted 3/2/3    equal
+ 38  election   52  registered  6  ballots  5  accepted  5  counted  5  true 2/1/2    decrypted 2/1/2    equal
+ 39  election   53  registered  4  ballots  3  accepted  3  counted  3  true 2/0/1    decrypted 2/0/1    equal
+ 40  election   54  registered  2  ballots  2  accepted  2  counted  2  true 1/1/0    decrypted 1/1/0    equal
+ 41  election   55  registered  9  ballots  5  accepted  5  counted  5  true 2/2/1    decrypted 2/2/1    equal
+ 42  election   56  registered  4  ballots  4  accepted  4  counted  4  true 1/1/2    decrypted 1/1/2    equal
+ 43  election   57  registered  9  ballots  9  accepted  9  counted  9  true 5/3/1    decrypted 5/3/1    equal
+ 44  election   58  registered  9  ballots  9  accepted  9  counted  9  true 3/4/2    decrypted 3/4/2    equal
+ 45  election   59  registered  9  ballots  8  accepted  8  counted  8  true 1/2/5    decrypted 1/2/5    equal
+ 46  election   60  registered  3  ballots  3  accepted  3  counted  3  true 0/2/1    decrypted 0/2/1    equal
+ 47  election   61  registered  8  ballots  6  accepted  6  counted  6  true 2/1/3    decrypted 2/1/3    equal
+ 48  election   62  registered  8  ballots  6  accepted  6  counted  6  true 1/5/0    decrypted 1/5/0    equal
+ 49  election   63  registered  9  ballots  9  accepted  9  counted  9  true 2/2/5    decrypted 2/2/5    equal
+ 50  election   64  registered  5  ballots  5  accepted  5  counted  5  true 1/1/3    decrypted 1/1/3    equal
+ 51  election   65  registered  7  ballots  7  accepted  7  counted  7  true 0/3/4    decrypted 0/3/4    equal
+ 52  election   66  registered  8  ballots  5  accepted  5  counted  5  true 1/3/1    decrypted 1/3/1    equal
+ 53  election   67  registered  9  ballots  8  accepted  8  counted  8  true 2/4/2    decrypted 2/4/2    equal
+ 54  election   68  registered  4  ballots  4  accepted  4  counted  4  true 2/0/2    decrypted 2/0/2    equal
+ 55  election   69  registered 10  ballots  9  accepted  9  counted  9  true 2/5/2    decrypted 2/5/2    equal
+ 56  election   70  registered  6  ballots  5  accepted  5  counted  5  true 3/0/2    decrypted 3/0/2    equal
+ 57  election   71  registered  4  ballots  4  accepted  4  counted  4  true 0/1/3    decrypted 0/1/3    equal
+ 58  election   72  registered  2  ballots  1  accepted  1  counted  1  true 0/0/1    decrypted 0/0/1    equal
+ 59  election   73  registered  2  ballots  1  accepted  1  counted  1  true 1/0/0    decrypted 1/0/0    equal
+ 60  election   74  registered  3  ballots  3  accepted  3  counted  3  true 1/1/1    decrypted 1/1/1    equal
+ 61  election   75  registered  4  ballots  3  accepted  3  counted  3  true 1/1/1    decrypted 1/1/1    equal
+ 62  election   76  registered  7  ballots  7  accepted  7  counted  7  true 3/1/3    decrypted 3/1/3    equal
+ 63  election   77  registered  2  ballots  2  accepted  2  counted  2  true 0/2/0    decrypted 0/2/0    equal
+ 64  election   78  registered  9  ballots  9  accepted  9  counted  9  true 2/3/4    decrypted 2/3/4    equal
+ 65  election   79  registered  3  ballots  2  accepted  2  counted  2  true 1/1/0    decrypted 1/1/0    equal
+ 66  election   80  registered  3  ballots  2  accepted  2  counted  2  true 1/0/1    decrypted 1/0/1    equal
+ 67  election   81  registered  9  ballots  7  accepted  7  counted  7  true 1/5/1    decrypted 1/5/1    equal
+ 68  election   82  registered  8  ballots  7  accepted  7  counted  7  true 2/3/2    decrypted 2/3/2    equal
+ 69  election   83  registered  5  ballots  4  accepted  4  counted  4  true 2/0/2    decrypted 2/0/2    equal
+ 70  election   84  registered 10  ballots  9  accepted  9  counted  9  true 1/5/3    decrypted 1/5/3    equal
+ 71  election   85  registered  6  ballots  5  accepted  5  counted  5  true 0/3/2    decrypted 0/3/2    equal
+ 72  election   86  registered  9  ballots  9  accepted  9  counted  9  true 1/3/5    decrypted 1/3/5    equal
+ 73  election   87  registered  7  ballots  6  accepted  6  counted  6  true 0/1/5    decrypted 0/1/5    equal
+ 74  election   88  registered  2  ballots  2  accepted  2  counted  2  true 0/0/2    decrypted 0/0/2    equal
+ 75  election   89  registered  9  ballots  8  accepted  8  counted  8  true 2/3/3    decrypted 2/3/3    equal
+ 76  election   90  registered  7  ballots  6  accepted  6  counted  6  true 3/1/2    decrypted 3/1/2    equal
+ 77  election   91  registered  8  ballots  7  accepted  7  counted  7  true 4/2/1    decrypted 4/2/1    equal
+ 78  election   92  registered 10  ballots  8  accepted  8  counted  8  true 2/4/2    decrypted 2/4/2    equal
+ 79  election   93  registered  8  ballots  6  accepted  6  counted  6  true 2/2/2    decrypted 2/2/2    equal
+ 80  election   94  registered  2  ballots  2  accepted  2  counted  2  true 1/0/1    decrypted 1/0/1    equal
+ 81  election   95  registered  3  ballots  3  accepted  3  counted  3  true 2/0/1    decrypted 2/0/1    equal
+ 82  election   96  registered  4  ballots  4  accepted  4  counted  4  true 2/0/2    decrypted 2/0/2    equal
+ 83  election   97  registered  5  ballots  5  accepted  5  counted  5  true 2/1/2    decrypted 2/1/2    equal
+ 84  election   98  registered  9  ballots  7  accepted  7  counted  7  true 2/2/3    decrypted 2/2/3    equal
+ 85  election   99  registered  3  ballots  2  accepted  2  counted  2  true 1/1/0    decrypted 1/1/0    equal
+ 86  election  100  registered  9  ballots  9  accepted  9  counted  9  true 1/2/6    decrypted 1/2/6    equal
+ 87  election  101  registered  9  ballots  9  accepted  9  counted  9  true 6/1/2    decrypted 6/1/2    equal
+ 88  election  102  registered  3  ballots  3  accepted  3  counted  3  true 2/1/0    decrypted 2/1/0    equal
+ 89  election  103  registered  4  ballots  4  accepted  4  counted  4  true 1/2/1    decrypted 1/2/1    equal
+ 90  election  104  registered  4  ballots  4  accepted  4  counted  4  true 2/0/2    decrypted 2/0/2    equal
+ 91  election  105  registered 10  ballots  7  accepted  7  counted  7  true 0/1/6    decrypted 0/1/6    equal
+ 92  election  106  registered  3  ballots  2  accepted  2  counted  2  true 0/0/2    decrypted 0/0/2    equal
+ 93  election  107  registered  4  ballots  3  accepted  3  counted  3  true 3/0/0    decrypted 3/0/0    equal
+ 94  election  108  registered  2  ballots  1  accepted  1  counted  1  true 0/1/0    decrypted 0/1/0    equal
+ 95  election  109  registered  8  ballots  5  accepted  5  counted  5  true 2/1/2    decrypted 2/1/2    equal
+ 96  election  110  registered  5  ballots  3  accepted  3  counted  3  true 1/1/1    decrypted 1/1/1    equal
+ 97  election  111  registered  3  ballots  2  accepted  2  counted  2  true 1/0/1    decrypted 1/0/1    equal
+ 98  election  112  registered  4  ballots  2  accepted  2  counted  2  true 1/0/1    decrypted 1/0/1    equal
+ 99  election  113  registered  9  ballots  7  accepted  7  counted  7  true 1/2/4    decrypted 1/2/4    equal
+100  election  114  registered  3  ballots  3  accepted  3  counted  3  true 0/1/2    decrypted 0/1/2    equal
+
+ballots cast: 520    accepted: 520    counted by the tally: 520    rejected by the tally: 0
+registered voters who abstained: 103
+elections whose decrypted tally equals the true result: 100/100
+negative control election 115: dishonest ballot answered "ORA-20006: Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash.", tally 1/2/1
+time: 1522 s

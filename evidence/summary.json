@@ -1,9 +1,10 @@
 {
-  "generated": "2026-11-23T15:47:40.850Z",
+  "layer": 2,
+  "generated": "2026-11-24T17:44:56.310Z",
   "command": "node tests/run-all.mjs",
   "mode": "full",
   "seed": 20261123,
-  "duration_ms": 1154727,
+  "duration_ms": 11418927,
   "environment": {
     "database": "Oracle AI Database 26ai Free Release 23.26.3.0.0 - Develop, Learn, and Run for Free Version 23.26.3.0.0",
     "database_platform": "Microsoft Windows x86 64-bit",
@@ -23,161 +24,138 @@
     {
       "name": "install: clean schema and APEX application",
       "ok": true,
-      "ms": 22338
+      "ms": 23142
     },
     {
       "name": "unit tests: Paillier library and election API",
       "ok": true,
-      "ms": 2005
+      "ms": 2831
     },
     {
       "name": "step 0: environment",
       "ok": true,
-      "ms": 44774
+      "ms": 45263
     },
     {
-      "name": "H1: Correctness",
+      "name": "G1: Test vectors",
       "ok": true,
-      "ms": 808395
+      "ms": 16565
     },
     {
-      "name": "H2: Blindness",
+      "name": "H7: Soundness",
       "ok": true,
-      "ms": 36388
+      "ms": 109773
     },
     {
-      "name": "H3: Indistinguishability",
+      "name": "H8: Completeness",
       "ok": true,
-      "ms": 22049
+      "ms": 1522472
     },
     {
-      "name": "H4: Ballot stuffing",
+      "name": "H9: Integrity",
       "ok": true,
-      "ms": 19398
+      "ms": 30370
     },
     {
-      "name": "H5: Other limits",
+      "name": "H10: What still breaks",
       "ok": true,
-      "ms": 57034
+      "ms": 75702
     },
     {
-      "name": "H6: Cost",
+      "name": "H11: Cost",
       "ok": true,
-      "ms": 112281
-    },
-    {
-      "name": "screenshots",
-      "ok": true,
-      "ms": 30034
+      "ms": 9592788
     }
   ],
+  "gate": {
+    "id": "G1",
+    "title": "Test vectors",
+    "verdict": "PASS",
+    "statement": "The Java verifier in the database reproduced 162/162 hashes of the browser byte for byte, over 18 fixed ballots in 2 key sizes (512 and 2048 bits), agreed with the browser on every verdict (6 accepted, 12 rejected) and verified 18/18 WebCrypto signatures. 6 altered vectors were all caught.",
+    "evidence": "evidence/g1-test-vectors/vectors.txt"
+  },
   "hypotheses": [
     {
-      "id": "H1",
-      "title": "Correctness",
+      "id": "H7",
+      "title": "Soundness",
       "verdict": "CONFIRMED",
-      "statement": "The decrypted tally equals the true tally in 100/100 randomized elections (10 to 5000 voters, 82874 ballots), and JavaScript, Java and Python agree on every value compared.",
-      "checks": "9/9",
+      "statement": "The database rejected 8 of 8 dishonest ballots pasted in the browser console, among them the ballot of 1000 votes and the balanced [3, -2, 0] that Layer 1 accepted, 3 of 3 replays, and 100 of 100 valid ballots with one digit changed. The tally stayed A=5  B=3  C=2: the honest ballots and the control.",
+      "checks": "17/17",
       "mode": {
         "quick": false,
         "seed": 20261123
       },
-      "evidence": "evidence/h1-correctness/result.json",
+      "evidence": "evidence/h7-soundness/result.json",
+      "main": "evidence/h7-soundness/attempts.txt",
       "files": [
-        "evidence/h1-correctness/elections.txt",
-        "evidence/h1-correctness/crosscheck.txt"
+        "evidence/h7-soundness/01-tally-after-the-attacks.png",
+        "evidence/h7-soundness/attempts.txt"
       ]
     },
     {
-      "id": "H2",
-      "title": "Blindness",
+      "id": "H8",
+      "title": "Completeness",
       "verdict": "CONFIRMED",
-      "statement": "Knowing the private key and the randomizer of all 27 ciphertexts, the test found none of them, whole or in part, in 21 sources: 231 HTTP requests and their responses, 4 tables, APEX session state (0 page items; 2 report paging positions), 4423 LEVEL9 debug messages, the activity and access logs, 172 SQL statements, captured binds, audit trail, alert log, and the storage of both tabs. Ballot requests differ only in the voter code and three ciphertexts. ORDS log files were not read.",
-      "checks": "14/14",
+      "statement": "100 random elections with 2048-bit keys: 520 of 520 honest ballots accepted, all 520 counted after a second verification, and the decrypted tally equal to the true result in 100 of 100. A dishonest ballot placed among honest ones was refused.",
+      "checks": "5/5",
       "mode": {
         "quick": false,
         "seed": 20261123
       },
-      "evidence": "evidence/h2-blindness/result.json",
+      "evidence": "evidence/h8-completeness/result.json",
+      "main": "evidence/h8-completeness/elections.txt",
       "files": [
-        "evidence/h2-blindness/scan-summary.txt",
-        "evidence/h2-blindness/tables.txt",
-        "evidence/h2-blindness/session-state.txt",
-        "evidence/h2-blindness/debug-trace.txt",
-        "evidence/h2-blindness/request-payloads.txt",
-        "evidence/h2-blindness/authority.har",
-        "evidence/h2-blindness/voter.har",
-        "evidence/h2-blindness/apex-logs.txt",
-        "evidence/h2-blindness/client-side.txt",
-        "evidence/h2-blindness/controls.txt"
+        "evidence/h8-completeness/elections.txt"
       ]
     },
     {
-      "id": "H3",
-      "title": "Indistinguishability",
+      "id": "H9",
+      "title": "Integrity",
       "verdict": "CONFIRMED",
-      "statement": "All 6000 stored ciphertexts are distinct, and none of 13 distinguishers separates Enc(0) from Enc(1) on 4000 labelled ciphertexts (classifier accuracy 51.4%). Indistinguishability itself rests on the DCR assumption, which a test cannot prove.",
-      "checks": "7/7",
+      "statement": "The owner and an account with the DBA role had 10 of 10 UPDATE, DELETE, TRUNCATE and MERGE statements refused each, where an ordinary copy of the table accepted them. 5 of 5 forged or unsigned ballots were rejected. The DBA could still INSERT 3 forged ballots; the tally counted none of them (6 counted, 3 rejected) and the chain verified over 1651 rows.",
+      "checks": "8/8",
       "mode": {
         "quick": false,
         "seed": 20261123
       },
-      "evidence": "evidence/h3-indistinguishability/result.json",
+      "evidence": "evidence/h9-integrity/result.json",
+      "main": "evidence/h9-integrity/statements.txt",
       "files": [
-        "evidence/h3-indistinguishability/distinct-ciphertexts.txt",
-        "evidence/h3-indistinguishability/distinguishers.txt"
+        "evidence/h9-integrity/statements.txt"
       ]
     },
     {
-      "id": "H4",
-      "title": "Ballot stuffing",
+      "id": "H10",
+      "title": "What still breaks",
       "verdict": "CONFIRMED",
-      "statement": "The tally accepted a ballot encrypting 1000 (A=4  B=3  C=2 became A=1004  B=3  C=2). A balanced ballot of [3, -2, 0] changed the result (A=7  B=1  C=2) while the totals still added up to the turnout.",
-      "checks": "7/7",
+      "statement": "All 7 limits held up in the lab: the key holder read 6 of 6 ballots with the voter code next to each; the hidden insert time re-linked 6 of 6; a DBA voted in the name of a registered voter with one UPDATE; a DBA dropped and rebuilt the tables without one ballot and the chain still verified; the owner made the tally refuse 2 honest ballots (this one is reported by the tally); a substituted vote.js read the choice; the verifier was replaced without a trace in the tables.",
+      "checks": "16/16",
       "mode": {
         "quick": false,
         "seed": 20261123
       },
-      "evidence": "evidence/h4-ballot-stuffing/result.json",
+      "evidence": "evidence/h10-what-still-breaks/result.json",
+      "main": "evidence/h10-what-still-breaks/limits.txt",
       "files": [
-        "evidence/h4-ballot-stuffing/01-stuffed-tally.png",
-        "evidence/h4-ballot-stuffing/02-balanced-stuffing-undetected.png",
-        "evidence/h4-ballot-stuffing/stuffing.txt"
+        "evidence/h10-what-still-breaks/01-server-shipped-code-reads-the-choice.png",
+        "evidence/h10-what-still-breaks/limits.txt"
       ]
     },
     {
-      "id": "H5",
-      "title": "Other limits",
-      "verdict": "CONFIRMED",
-      "statement": "All three limits hold: a DBA with the public key moved 5 votes with two UPDATEs and the totals still matched the turnout; the key holder read 24/24 individual ballots; ordering by voted_at and ballot_id re-linked 24/24 voters arriving one at a time (59/200 exactly, 199/200 within 7 positions, when 8 sessions vote at once).",
-      "checks": "6/6",
-      "mode": {
-        "quick": false,
-        "seed": 20261123
-      },
-      "evidence": "evidence/h5-limits/result.json",
-      "files": [
-        "evidence/h5-limits/b-key-holder-reads-ballots.txt",
-        "evidence/h5-limits/c-relinking.txt",
-        "evidence/h5-limits/a-dba-adds-votes.txt",
-        "evidence/h5-limits/extra-key-substitution.txt",
-        "evidence/h5-limits/extra-key-loss.txt"
-      ]
-    },
-    {
-      "id": "H6",
+      "id": "H11",
       "title": "Cost",
       "verdict": "CONFIRMED",
-      "statement": "Measured: casting a ballot takes a median 289 ms in the browser; tallying 10000 voters takes 4.9 s against 1.074 ms for a plaintext COUNT (4584x); a ballot stores 3087 bytes against 5.",
+      "statement": "Measured: proofs add 3808 hexadecimal characters to a ballot; encrypting and proving takes a median 283 ms in the browser and casting 1032 ms from the click to the receipt (Layer 1: 289 ms); the database verifies one ballot in 641 ms; the tally of 10000 voters takes 104.7 min against 4.9 s in Layer 1.",
       "checks": "4/4",
       "mode": {
         "quick": false,
         "seed": 20261123
       },
-      "evidence": "evidence/h6-cost/result.json",
+      "evidence": "evidence/h11-cost/result.json",
+      "main": "evidence/h11-cost/summary.txt",
       "files": [
-        "evidence/h6-cost/timings.json",
-        "evidence/h6-cost/summary.txt"
+        "evidence/h11-cost/timings.json",
+        "evidence/h11-cost/summary.txt"
       ]
     }
   ]

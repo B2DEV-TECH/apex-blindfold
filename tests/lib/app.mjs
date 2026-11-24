@@ -61,9 +61,10 @@ export async function tallyInBrowser(page) {
   };
 }
 
-// The console snippet of H4, with its two settings replaced.
-export function stuffingSnippet(voter, weights) {
-  const source = readFileSync(join(ROOT, 'tests', 'snippets', 'ballot-stuffing.js'), 'utf8');
+// A console snippet with its two settings replaced: the one of Layer 1 (ciphertexts only) or
+// the one of Layer 2 (ciphertexts, proofs and a signature).
+export function stuffingSnippet(voter, weights, file = 'ballot-stuffing.js') {
+  const source = readFileSync(join(ROOT, 'tests', 'snippets', file), 'utf8');
   let replaced = 0;
   const patched = source
     .replace(/const VOTER = '[^']*';/, () => { replaced += 1; return `const VOTER = '${voter}';`; })

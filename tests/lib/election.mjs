@@ -1,6 +1,7 @@
 // Election helpers used by the hypothesis tests. Every call goes through the
 // same PL/SQL package (bf_election) that the APEX Ajax callbacks use.
 import * as P from './paillier.mjs';
+import * as V from './validity.mjs';
 import { oracledb } from './db.mjs';
 
 export const OPTIONS = 3;
@@ -14,40 +15,72 @@ export async function openElection(conn, publicKey, voterCount) {
   });
 }
 
-// ballots: [[c1, c2, c3], ...]; ballot i is cast by voter firstVoter + i.
-// Commits once at the end, like one long polling day.
-export async function castBallots(conn, ballots, { firstVoter = 0 } = {}) {
-  const BATCH = 500;
-  for (let start = 0; start < ballots.length; start += BATCH) {
-    const rows = ballots.slice(start, start + BATCH).map((enc, i) => ({
-      voter: voterCode(firstVoter + start + i),
-      c1: enc[0],
-      c2: enc[1],
-      c3: enc[2],
-    }));
-    await conn.executeMany(
-      'declare v_ballot_id number; begin v_ballot_id := bf_election.cast_ballot(:voter, :c1, :c2, :c3); end;',
-      rows,
-      {
-        bindDefs: {
-          voter: { type: oracledb.STRING, maxSize: 30 },
-          c1: { type: oracledb.STRING, maxSize: 1024 },
-          c2: { type: oracledb.STRING, maxSize: 1024 },
-          c3: { type: oracledb.STRING, maxSize: 1024 },
-        },
-      },
-    );
-  }
-  await conn.commit();
+// ---- Layer 2: a ballot carries proofs and a signature, bound to a reserved ballot number
+
+export async function currentElectionId(conn) {
+  return (await conn.execute('select bf_election.election_id as id from dual')).rows[0].ID;
 }
 
-// Casts one ballot and returns its id. Does not commit.
-export async function castBallot(conn, voter, enc) {
+// Registers the voter key and returns the ballot number reserved for the voter. Does not commit.
+export async function registerVoter(conn, voter, publicKeyHex) {
   const result = await conn.execute(
-    'begin :id := bf_election.cast_ballot(:voter, :c1, :c2, :c3); end;',
-    { id: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }, voter, c1: enc[0], c2: enc[1], c3: enc[2] },
+    'begin :id := bf_election.register_voter(:voter, :key); end;',
+    { id: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }, voter, key: publicKeyHex },
   );
   return result.outBinds.id;
+}
+
+// What a browser does before it sends a ballot: generate the voter key, register it, receive the
+// ballot number, encrypt, prove and sign. `plaintexts` is what the three ciphertexts hold; an
+// honest ballot has a single 1. `claims` is what a cheater pretends they hold (see validity.js).
+// Returns everything cast_ballot takes. Does not commit.
+export async function prepareBallot(conn, publicKey, voter, plaintexts, { claims = null, electionId = null, voterKey = null, random = undefined } = {}) {
+  const key = voterKey ?? await V.generateVoterKey();
+  const ballotId = await registerVoter(conn, voter, key.publicKeyHex);
+  const context = { electionId: electionId ?? await currentElectionId(conn), ballotId };
+  const ballot = await V.proveBallot(publicKey, context, plaintexts, { claims, ...(random ? { random } : {}) });
+  const wire = { ciphertexts: ballot.ciphertexts, bitProofs: ballot.bitProofs, sumProof: ballot.sumProof };
+  const signature = await V.signBallot(key.privateKey, publicKey, context, voter, wire);
+  return { voter, ballotId, context, ...wire, signature, voterKey: key };
+}
+
+export const honest = (choice) => Array.from({ length: OPTIONS }, (_, option) => (option === choice ? 1 : 0));
+
+const CAST = 'begin :id := bf_election.cast_ballot(:voter, :ballot, :c1, :c2, :c3, :p1, :p2, :p3, :psum, :signature); end;';
+const castBinds = (b) => ({
+  voter: b.voter, ballot: b.ballotId,
+  c1: b.ciphertexts[0], c2: b.ciphertexts[1], c3: b.ciphertexts[2],
+  p1: b.bitProofs[0], p2: b.bitProofs[1], p3: b.bitProofs[2],
+  psum: b.sumProof, signature: b.signature,
+});
+
+// Casts one prepared ballot and returns its number. Does not commit.
+export async function castBallot(conn, prepared) {
+  const result = await conn.execute(CAST, { id: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }, ...castBinds(prepared) });
+  return result.outBinds.id;
+}
+
+// Like castBallot, for ballots that may be refused: { ok, ballotId } or { ok: false, code, error }.
+export async function tryCastBallot(conn, prepared) {
+  try {
+    return { ok: true, ballotId: await castBallot(conn, prepared) };
+  } catch (error) {
+    const message = String(error.message).split('\n')[0];
+    return { ok: false, code: Number((message.match(/^ORA-(\d+)/) ?? [])[1] ?? 0), error: message };
+  }
+}
+
+// Honest ballots for voters firstVoter, firstVoter + 1, ...: choices[i] is the zero-based option
+// of ballot i. Commits once at the end, like one long polling day.
+export async function castChoices(conn, publicKey, choices, { firstVoter = 0 } = {}) {
+  const electionId = await currentElectionId(conn);
+  const ids = [];
+  for (let i = 0; i < choices.length; i++) {
+    const prepared = await prepareBallot(conn, publicKey, voterCode(firstVoter + i), honest(choices[i]), { electionId });
+    ids.push(await castBallot(conn, prepared));
+  }
+  await conn.commit();
+  return ids;
 }
 
 // The homomorphic tally as the database computes it: encrypted totals.

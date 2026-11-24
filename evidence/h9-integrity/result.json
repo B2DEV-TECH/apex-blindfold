@@ -1,0 +1,86 @@
+{
+  "id": "H9",
+  "hypothesis": "Integrity: a DBA cannot update, delete or move a stored vote; a forged or unsigned ballot is rejected; chain verification passes",
+  "verdict": "CONFIRMED",
+  "statement": "The owner and an account with the DBA role had 10 of 10 UPDATE, DELETE, TRUNCATE and MERGE statements refused each, where an ordinary copy of the table accepted them. 5 of 5 forged or unsigned ballots were rejected. The DBA could still INSERT 3 forged ballots; the tally counted none of them (6 counted, 3 rejected) and the chain verified over 1651 rows.",
+  "numbers": {
+    "key_bits": 2048,
+    "ballots": 6,
+    "statements": 10,
+    "refused_owner": 10,
+    "refused_dba": 10,
+    "control_ordinary_table": true,
+    "forgeries": 5,
+    "forgeries_rejected": 5,
+    "dba_inserts": 4,
+    "dba_inserts_stored": 3,
+    "tally_counted": 6,
+    "tally_rejected": 3,
+    "chain_rows": 1651,
+    "chain_seals": 549,
+    "truth": [
+      2,
+      3,
+      1
+    ],
+    "decrypted": [
+      2,
+      3,
+      1
+    ]
+  },
+  "mode": {
+    "quick": false,
+    "seed": 20261123
+  },
+  "checks": [
+    {
+      "name": "the owner cannot update, delete, move, truncate or merge a stored vote",
+      "pass": true,
+      "detail": "10/10 statements refused"
+    },
+    {
+      "name": "the DBA cannot update, delete, move, truncate or merge a stored vote",
+      "pass": true,
+      "detail": "10/10 statements refused"
+    },
+    {
+      "name": "the stored ballots are byte for byte what they were",
+      "pass": true,
+      "detail": "6 ballots, 18 ciphertext rows and 6 seals compared"
+    },
+    {
+      "name": "negative control: on an ordinary copy of the table both accounts can update and delete",
+      "pass": true,
+      "detail": "the refusals above come from the blockchain table, not from a missing privilege"
+    },
+    {
+      "name": "a forged or unsigned ballot is rejected by cast_ballot",
+      "pass": true,
+      "detail": "5/5 rejected with ORA-20007"
+    },
+    {
+      "name": "chain verification passes on both tables, over every row they hold",
+      "pass": true,
+      "detail": "DBMS_BLOCKCHAIN_TABLE.VERIFY_ROWS: 1651 of 1651 ciphertext rows, 549 of 549 seals"
+    },
+    {
+      "name": "the tally counts none of the ballots that the DBA inserted",
+      "pass": true,
+      "detail": "6 counted, 3 rejected"
+    },
+    {
+      "name": "the decrypted tally is the true result",
+      "pass": true,
+      "detail": "true 2/3/1, decrypted 2/3/1"
+    }
+  ],
+  "notes": [
+    "the DBA could INSERT 3 of 4 forged ballots directly into the blockchain tables: INSERT is what such a table allows"
+  ],
+  "evidence": [
+    "h9-integrity/statements.txt"
+  ],
+  "started": "2026-11-24T15:03:17.574Z",
+  "finished": "2026-11-24T15:03:47.798Z"
+}

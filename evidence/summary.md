@@ -1,30 +1,31 @@
-# APEX Blindfold: results of one run
+# APEX Blindfold Layer 2: results of one run
 
-Generated 2026-11-23T15:47:40.850Z by `node tests/run-all.mjs` (full mode, seed 20261123, 19 min 15 s).
+Generated 2026-11-24T17:44:56.310Z by `node tests/run-all.mjs` (full mode, seed 20261123, 190 min 19 s).
 
 Environment: Oracle AI Database 26ai Free Release 23.26.3.0.0 on Microsoft Windows x86 64-bit, APEX 26.2.0, ORDS 26.3.0.r2721811, tally engine: Java stored procedure. Details in `evidence/00-environment`.
 
+Gate G1, Test vectors: **PASS**. The Java verifier in the database reproduced 162/162 hashes of the browser byte for byte, over 18 fixed ballots in 2 key sizes (512 and 2048 bits), agreed with the browser on every verdict (6 accepted, 12 rejected) and verified 18/18 WebCrypto signatures. 6 altered vectors were all caught. [`evidence/g1-test-vectors/vectors.txt`](g1-test-vectors/vectors.txt)
+
 | # | Hypothesis | Verdict | Observed in this run | Evidence |
 |---|---|---|---|---|
-| H1 | Correctness | **CONFIRMED** | The decrypted tally equals the true tally in 100/100 randomized elections (10 to 5000 voters, 82874 ballots), and JavaScript, Java and Python agree on every value compared. | [`evidence/h1-correctness/elections.txt`](h1-correctness/elections.txt), [result.json](h1-correctness/result.json) |
-| H2 | Blindness | **CONFIRMED** | Knowing the private key and the randomizer of all 27 ciphertexts, the test found none of them, whole or in part, in 21 sources: 231 HTTP requests and their responses, 4 tables, APEX session state (0 page items; 2 report paging positions), 4423 LEVEL9 debug messages, the activity and access logs, 172 SQL statements, captured binds, audit trail, alert log, and the storage of both tabs. Ballot requests differ only in the voter code and three ciphertexts. ORDS log files were not read. | [`evidence/h2-blindness/scan-summary.txt`](h2-blindness/scan-summary.txt), [result.json](h2-blindness/result.json) |
-| H3 | Indistinguishability | **CONFIRMED** | All 6000 stored ciphertexts are distinct, and none of 13 distinguishers separates Enc(0) from Enc(1) on 4000 labelled ciphertexts (classifier accuracy 51.4%). Indistinguishability itself rests on the DCR assumption, which a test cannot prove. | [`evidence/h3-indistinguishability/distinguishers.txt`](h3-indistinguishability/distinguishers.txt), [result.json](h3-indistinguishability/result.json) |
-| H4 | Ballot stuffing | **CONFIRMED** | The tally accepted a ballot encrypting 1000 (A=4  B=3  C=2 became A=1004  B=3  C=2). A balanced ballot of [3, -2, 0] changed the result (A=7  B=1  C=2) while the totals still added up to the turnout. | [`evidence/h4-ballot-stuffing/stuffing.txt`](h4-ballot-stuffing/stuffing.txt), [result.json](h4-ballot-stuffing/result.json) |
-| H5 | Other limits | **CONFIRMED** | All three limits hold: a DBA with the public key moved 5 votes with two UPDATEs and the totals still matched the turnout; the key holder read 24/24 individual ballots; ordering by voted_at and ballot_id re-linked 24/24 voters arriving one at a time (59/200 exactly, 199/200 within 7 positions, when 8 sessions vote at once). | [`evidence/h5-limits/a-dba-adds-votes.txt`](h5-limits/a-dba-adds-votes.txt), [result.json](h5-limits/result.json) |
-| H6 | Cost | **CONFIRMED** | Measured: casting a ballot takes a median 289 ms in the browser; tallying 10000 voters takes 4.9 s against 1.074 ms for a plaintext COUNT (4584x); a ballot stores 3087 bytes against 5. | [`evidence/h6-cost/timings.json`](h6-cost/timings.json), [result.json](h6-cost/result.json) |
+| H7 | Soundness | **CONFIRMED** | The database rejected 8 of 8 dishonest ballots pasted in the browser console, among them the ballot of 1000 votes and the balanced [3, -2, 0] that Layer 1 accepted, 3 of 3 replays, and 100 of 100 valid ballots with one digit changed. The tally stayed A=5  B=3  C=2: the honest ballots and the control. | [`evidence/h7-soundness/attempts.txt`](h7-soundness/attempts.txt), [result.json](h7-soundness/result.json) |
+| H8 | Completeness | **CONFIRMED** | 100 random elections with 2048-bit keys: 520 of 520 honest ballots accepted, all 520 counted after a second verification, and the decrypted tally equal to the true result in 100 of 100. A dishonest ballot placed among honest ones was refused. | [`evidence/h8-completeness/elections.txt`](h8-completeness/elections.txt), [result.json](h8-completeness/result.json) |
+| H9 | Integrity | **CONFIRMED** | The owner and an account with the DBA role had 10 of 10 UPDATE, DELETE, TRUNCATE and MERGE statements refused each, where an ordinary copy of the table accepted them. 5 of 5 forged or unsigned ballots were rejected. The DBA could still INSERT 3 forged ballots; the tally counted none of them (6 counted, 3 rejected) and the chain verified over 1651 rows. | [`evidence/h9-integrity/statements.txt`](h9-integrity/statements.txt), [result.json](h9-integrity/result.json) |
+| H10 | What still breaks | **CONFIRMED** | All 7 limits held up in the lab: the key holder read 6 of 6 ballots with the voter code next to each; the hidden insert time re-linked 6 of 6; a DBA voted in the name of a registered voter with one UPDATE; a DBA dropped and rebuilt the tables without one ballot and the chain still verified; the owner made the tally refuse 2 honest ballots (this one is reported by the tally); a substituted vote.js read the choice; the verifier was replaced without a trace in the tables. | [`evidence/h10-what-still-breaks/limits.txt`](h10-what-still-breaks/limits.txt), [result.json](h10-what-still-breaks/result.json) |
+| H11 | Cost | **CONFIRMED** | Measured: proofs add 3808 hexadecimal characters to a ballot; encrypting and proving takes a median 283 ms in the browser and casting 1032 ms from the click to the receipt (Layer 1: 289 ms); the database verifies one ballot in 641 ms; the tally of 10000 voters takes 104.7 min against 4.9 s in Layer 1. | [`evidence/h11-cost/summary.txt`](h11-cost/summary.txt), [result.json](h11-cost/result.json) |
 
 Every row is copied from the `result.json` that the test of that hypothesis wrote. The numbers change
 from run to run where randomness or timing is involved; the verdicts should not.
+Layer 1 (H1 to H6) is in [summary-layer1.md](summary-layer1.md), from the run of tag `v1-layer1`.
 
 | Step | Result | Time |
 |---|---|---|
-| install: clean schema and APEX application | done | 0 min 22 s |
-| unit tests: Paillier library and election API | done | 0 min 02 s |
+| install: clean schema and APEX application | done | 0 min 23 s |
+| unit tests: Paillier library and election API | done | 0 min 03 s |
 | step 0: environment | done | 0 min 45 s |
-| H1: Correctness | done | 13 min 28 s |
-| H2: Blindness | done | 0 min 36 s |
-| H3: Indistinguishability | done | 0 min 22 s |
-| H4: Ballot stuffing | done | 0 min 19 s |
-| H5: Other limits | done | 0 min 57 s |
-| H6: Cost | done | 1 min 52 s |
-| screenshots | done | 0 min 30 s |
+| G1: Test vectors | done | 0 min 17 s |
+| H7: Soundness | done | 1 min 50 s |
+| H8: Completeness | done | 25 min 22 s |
+| H9: Integrity | done | 0 min 30 s |
+| H10: What still breaks | done | 1 min 16 s |
+| H11: Cost | done | 159 min 53 s |

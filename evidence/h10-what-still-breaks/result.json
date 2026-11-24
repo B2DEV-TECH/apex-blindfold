@@ -1,0 +1,164 @@
+{
+  "id": "H10",
+  "hypothesis": "What still breaks: a DBA with full access, JavaScript shipped by the server and a dishonest key holder still defeat Layer 2 (CONFIRMED = the attack works)",
+  "verdict": "CONFIRMED",
+  "statement": "All 7 limits held up in the lab: the key holder read 6 of 6 ballots with the voter code next to each; the hidden insert time re-linked 6 of 6; a DBA voted in the name of a registered voter with one UPDATE; a DBA dropped and rebuilt the tables without one ballot and the chain still verified; the owner made the tally refuse 2 honest ballots (this one is reported by the tally); a substituted vote.js read the choice; the verifier was replaced without a trace in the tables.",
+  "numbers": {
+    "key_bits": 2048,
+    "ballots": 6,
+    "attacks": [
+      {
+        "id": 1,
+        "name": "Read single ballots, with the voter name",
+        "who": "Whoever holds the private key",
+        "worked": true,
+        "noticed": false,
+        "detail": "6 of 6 ballots read, each next to its voter code"
+      },
+      {
+        "id": 2,
+        "name": "Re-link ballots to voters by the hidden insert time",
+        "who": "Anyone who reads BLIND_BALLOTS and VOTER_ROLL",
+        "worked": true,
+        "noticed": false,
+        "detail": "6 of 6 paired by ORABCTAB_CREATION_TIME$ against VOTER_ROLL.voted_at, without reading BALLOT_SEALS"
+      },
+      {
+        "id": 3,
+        "name": "Vote in the name of a registered voter who has not voted",
+        "who": "A DBA who can write to VOTER_ROLL",
+        "worked": true,
+        "noticed": false,
+        "detail": "one UPDATE of VOTER_ROLL.public_key, then the ordinary API: ballot 7 accepted and counted; the voter, coming back, is told the code has been used"
+      },
+      {
+        "id": 4,
+        "name": "Remove a ballot by dropping and rebuilding the tables",
+        "who": "A DBA",
+        "worked": true,
+        "noticed": false,
+        "detail": "the chain verified over the rebuilt tables; 5 ballots counted while VOTER_ROLL says 6 voted, and nothing compares the two"
+      },
+      {
+        "id": 5,
+        "name": "Make the tally refuse honest ballots, after disabling the primary key and dropping the foreign key",
+        "who": "The owner of the tables",
+        "worked": true,
+        "noticed": true,
+        "detail": "2 honest ballots not counted; the tally lists them as rejected, with the reason"
+      },
+      {
+        "id": 6,
+        "name": "Read the choice in the browser, with JavaScript shipped by the server",
+        "who": "Whoever can change the static files of the application",
+        "worked": true,
+        "noticed": false,
+        "detail": "a substituted vote.js ran in the voter tab and read the choice before it was encrypted; the ballot was accepted as usual"
+      },
+      {
+        "id": 7,
+        "name": "Replace the verifier",
+        "who": "The owner of the schema (or a DBA)",
+        "worked": true,
+        "noticed": false,
+        "detail": "the class that checks every proof and signature was replaced; the ballot tables, their chain and the tally answer show nothing"
+      }
+    ]
+  },
+  "mode": {
+    "quick": false,
+    "seed": 20261123
+  },
+  "checks": [
+    {
+      "name": "the key holder reads every ballot, with the voter code next to it",
+      "pass": true,
+      "detail": "6/6 ballots of election 117"
+    },
+    {
+      "name": "negative control: another private key reads none of them",
+      "pass": true,
+      "detail": "0/6"
+    },
+    {
+      "name": "the hidden insert time of BLIND_BALLOTS pairs every ballot with its voter",
+      "pass": true,
+      "detail": "6/6, checked against the voter codes in BALLOT_SEALS"
+    },
+    {
+      "name": "negative control: a random pairing does not",
+      "pass": true,
+      "detail": "2/6 by a seeded shuffle"
+    },
+    {
+      "name": "negative control: without writing to VOTER_ROLL, another key cannot register for that voter",
+      "pass": true,
+      "detail": "ORA-20008: This voter code already has a key, registered by another browser tab. A voter code takes one key, once."
+    },
+    {
+      "name": "after one UPDATE of VOTER_ROLL the DBA casts a ballot in that voter name and the tally counts it",
+      "pass": true,
+      "detail": "ballot 7 accepted; tally A=2  B=3  C=2, 7 counted, 0 rejected"
+    },
+    {
+      "name": "the voter, coming back, finds the code used",
+      "pass": true,
+      "detail": "ORA-20004: This voter code has already been used."
+    },
+    {
+      "name": "negative control: the DBA cannot DELETE that ballot",
+      "pass": true,
+      "detail": "ORA-05715: operation not allowed on the blockchain or immutable table"
+    },
+    {
+      "name": "after DROP and CREATE the chain verifies, one ballot is gone and the tally does not notice",
+      "pass": true,
+      "detail": "chain: 1687 rows and 561 seals; tally A=1  B=3  C=1, 5 counted, 0 rejected; VOTER_ROLL: 6 voted"
+    },
+    {
+      "name": "negative control: with the primary key enabled a second row for a ballot is refused",
+      "pass": true,
+      "detail": "ORA-00001: unique constraint (BLINDFOLD.BLIND_BALLOTS_PK) violated on table BLINDFOLD.BLIND_BALLOTS columns (ELECTION_ID, BALLOT_ID, CANDIDATE_ID)"
+    },
+    {
+      "name": "the owner disables the key, drops the foreign key, and two honest ballots stop being counted",
+      "pass": true,
+      "detail": "disable: done; drop FK: done; 3 counted, 2 rejected"
+    },
+    {
+      "name": "the tally says so: it lists both ballots as rejected, with the reason",
+      "pass": true,
+      "detail": "ballot 2: expected three ciphertext rows, found 4; ballot 3: expected three ciphertext rows, found 4"
+    },
+    {
+      "name": "negative control: the application as installed shows no such note",
+      "pass": true,
+      "detail": "0 note(s)"
+    },
+    {
+      "name": "a substituted vote.js runs in the voter tab and reads the choice before encryption",
+      "pass": true,
+      "detail": "\"Read by code the server shipped, before encryption: B / AIComputed Columns with Natural Language in Interactive Reports / AI / Computed Columns with Natural Language in Interactive Reports\"; ballots 1 and 2 accepted"
+    },
+    {
+      "name": "negative control: before the replacement the marker does not exist",
+      "pass": true,
+      "detail": "ORA-00904: \"BF_H10_MARKER\": invalid identifier"
+    },
+    {
+      "name": "the owner replaces the verifier, and nothing that the tally checks records it",
+      "pass": true,
+      "detail": "marker: replaced by H10; chain {\"blind_ballots\":1695,\"ballot_seals\":563} before and {\"blind_ballots\":1695,\"ballot_seals\":563} after; only USER_OBJECTS.LAST_DDL_TIME moved (2026-11-24 11:34:43 -> 2026-11-24 12:04:48)"
+    }
+  ],
+  "notes": [
+    "the vote.js that the browser receives is a row of APEX_APPLICATION_STATIC_FILES: SHA-256 fa72d6bec8c8715f..., the file in the repository fa72d6bec8c8715f...",
+    "lab schema reinstalled from db/install.sql: marker gone, BLIND_BALLOTS_PK ENABLED"
+  ],
+  "evidence": [
+    "h10-what-still-breaks/01-server-shipped-code-reads-the-choice.png",
+    "h10-what-still-breaks/limits.txt"
+  ],
+  "started": "2026-11-24T15:03:48.477Z",
+  "finished": "2026-11-24T15:05:03.502Z"
+}

@@ -12,6 +12,9 @@ set define off
 prompt == tables
 @@01_tables.sql
 
+prompt == ballot validity and signatures (Java stored procedure)
+@@05_ballot_validity_java.sql
+
 prompt == blind tally (Java stored procedure)
 @@02_blind_tally_java.sql
 

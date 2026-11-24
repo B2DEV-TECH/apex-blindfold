@@ -104,7 +104,7 @@ export async function mount(root) {
       say(keyStatus, 'The number of voters must be between 1 and 100000.', 'error');
       return;
     }
-    if (info.ballot_rows > 0 && !window.confirm(`Opening a new election erases the ${formatInt(info.ballot_rows / 3)} ballots that are stored. Continue?`)) {
+    if (info.ballot_rows > 0 && !window.confirm(`Opening a new election closes this one. Its ${formatInt(info.ballot_rows / 3)} ballots stay stored, they cannot be removed, and they will never be counted. Continue?`)) {
       return;
     }
 
@@ -160,7 +160,7 @@ export async function mount(root) {
   // ---- 2. the database multiplies ciphertexts and returns encrypted totals
   tallyButton.addEventListener('click', async () => {
     tallyButton.disabled = true;
-    say(tallyStatus, 'The database is multiplying ciphertexts…');
+    say(tallyStatus, 'The database is verifying the chain, every proof and every signature, then multiplying ciphertexts…');
     const started = performance.now();
     const answer = await ask('ENCRYPTED_TALLY');
     const elapsed = performance.now() - started;
@@ -174,11 +174,17 @@ export async function mount(root) {
     resultsBox.replaceChildren();
     say(decryptStatus, '');
 
-    say(tallyStatus, `The database multiplied ${formatInt(answer.tally.ballot_rows)} ciphertexts in ${formatInt(Math.round(elapsed))} ms. It still does not know the result.`, 'ok');
-    totalsBox.replaceChildren(...answer.tally.totals.map((total, index) => el('div', { class: 'bf-total' },
+    const tally = answer.tally;
+    const audit = `Chain verified: ${formatInt(tally.chain.blind_ballots)} ciphertext rows and ${formatInt(tally.chain.ballot_seals)} seals. Proofs and signatures checked again: ${formatInt(tally.ballots_counted)} ballots counted, ${formatInt(tally.ballots_rejected)} rejected.`;
+    say(tallyStatus, `${audit} ${formatInt(Math.round(elapsed))} ms. The database still does not know the result.`, tally.ballots_rejected > 0 ? 'error' : 'ok');
+    totalsBox.replaceChildren(...tally.totals.map((total, index) => el('div', { class: 'bf-total' },
       el('span', { class: 'bf-total__letter' }, String.fromCharCode(65 + index)),
       el('span', { class: 'bf-total__label' }, info.candidates[index].label),
       el('code', { class: 'bf-hex' }, short(total.total_enc, 28, 12)))));
+    if (tally.rejected.length > 0) {
+      totalsBox.append(el('ul', { class: 'bf-rejected' }, tally.rejected.map((r) => el('li', {},
+        `Ballot ${r.ballot_id}${r.voter_id ? ` (${r.voter_id})` : ''} was not counted: ${r.reason}.`))));
+    }
     decryptButton.disabled = !keyPair;
     if (!keyPair) say(decryptStatus, 'This tab holds no private key, so these totals stay encrypted.', 'error');
   });
@@ -218,12 +224,13 @@ export async function mount(root) {
     }));
 
     // The only sanity check a blind tally allows: totals must add up to turnout.
-    const turnout = BigInt(encrypted.turnout);
+    // Layer 2: the reference is the number of ballots that passed verification.
+    const turnout = BigInt(encrypted.tally.ballots_counted);
     const plausible = sum === turnout && totals.every((value) => value >= 0n && value <= turnout);
     if (plausible) {
-      say(decryptStatus, `Decrypted in ${formatInt(Math.round(elapsed))} ms. ${formatInt(sum)} votes from ${formatInt(turnout)} voters.`, 'ok');
+      say(decryptStatus, `Decrypted in ${formatInt(Math.round(elapsed))} ms. ${formatInt(sum)} votes from ${formatInt(turnout)} verified ballots.`, 'ok');
     } else {
-      say(decryptStatus, `Decrypted in ${formatInt(Math.round(elapsed))} ms. ${formatInt(sum)} votes from ${formatInt(turnout)} voters: these totals cannot come from honest ballots. Some ciphertext did not encrypt 0 or 1, and the tally accepted it.`, 'error');
+      say(decryptStatus, `Decrypted in ${formatInt(Math.round(elapsed))} ms. ${formatInt(sum)} votes from ${formatInt(turnout)} verified ballots: these totals cannot come from honest ballots, although every counted ballot passed its proofs.`, 'error');
     }
   });
 }

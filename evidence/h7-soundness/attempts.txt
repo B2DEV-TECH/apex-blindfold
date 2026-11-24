@@ -1,0 +1,57 @@
+# H7: soundness
+# generated: 2026-11-24T14:37:54.735Z
+# The attacker is an ordinary registered voter with a browser console. No database access.
+# Layer 1 accepted the first two attacks below: evidence/h4-ballot-stuffing/stuffing.txt (tag v1-layer1).
+# Unaudited educational cryptography. A test that finds no accepted forgery is not a proof that none exists.
+
+Election 12: 9 honest ballots (A=4  B=3  C=2) cast through bf_election.cast_ballot.
+Tally before the attacks, decrypted on the Tally page: A=4  B=3  C=2
+
+Negative control: VOTER-0010 pastes ballot-stuffing-layer2.js with WEIGHTS = [1, 0, 0]
+  database answer: {"ok":true,"ballot_id":10}
+
+Attack: the Layer 1 snippet, unchanged: a thousand votes, no proof
+  VOTER-0011 pastes tests/snippets/ballot-stuffing.js with WEIGHTS = [1000, 0, 0]
+  database answer: {"ok":false,"code":-20005,"message":"A ballot must carry exactly three ciphertexts and three bit proofs."}
+
+Attack: a thousand votes for A, with forged proofs
+  VOTER-0012 pastes tests/snippets/ballot-stuffing-layer2.js with WEIGHTS = [1000, 0, 0]
+  database answer: {"ok":false,"code":-20006,"message":"Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash."}
+
+Attack: three for A, minus two for B: the plaintexts add up to 1
+  VOTER-0013 pastes tests/snippets/ballot-stuffing-layer2.js with WEIGHTS = [3, -2, 0]
+  database answer: {"ok":false,"code":-20006,"message":"Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash."}
+
+Attack: a negative value
+  VOTER-0014 pastes tests/snippets/ballot-stuffing-layer2.js with WEIGHTS = [-1, 1, 1]
+  database answer: {"ok":false,"code":-20006,"message":"Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash."}
+
+Attack: two options set to 1
+  VOTER-0015 pastes tests/snippets/ballot-stuffing-layer2.js with WEIGHTS = [1, 1, 0]
+  database answer: {"ok":false,"code":-20006,"message":"Ballot rejected, invalid proof: sum: the challenge is not the hash."}
+
+Attack: all three options set to 1
+  VOTER-0016 pastes tests/snippets/ballot-stuffing-layer2.js with WEIGHTS = [1, 1, 1]
+  database answer: {"ok":false,"code":-20006,"message":"Ballot rejected, invalid proof: sum: the challenge is not the hash."}
+
+Attack: a blank ballot
+  VOTER-0017 pastes tests/snippets/ballot-stuffing-layer2.js with WEIGHTS = [0, 0, 0]
+  database answer: {"ok":false,"code":-20006,"message":"Ballot rejected, invalid proof: sum: the challenge is not the hash."}
+
+Attack: two votes for one option
+  VOTER-0018 pastes tests/snippets/ballot-stuffing-layer2.js with WEIGHTS = [2, 0, 0]
+  database answer: {"ok":false,"code":-20006,"message":"Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash."}
+
+Tally after the attacks: A=5  B=3  C=2
+Tally page: Chain verified: 49 ciphertext rows and 16 seals. Proofs and signatures checked again: 10 ballots counted, 0 rejected. 6,475 ms. The database still does not know the result.
+Tally page: Decrypted in 293 ms. 10 votes from 10 verified ballots.
+
+Replays, through bf_election.cast_ballot, 2048-bit key:
+  earlier election, same ballot number:   ORA-20006: Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash.
+  another voter's stored ballot:          ORA-20006: Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash.
+  another voter's reserved number:        ORA-20006: Ballot rejected: this is not the ballot number reserved for this voter code.
+
+Seeded damage (seed 20261123): one hexadecimal digit of a valid ballot changed, 100 times.
+  rejected: 100/100
+    92  option N: the challenges do not add up to the hash
+     8  sum: the challenge is not the hash

@@ -1,0 +1,54 @@
+{
+  "id": "H8",
+  "hypothesis": "Completeness: in 100 seeded random elections every honest ballot is accepted and the decrypted tally equals the true result",
+  "verdict": "CONFIRMED",
+  "statement": "100 random elections with 2048-bit keys: 520 of 520 honest ballots accepted, all 520 counted after a second verification, and the decrypted tally equal to the true result in 100 of 100. A dishonest ballot placed among honest ones was refused.",
+  "numbers": {
+    "elections": 100,
+    "key_bits": 2048,
+    "ballots": 520,
+    "accepted": 520,
+    "counted": 520,
+    "rejected_by_tally": 0,
+    "exact": 100,
+    "abstentions": 103,
+    "seconds": 1522
+  },
+  "mode": {
+    "quick": false,
+    "seed": 20261123
+  },
+  "checks": [
+    {
+      "name": "every honest ballot was accepted by cast_ballot",
+      "pass": true,
+      "detail": "520/520 ballots in 100 elections"
+    },
+    {
+      "name": "the tally counted every honest ballot and rejected none",
+      "pass": true,
+      "detail": "520 counted, 0 rejected, after verifying each one again"
+    },
+    {
+      "name": "the decrypted tally equals the true result in every election",
+      "pass": true,
+      "detail": "100/100 elections"
+    },
+    {
+      "name": "negative control: a dishonest ballot [2, -1, 0] among honest ones is refused and not counted",
+      "pass": true,
+      "detail": "ORA-20006: Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash.; tally 1/2/1"
+    },
+    {
+      "name": "negative control: the comparison notices a result that is off by one vote",
+      "pass": true,
+      "detail": "decrypted 1/2/1 against a wrong expectation 2/1/1"
+    }
+  ],
+  "notes": [],
+  "evidence": [
+    "h8-completeness/elections.txt"
+  ],
+  "started": "2026-11-24T14:37:55.100Z",
+  "finished": "2026-11-24T15:03:17.428Z"
+}

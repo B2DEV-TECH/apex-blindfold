@@ -1,5 +1,5 @@
 # Step 0: MLE JavaScript and Java availability, by privilege
-# generated: 2026-11-23T15:28:56.428Z
+# generated: 2026-11-24T14:35:09.745Z
 # A throwaway user receives one privilege at a time.
 # After each grant: create the source, create its PL/SQL call spec, execute it.
 # The execute step computes 4^13 mod 497. The expected answer is 445 = 0x1bd.
@@ -36,7 +36,7 @@
      create call spec     : OK
      objects              : FUNCTION BF_PROBE_MODPOW INVALID | MLE MODULE BF_PROBE_MOD INVALID
      compile error        : MLE MODULE BF_PROBE_MOD: MLE is not available on this platform
-     compile error        : FUNCTION BF_PROBE_MODPOW: PLS-00905: object BF_PROBE_F620E3.BF_PROBE_MOD is invalid
+     compile error        : FUNCTION BF_PROBE_MODPOW: PLS-00905: object BF_PROBE_0EC4B8.BF_PROBE_MOD is invalid
      compile error        : FUNCTION BF_PROBE_MODPOW: PL/SQL: Compilation unit analysis terminated
      execute              : ORA-06575: Package or function BF_PROBE_MODPOW is in an invalid state
    Java stored procedure
@@ -51,7 +51,7 @@
      create call spec     : OK
      objects              : FUNCTION BF_PROBE_MODPOW INVALID | MLE MODULE BF_PROBE_MOD INVALID
      compile error        : MLE MODULE BF_PROBE_MOD: MLE is not available on this platform
-     compile error        : FUNCTION BF_PROBE_MODPOW: PLS-00905: object BF_PROBE_F620E3.BF_PROBE_MOD is invalid
+     compile error        : FUNCTION BF_PROBE_MODPOW: PLS-00905: object BF_PROBE_0EC4B8.BF_PROBE_MOD is invalid
      compile error        : FUNCTION BF_PROBE_MODPOW: PL/SQL: Compilation unit analysis terminated
      execute              : ORA-06575: Package or function BF_PROBE_MODPOW is in an invalid state
    Java stored procedure

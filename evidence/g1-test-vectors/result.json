@@ -1,0 +1,74 @@
+{
+  "id": "G1",
+  "gate": "Test vectors: the Java verifier reproduces the challenge hashes of the browser byte for byte",
+  "verdict": "PASS",
+  "statement": "The Java verifier in the database reproduced 162/162 hashes of the browser byte for byte, over 18 fixed ballots in 2 key sizes (512 and 2048 bits), agreed with the browser on every verdict (6 accepted, 12 rejected) and verified 18/18 WebCrypto signatures. 6 altered vectors were all caught.",
+  "numbers": {
+    "samples": 18,
+    "hashes_compared": 162,
+    "hashes_equal": 162,
+    "verdicts_agree": 18,
+    "accepted": 6,
+    "rejected": 12,
+    "signatures_verified": 18,
+    "negative_controls": 6,
+    "exported_by": "msedge 158.0.4370.33"
+  },
+  "checks": [
+    {
+      "name": "every challenge hash and every signed-bytes hash is the same in the browser and in the database",
+      "pass": true,
+      "detail": "162/162 hashes of 32 bytes, 18 samples"
+    },
+    {
+      "name": "the database accepts and rejects the same ballots as the browser",
+      "pass": true,
+      "detail": "18/18: 6 accepted, 12 rejected"
+    },
+    {
+      "name": "the samples contain both valid and invalid ballots",
+      "pass": true,
+      "detail": "6 valid, 12 invalid"
+    },
+    {
+      "name": "the database verifies every WebCrypto signature",
+      "pass": true,
+      "detail": "18/18 ECDSA P-256 signatures in P1363 format"
+    },
+    {
+      "name": "negative control: one digit of a ciphertext changed, the recorded hashes no longer match",
+      "pass": true,
+      "detail": "5 of 9 hashes differ; ballot: FAIL option 1: the challenges do not add up to the hash; signature: FAIL the signature does not match the ballot"
+    },
+    {
+      "name": "negative control: one digit of a response changed, the ballot is rejected",
+      "pass": true,
+      "detail": "2 of 9 hashes differ; ballot: FAIL option 1: the challenges do not add up to the hash"
+    },
+    {
+      "name": "negative control: the ballot number changed, the hashes change",
+      "pass": true,
+      "detail": "9 of 9 hashes differ; ballot: FAIL option 1: the challenges do not add up to the hash"
+    },
+    {
+      "name": "negative control: one digit of the signature changed, the signature is rejected",
+      "pass": true,
+      "detail": "signature: FAIL the signature does not match the ballot; ballot: OK"
+    },
+    {
+      "name": "negative control: the signature presented with another voter code is rejected",
+      "pass": true,
+      "detail": "signature: FAIL the signature does not match the ballot; ballot: OK"
+    },
+    {
+      "name": "negative control: the signature checked against another voter key is rejected",
+      "pass": true,
+      "detail": "signature: FAIL the signature does not match the ballot"
+    }
+  ],
+  "evidence": [
+    "g1-test-vectors/vectors.txt"
+  ],
+  "started": "2026-11-24T14:35:48.756Z",
+  "finished": "2026-11-24T14:36:05.189Z"
+}

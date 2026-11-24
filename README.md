@@ -21,6 +21,7 @@
   <a href="#how-it-works">How it works</a> ·
   <a href="#verdicts">Verdicts</a> ·
   <a href="#what-breaks-it">What breaks it</a> ·
+  <a href="#layer-2-ballot-validity-and-integrity">Layer 2</a> ·
   <a href="#live-session">Live session</a> ·
   <a href="#what-it-costs">What it costs</a> ·
   <a href="#reproduce-it">Reproduce it</a> ·
@@ -31,7 +32,8 @@ APEX Blindfold is a small research lab. An Oracle APEX application runs a fictio
 "Best Oracle APEX 26.2 feature", with Paillier additively homomorphic encryption. Voters encrypt in
 the browser, the database multiplies ciphertexts it cannot read, and only the holder of the private
 key can decrypt the three totals. Six hypotheses put that idea under test, and each one closes with
-evidence that one command regenerates.
+evidence that one command regenerates. [Layer 2](#layer-2-ballot-validity-and-integrity) adds
+validity proofs, signed ballots and tamper-evident storage, with five more hypotheses.
 
 > [!WARNING]
 > **Educational cryptography. This is not a voting system.** The election is fictional and the code
@@ -47,7 +49,8 @@ evidence that one command regenerates.
   (H1, H2, H3).
 - **For trusting the result, no.** A voter can cast one ballot worth a thousand votes, a DBA can
   move votes from one option to another, and whoever holds the key can open any single ballot
-  (H4, H5). The lab demonstrates each of these, and describes the fixes without building them.
+  (H4, H5). Layer 1 demonstrates each of these. Layer 2 builds defences against the stuffed ballot
+  and against changing stored ballots, and measures what they leave open (H7 to H11).
 
 <p align="center">
   <img src="assets/readme/vote-receipt.png" width="880" alt="The Vote page after a ballot was cast. It lists what left the browser: the public key received, three ciphertexts and a voter code. The line under them reads: Choice sent: none.">
@@ -140,7 +143,8 @@ probe and its output are in [`evidence/00-environment`](evidence/00-environment)
 ## Verdicts
 
 Each hypothesis closes as CONFIRMED, REFUTED or PARTIAL. For H4 and H5, CONFIRMED means that the
-attack works.
+attack works. These are the six hypotheses of Layer 1, from the run of tag `v1-layer1`. Layer 2 has
+[its own table](#gate-and-verdicts).
 
 <!-- verdicts:start -->
 | # | Hypothesis | Verdict | Observed | Evidence |
@@ -154,7 +158,7 @@ attack works.
 
 One run from a clean schema: 2026-11-23, full mode, seed 20261123, 19 minutes.
 Each row is the sentence the test itself wrote into its `result.json`. The same table, with the
-time of every step, is in [`evidence/summary.md`](evidence/summary.md).
+time of every step, is in [`evidence/summary-layer1.md`](evidence/summary-layer1.md).
 <!-- verdicts:end -->
 
 ## What the DBA sees
@@ -208,18 +212,130 @@ against the running application.
 </p>
 <p align="center"><sub>One ballot, a thousand votes. The page can tell that something is wrong, not which ballot did it. Cropped from <a href="evidence/h4-ballot-stuffing/01-stuffed-tally.png">evidence/h4-ballot-stuffing</a>.</sub></p>
 
-What a real system adds. All of it is described here, and none of it is built:
+What a real system adds:
 
 | Layer | Status in this lab | What it is |
 |---|---|---|
-| 1. Blind tally | **built and measured** | the application in this repository |
-| 2. Ballot validity | attack shown, fix described only | Every ballot carries a zero-knowledge proof that each ciphertext encrypts 0 or 1 and that the three plaintexts add up to 1. The server, and anyone else, checks the proof without learning the vote, and rejects a ballot whose proof fails [[2]](#references). |
+| 1. Blind tally | **built and measured** | the application of tag `v1-layer1` |
+| 2. Ballot validity and integrity | **built and measured**, see [Layer 2](#layer-2-ballot-validity-and-integrity) | Every ballot carries zero-knowledge proofs that each ciphertext encrypts 0 or 1 and that the three plaintexts add up to 1 [[2]](#references), and the voter's signature. The database checks both before it stores the ballot and again before it counts it, and keeps ballots in blockchain tables. |
 | 3. Threshold decryption | described only | The private key is split among several trustees, so that no single party can open a ballot [[2]](#references). |
 
-The remaining attacks have no layer in this list. Stored ciphertexts carry no signature and the
-table keeps no history, the voter receives the public key from the server and has no copy to compare
-it with, and the order of arrival survives in more places than the two columns the test used. The
-lab shows these and stops there.
+The table above describes Layer 1. The voter still receives the public key from the server and has
+no copy to compare it with, in both layers; the lab shows this and stops there.
+
+## Layer 2: ballot validity and integrity
+
+Layer 1 hid the votes and left the count unprotected. Layer 2 keeps the same application and adds
+four things:
+
+- **Validity proofs, in the voter's browser.** For each option, a non-interactive proof that its
+  ciphertext encrypts 0 or 1; for the ballot, a proof that the three plaintexts add up to 1. They
+  are written from their definition with `BigInt`, like the encryption
+  ([`validity.js`](app/apexlang/shared-components/static-files/blindfold/validity.js)).
+- **Verification in the database**, by a Java stored procedure with `java.math.BigInteger`
+  ([`05_ballot_validity_java.sql`](db/05_ballot_validity_java.sql)), before the ballot is stored and
+  again in the tally. Before any hypothesis ran, the gate G1 checked that the browser and the
+  database compute every hash of the proofs byte for byte the same.
+- **Signed ballots.** The voter's browser makes an ECDSA P-256 key pair (WebCrypto, private key not
+  extractable), registers the public key for the voter code and signs the whole ballot. The database
+  verifies the signature with the key registered for that voter.
+- **Tamper-evident storage.** `BLIND_BALLOTS` and the new `BALLOT_SEALS` (voter code, sum proof,
+  signature) are blockchain tables. `UPDATE`, `DELETE` and `TRUNCATE` are refused to everyone, and
+  the tally runs `DBMS_BLOCKCHAIN_TABLE.VERIFY_ROWS` before it counts. `NO DROP UNTIL 0 DAYS IDLE`
+  lets the lab reinstall itself, and lets a DBA drop the tables: H10.
+
+The proofs, in a few lines. A ciphertext is `c = (1 + m·n)·rⁿ mod n²`. For a claimed value `k`, the
+number `u = c·(1 − k·n) mod n²` is an n-th power, `rⁿ`, exactly when `m = k`, and only the voter
+knows `r`:
+
+```
+prove     a = wⁿ mod n²     e = SHA-256(...) cut to 128 bits     z = w·rᵉ mod n
+check     zⁿ ≡ a·uᵉ (mod n²)
+0 or 1    a real proof for the true value, a simulated one for the other, e₀ + e₁ = e
+sum 1     the same proof on c₁·c₂·c₃ with k = 1 and the witness r₁·r₂·r₃
+binding   the hash covers n, the election, the ballot number, the option, c and every a
+```
+
+Every design choice of Layer 2 is Geraldo's, with the options he was given and what he chose, in
+[`docs/decisions-layer2.md`](docs/decisions-layer2.md). For H10, CONFIRMED means that the attack
+works.
+
+### Gate and verdicts
+
+<!-- verdicts2:start -->
+| # | Hypothesis | Verdict | Observed | Evidence |
+|---|---|---|---|---|
+| G1 | Test vectors (gate) | **PASS** | The Java verifier in the database reproduced 162/162 hashes of the browser byte for byte, over 18 fixed ballots in 2 key sizes (512 and 2048 bits), agreed with the browser on every verdict (6 accepted, 12 rejected) and verified 18/18 WebCrypto signatures. 6 altered vectors were all caught. | [vectors.txt](evidence/g1-test-vectors/vectors.txt) |
+| H7 | Soundness | **CONFIRMED** | The database rejected 8 of 8 dishonest ballots pasted in the browser console, among them the ballot of 1000 votes and the balanced [3, -2, 0] that Layer 1 accepted, 3 of 3 replays, and 100 of 100 valid ballots with one digit changed. The tally stayed A=5 B=3 C=2: the honest ballots and the control. | [attempts.txt](evidence/h7-soundness/attempts.txt) |
+| H8 | Completeness | **CONFIRMED** | 100 random elections with 2048-bit keys: 520 of 520 honest ballots accepted, all 520 counted after a second verification, and the decrypted tally equal to the true result in 100 of 100. A dishonest ballot placed among honest ones was refused. | [elections.txt](evidence/h8-completeness/elections.txt) |
+| H9 | Integrity | **CONFIRMED** | The owner and an account with the DBA role had 10 of 10 UPDATE, DELETE, TRUNCATE and MERGE statements refused each, where an ordinary copy of the table accepted them. 5 of 5 forged or unsigned ballots were rejected. The DBA could still INSERT 3 forged ballots; the tally counted none of them (6 counted, 3 rejected) and the chain verified over 1651 rows. | [statements.txt](evidence/h9-integrity/statements.txt) |
+| H10 | What still breaks | **CONFIRMED** | All 7 limits held up in the lab: the key holder read 6 of 6 ballots with the voter code next to each; the hidden insert time re-linked 6 of 6; a DBA voted in the name of a registered voter with one UPDATE; a DBA dropped and rebuilt the tables without one ballot and the chain still verified; the owner made the tally refuse 2 honest ballots (this one is reported by the tally); a substituted vote.js read the choice; the verifier was replaced without a trace in the tables. | [limits.txt](evidence/h10-what-still-breaks/limits.txt) |
+| H11 | Cost | **CONFIRMED** | Measured: proofs add 3808 hexadecimal characters to a ballot; encrypting and proving takes a median 283 ms in the browser and casting 1032 ms from the click to the receipt (Layer 1: 289 ms); the database verifies one ballot in 641 ms; the tally of 10000 voters takes 104.7 min against 4.9 s in Layer 1. | [summary.txt](evidence/h11-cost/summary.txt) |
+
+One run from a clean schema: 2026-11-24, full mode, seed 20261123, 190 minutes.
+Each row is the sentence the test itself wrote into its `result.json`. The same table, with the
+time of every step, is in [`evidence/summary.md`](evidence/summary.md).
+<!-- verdicts2:end -->
+
+### The Layer 1 attacks, again
+
+<!-- stopped2:start -->
+| Attack | Layer 1 | Layer 2 | Evidence |
+|---|---|---|---|
+| **Stuff a ballot**, the Layer 1 snippet as it was. | A=4 B=3 C=2 became **A=1004 B=3 C=2** | **Rejected** before anything was stored: "A ballot must carry exactly three ciphertexts and three bit proofs." | [attempts.txt](evidence/h7-soundness/attempts.txt) |
+| **Stuff a ballot** `[1000, 0, 0]`, with proofs forged as well as the attacker can. | A=4 B=3 C=2 became **A=1004 B=3 C=2** | **Rejected** before anything was stored: "Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash." | [attempts.txt](evidence/h7-soundness/attempts.txt) |
+| **Stuff it quietly** `[3, -2, 0]`, with forged proofs. | A=4 B=3 C=2 became **A=7 B=1 C=2** | **Rejected** before anything was stored: "Ballot rejected, invalid proof: option 1: the challenges do not add up to the hash." | [attempts.txt](evidence/h7-soundness/attempts.txt) |
+| **Move votes** with `UPDATE` on the stored ciphertexts. | A=6 B=7 C=7 became **A=1 B=12 C=7** | **Refused**, for the owner (10 of 10 statements) and for an account with the DBA role (10 of 10): ORA-05715. An ordinary copy of the table accepted the same statements. | [statements.txt](evidence/h9-integrity/statements.txt) |
+| **Insert forged ballots** directly into the tables, as a DBA. | Not tried: in Layer 1 an UPDATE was enough | Stored, 3 of 4: a blockchain table accepts INSERT. **Counted: none.** The tally counted 6 ballots and rejected 3, each with the reason. | [statements.txt](evidence/h9-integrity/statements.txt) |
+
+H7 pasted 8 dishonest ballots in the browser console and the database rejected 8. It also rejected 3 of 3 replayed proofs and 100 of 100 valid ballots with one digit changed.
+<!-- stopped2:end -->
+
+### What still breaks
+
+The defences of Layer 2 are code and tables in the database, and keys in the browser. Whoever
+controls those still decides the count. Two of the rows below use harmless replacements: the
+substituted `vote.js` only shows the choice, and the replaced verifier makes the same checks with
+one marker added. They prove that the replaced code runs, not what it could be made to do.
+
+<!-- limits2:start -->
+| Attack | Who can do it | What happened in the lab | Does the application notice? | Evidence |
+|---|---|---|---|---|
+| **Read single ballots, with the voter name.** | Whoever holds the private key | **Worked.** 6 of 6 ballots read, each next to its voter code | No. | [limits.txt](evidence/h10-what-still-breaks/limits.txt) |
+| **Re-link ballots to voters by the hidden insert time.** | Anyone who reads BLIND_BALLOTS and VOTER_ROLL | **Worked.** 6 of 6 paired by ORABCTAB_CREATION_TIME$ against VOTER_ROLL.voted_at, without reading BALLOT_SEALS | No. | [limits.txt](evidence/h10-what-still-breaks/limits.txt) |
+| **Vote in the name of a registered voter who has not voted.** | A DBA who can write to VOTER_ROLL | **Worked.** one UPDATE of VOTER_ROLL.public_key, then the ordinary API: ballot 7 accepted and counted; the voter, coming back, is told the code has been used | No. | [limits.txt](evidence/h10-what-still-breaks/limits.txt) |
+| **Remove a ballot by dropping and rebuilding the tables.** | A DBA | **Worked.** the chain verified over the rebuilt tables; 5 ballots counted while VOTER_ROLL says 6 voted, and nothing compares the two | No. | [limits.txt](evidence/h10-what-still-breaks/limits.txt) |
+| **Make the tally refuse honest ballots, after disabling the primary key and dropping the foreign key.** | The owner of the tables | **Worked.** 2 honest ballots not counted; the tally lists them as rejected, with the reason | Yes: the tally lists the ballots it did not count, with the reason. | [limits.txt](evidence/h10-what-still-breaks/limits.txt) |
+| **Read the choice in the browser, with JavaScript shipped by the server.** | Whoever can change the static files of the application | **Worked.** a substituted vote.js ran in the voter tab and read the choice before it was encrypted; the ballot was accepted as usual | No. | [01-server-shipped-code-reads-the-choice.png](evidence/h10-what-still-breaks/01-server-shipped-code-reads-the-choice.png) |
+| **Replace the verifier.** | The owner of the schema (or a DBA) | **Worked.** the class that checks every proof and signature was replaced; the ballot tables, their chain and the tally answer show nothing | No. | [limits.txt](evidence/h10-what-still-breaks/limits.txt) |
+<!-- limits2:end -->
+
+### What Layer 2 costs
+
+<!-- cost2:start -->
+| What | Layer 1 | Layer 2 | Ratio |
+|---|---:|---:|---:|
+| Encrypt one ballot, in the voter browser | 224 ms | 283 ms, with the proofs | 1.3x |
+| Cast one ballot, from the click to the receipt | 289 ms | 1,032 ms | 3.6x |
+| Request body of one ballot | 3,284 bytes | 7,250 bytes, plus 385 to register the voter key | 2.2x |
+| Verify one ballot in the database, on arrival | nothing to verify | 635 ms for the proofs, 5.62 ms for the signature |  |
+| Tally of 100 voters | 61.3 ms | **1.0 min** | 1,024x |
+| Tally of 1,000 voters | 504 ms | **10.4 min** | 1,243x |
+| Tally of 10,000 voters | 4.9 s | **104.7 min** | 1,276x |
+| Stored per ballot (column values) | 3,087 bytes | 7,044 bytes | 2.3x |
+
+- One ballot carries 3,072 hexadecimal characters of ciphertexts, 3,264 of bit proofs, 544 of sum proof and 128 of signature, for a 2048-bit key.
+- The tally verifies the chain of both tables, then every proof and every signature again, then multiplies. 100 voters: median of 3 runs; 1,000 voters: one run; 10,000 voters: one run. The Layer 1 times are medians of warm runs.
+- The 10,000 ballots of the largest tally were proven in 7 Node worker threads with the library of the application, and inserted by the owner of the tables. The tally verified every one of them, and decrypted to the true result.
+- Layer 1 numbers come from the run of tag v1-layer1 on the same machine: Intel Core i7-9700KF CPU @ 3.60GHz, 8 logical cores, msedge 158.0.4370.33 (headless).
+- Raw measurements: [timings.json](evidence/h11-cost/timings.json). Summary: [summary.txt](evidence/h11-cost/summary.txt).
+<!-- cost2:end -->
+
+### Live session of Layer 2
+
+The session in front of Geraldo, every attack by his hand on tag `v1-layer1` and again on Layer 2,
+follows [`tests/live/RUNBOOK-layer2.md`](tests/live/RUNBOOK-layer2.md). Its recordings go to
+`evidence/live-session-layer2`, apart from the automated evidence.
 
 ## Live session
 
@@ -258,6 +374,8 @@ are in [`evidence/live-session`](evidence/live-session/README.md), together with
 wrong. GitHub does not play an MP4 in the page: open a segment and choose *View raw* to download it.
 
 ## What it costs
+
+Layer 1. Layer 2 against Layer 1 is in [What Layer 2 costs](#what-layer-2-costs).
 
 <!-- cost:start -->
 | In the browser | Where | Median | Fastest and slowest | Samples |
@@ -314,10 +432,18 @@ SYSDBA through the operating system) or by running
 installed Microsoft Edge or Google Chrome, or the Chromium that `npx playwright install chromium`
 downloads.
 
-After that, one command installs everything into a clean schema, runs the unit tests and the six
-hypotheses, takes the screenshots and writes the verdicts to `evidence/summary.md`:
+After that, one command installs everything into a clean schema, runs the unit tests, the gate G1
+and the five hypotheses of Layer 2, and writes the verdicts to `evidence/summary.md`:
 
 ```sh
+npm run lab
+```
+
+Layer 1, its six hypotheses and its screenshots, run on the tag:
+
+```sh
+git checkout v1-layer1
+npm ci
 npm run lab
 ```
 
@@ -325,7 +451,8 @@ npm run lab
 |---|---|
 | `npm run lab` | the whole lab from a clean schema; the time it took here is under the verdict table |
 | `npm run lab:quick` | the same steps with smaller samples, in a few minutes |
-| `node tests/run-all.mjs --only h4,h5` | some steps only, without reinstalling |
+| `node tests/run-all.mjs --only h7,h9` | some steps only, without reinstalling |
+| `node tests/g1-vectors.mjs` | the gate alone: the Java verifier against the fixed vectors of the browser |
 | `node tests/run-all.mjs --seed 7` | another replayable set of random elections |
 | `npm run readme:check` | fails if a table of this README disagrees with `/evidence` |
 | `npm run scan` | looks for passwords, host names, accounts and addresses in every file git would publish |
@@ -339,7 +466,8 @@ The automated tests know every secret, which is what lets them search for one. T
 experiment needs two people: one votes, the other has full DBA access and tries to tell how.
 [`tests/live/RUNBOOK.md`](tests/live/RUNBOOK.md) is the script of that session. The DBA writes the
 guesses to a file and publishes its hash before the voter reveals anything. The script was corrected
-after its first use, which is the [live session](#live-session) above.
+after its first use, which is the [live session](#live-session) above. The session of Layer 2 has its
+own script, [`tests/live/RUNBOOK-layer2.md`](tests/live/RUNBOOK-layer2.md).
 
 ## What this is NOT
 
@@ -350,11 +478,13 @@ after its first use, which is the [live session](#live-session) above.
   It cannot evaluate arbitrary functions on encrypted data.
 - **Unaudited, educational cryptography.** The code follows the textbook definition so that it can be
   read. Nobody has reviewed it for side channels, weak parameters or implementation mistakes.
-- **No integrity guarantees.** Ballots are not proven valid and stored ciphertexts are not protected:
-  see H4 and H5. The tally is only as honest as every voter and every administrator.
-- **The server ships the JavaScript.** The browser encrypts with code the server sent. A server that
-  wants the votes or the private key can send code that leaks them, and the lab does nothing
-  about it.
+- **Weak integrity guarantees.** Layer 1 has none: see H4 and H5. Layer 2 rejects ballots whose
+  proofs or signature fail and keeps ballots in blockchain tables, but a DBA can still drop and
+  rebuild those tables, replace a voter's key or replace the verifier: see H10. The tally is only as
+  honest as every administrator.
+- **The server ships the JavaScript.** The browser encrypts, proves and signs with code the server
+  sent. A server that wants the votes or the private key can send code that leaks them, and the lab
+  does nothing about it but measure it (H10).
 - **Not an Oracle feature, and not endorsed by Oracle.** It is an independent experiment that uses
   Oracle APEX and Oracle AI Database.
 - **No evaluation of any real election system.** The election is fictional, and nothing here
@@ -363,7 +493,8 @@ after its first use, which is the [live session](#live-session) above.
 ## Article
 
 [A Tally the Database Cannot Read: Homomorphic Voting in Oracle APEX](https://b2dev.tech/blog/apex-blindfold-a-tally-the-database-cannot-read),
-published on b2dev.tech on 23 November 2026, is the write-up of this lab.
+published on b2dev.tech on 23 November 2026, is the write-up of Layer 1. The write-up of Layer 2 is
+a draft, not published.
 
 ## Repository layout
 
@@ -372,7 +503,8 @@ published on b2dev.tech on 23 November 2026, is the write-up of this lab.
 | [`app`](app) | the APEX application: APEXlang source in `app/apexlang`, SQL export in `app/f2620.sql` |
 | [`db`](db) | tables, the Java tally, the PL/SQL packages, install and uninstall scripts |
 | [`tests`](tests) | unit tests, one script per hypothesis, the runner, the tools of the live session |
-| [`evidence`](evidence) | the output of one full run, in one folder per hypothesis, and the record of the live session in [`evidence/live-session`](evidence/live-session/README.md) |
+| [`evidence`](evidence) | the output of one full run of each layer, in one folder per hypothesis, and the record of the live session in [`evidence/live-session`](evidence/live-session/README.md) |
+| [`docs`](docs) | the design decisions of Layer 2 |
 | [`scripts`](scripts) | installation, the scan that runs before a push, the generators of this README |
 | [`assets`](assets) | logo, and the README images and animation made from the evidence |
 

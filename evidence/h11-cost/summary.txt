@@ -1,0 +1,33 @@
+# H11: cost of Layer 2
+# generated: 2026-11-24T17:44:56.276Z
+# 2048-bit election key. Machine: Intel(R) Core(TM) i7-9700KF CPU @ 3.60GHz, 8 logical cores. Browser: msedge 158.0.4370.33 (headless).
+# Layer 1 reference: evidence/h6-cost/result.json, the run of tag v1-layer1 on the same machine.
+# The 10000 ballots of the tally were proven in 7 Node worker threads and inserted by the owner; the tally verified each one again.
+
+Size of one ballot (hexadecimal characters)
+  three ciphertexts:   3072
+  three bit proofs:    3264
+  sum proof:           544
+  signature:           128
+  request body of CAST_BALLOT: 7250 bytes against 3284 bytes in Layer 1 (2.2x)
+  request body of REGISTER_VOTER: 385 bytes (Layer 1 had no such request)
+
+In the browser
+  encrypt one ballot (three ciphertexts), no proofs      median       81.6 ms   min 80.8  max 83  n=20
+  encrypt and prove one ballot                           median     283.35 ms   min 281.5  max 287.1  n=20
+  generate the voter key (ECDSA P-256)                   median        0.1 ms   min 0  max 0.2  n=20
+  sign the ballot                                        median        0.3 ms   min 0.2  max 0.3  n=20
+  cast one ballot, from the click to the receipt         median    1031.85 ms   min 1020.3  max 1545.9  n=20
+  Layer 1: encrypt 224.3 ms, cast from the click to the receipt 289.35 ms
+
+In the database, per ballot
+  verify the four proofs (bf_v2_verify_ballot)           median    635.266 ms   min 628.304  max 638.566  n=20
+  verify the signature (bf_v2_verify_signature)          median       5.62 ms   min 5.236  max 9.365  n=20
+  bf_election.cast_ballot, everything included           median    637.736 ms   min 631.229  max 645.184  n=20
+
+Tally (chain verification, proofs and signatures of every ballot again, then the products)
+     100 voters: 62.9 s, 62.8 s, 62.7 s       Layer 1: 0.06 s (1024x)   stored 7040 bytes per ballot (Layer 1: 3084)
+    1000 voters: 626.3 s                      Layer 1: 0.50 s (1243x)   stored 7044 bytes per ballot (Layer 1: 3087)
+   10000 voters: 6282.6 s                     Layer 1: 4.92 s (1276x)   stored 7044 bytes per ballot (Layer 1: 3087)
+  building the 10000 ballots in Node: 2398 s on 7 threads
+  One tally per size from 1,000 voters up; three at 100. Times seen from the client, same machine.

@@ -1,0 +1,79 @@
+# H10: what still breaks
+# generated: 2026-11-24T15:05:03.501Z
+# 2048-bit election key, fictional election, lab schema. CONFIRMED = the attack works.
+# Powers used: the private key (1), read access (2), the DBA role (3, 4), the schema owner (5, 7),
+# the static files of the application (6). SYSDBA and operating system access were not needed.
+
+1. The key holder reads every ballot
+  Election 117, 6 ballots. BALLOT_SEALS keeps the voter code of each ballot in the clear (decision 5).
+  VOTER-0001  ballot read as A
+  VOTER-0002  ballot read as B
+  VOTER-0003  ballot read as B
+  VOTER-0004  ballot read as C
+  VOTER-0005  ballot read as A
+  VOTER-0006  ballot read as B
+  with another private key (control): 0 of 6 read
+
+2. The hidden insert time re-links ballots to voters
+  select ballot_id, min(orabctab_creation_time$) from <owner>.blind_ballots where election_id = 117 group by ballot_id order by 2
+  select voter_id from <owner>.voter_roll where voted_at is not null order by voted_at
+  ballot 1 -> VOTER-0001   (seal says VOTER-0001)
+  ballot 2 -> VOTER-0002   (seal says VOTER-0002)
+  ballot 3 -> VOTER-0003   (seal says VOTER-0003)
+  ballot 4 -> VOTER-0004   (seal says VOTER-0004)
+  ballot 5 -> VOTER-0005   (seal says VOTER-0005)
+  ballot 6 -> VOTER-0006   (seal says VOTER-0006)
+  re-linked: 6 of 6; a seeded random pairing: 2 of 6
+  The voter code is in BALLOT_SEALS anyway (decision 5). This measures what removing it would not fix.
+
+3. A DBA votes in the name of a registered voter who has not voted
+  VOTER-0007 registered a key and did not vote.
+  control, register another key for VOTER-0007: ORA-20008: This voter code already has a key, registered by another browser tab. A voter code takes one key, once.
+  update <owner>.voter_roll set public_key = <the DBA key> where voter_id = 'VOTER-0007'  -> accepted
+  ballot for C, signed with the DBA key, through bf_election.cast_ballot: accepted as ballot 7
+  tally: 7 counted, 0 rejected, decrypted A=2  B=3  C=2 (the honest ballots: A=2  B=3  C=1)
+  VOTER-0007 comes back with the key of the browser: ORA-20004: This voter code has already been used.
+
+4. A DBA drops the ballot tables, rebuilds them and copies back every ballot but one
+  Election 118, 6 honest ballots (A=2  B=3  C=1). The ballot left out: 1, a vote for A.
+  control, delete from <owner>.blind_ballots where ballot_id = 1: ORA-05715: operation not allowed on the blockchain or immutable table
+  drop table <owner>.ballot_seals purge  -> done
+  drop table <owner>.blind_ballots purge  -> done
+  create blockchain table <owner>.blind_ballots ( ...  -> done
+  create blockchain table <owner>.ballot_seals ( ...  -> done
+  copied back: 1687 of 1690 ciphertext rows and 561 of 562 seals, every election
+  chain verification: 1687 rows and 561 seals verified
+  tally: 5 counted, 0 rejected, decrypted A=1  B=3  C=1
+  VOTER_ROLL: 6 voters marked as voted
+  The insert time of every copied row is the time of the copy: the rebuilt chain starts on the day of the rebuild.
+
+5. The owner disables the primary key and drops the foreign key of BLIND_BALLOTS
+  control, a fourth row for ballot 2 with the key enabled: ORA-00001: unique constraint (BLINDFOLD.BLIND_BALLOTS_PK) violated on table BLINDFOLD.BLIND_BALLOTS columns (ELECTION_ID, BALLOT_ID, CANDIDATE_ID)
+  alter table blind_ballots disable constraint blind_ballots_pk   -> done
+  alter table blind_ballots drop constraint blind_ballots_candidate_fk   -> done
+  a fourth row for ballot 2 (candidate 1 again): stored
+  a fourth row for ballot 3 (candidate 9): stored
+  tally: 3 counted, 2 rejected
+    ballot 2 (VOTER-0002): expected three ciphertext rows, found 4
+    ballot 3 (VOTER-0003): expected three ciphertext rows, found 4
+
+6. JavaScript shipped by the server
+  The substitution is made with Playwright request routing, which stands for a server or an APEX developer
+  who changes the static file. The installed application is not modified.
+  vote.js in APEX_APPLICATION_STATIC_FILES: SHA-256 fa72d6bec8c8715f8ca901018c17e70085a8e5b2c7719efc7d49b932bf167f3c
+  vote.js in the repository:                SHA-256 fa72d6bec8c8715f8ca901018c17e70085a8e5b2c7719efc7d49b932bf167f3c
+  control, as installed: 0 note on the page; ballot 1 accepted
+  substituted, voter chooses B: "Read by code the server shipped, before encryption: B / AIComputed Columns with Natural Language in Interactive Reports / AI / Computed Columns with Natural Language in Interactive Reports"; ballot 2 accepted
+  The added lines read the page only. Code in that position also holds the voter signing key
+  handle and the values that get encrypted.
+
+7. The verifier is code in the schema
+  create or replace and compile java source named "BlindfoldValidity": the same checks plus one method, marker().
+  marker before: ORA-00904: "BF_H10_MARKER": invalid identifier; after: replaced by H10
+  LAST_DDL_TIME of the Java source: 2026-11-24 11:34:43 -> 2026-11-24 12:04:48
+  chain verification before: {"blind_ballots":1695,"ballot_seals":563}; after: {"blind_ballots":1695,"ballot_seals":563}
+  tally after the replacement: 2 counted, 0 rejected
+  Whoever can replace this class decides what verifyBallot and verifySignature answer, at arrival and in the tally.
+
+The lab schema was reinstalled from db/install.sql at the end of this test.
+  marker: gone; BLIND_BALLOTS_PK: ENABLED

@@ -4,8 +4,14 @@
  * The choice never becomes an APEX item and is never submitted. The browser
  * encrypts it into three Paillier ciphertexts and sends only those through the
  * CAST_BALLOT Ajax Callback.
+ *
+ * Layer 2: the ballot also carries proofs that it is an honest one (each
+ * ciphertext holds 0 or 1, and together they hold 1) and a signature. The
+ * voter key pair is generated here, its public half is registered for the
+ * voter code, and the private half never leaves this tab: it cannot even be
+ * exported from the object that holds it.
  */
-import { P, callback, el, short, formatInt, repaint, pageUrl, mountChrome, say } from './shared.js';
+import { P, V, callback, el, short, formatInt, repaint, pageUrl, mountChrome, say } from './shared.js';
 
 export async function mount(root) {
   mountChrome(root, 'vote');
@@ -21,6 +27,7 @@ export async function mount(root) {
   let publicKey = null;
   let choice = null; // zero-based index of the selected option. Lives in this variable only.
   let candidates = [];
+  const voterKeys = new Map(); // voter code -> key pair, for a retry in this tab. Memory only.
 
   const log = (title, ...body) => {
     const item = el('li', { class: 'bf-wire__item' }, el('span', { class: 'bf-wire__title' }, title), ...body);
@@ -95,11 +102,37 @@ export async function mount(root) {
     castButton.disabled = true;
     // Keep only the public key entry: a retry starts a fresh log.
     wire.querySelectorAll('.bf-wire__item:not(:first-child)').forEach((item) => item.remove());
-    say(message, 'Encrypting in this browser…');
+    say(message, 'Registering a signing key for this voter code…');
+    await repaint();
+
+    // ---- a key for this voter, and the ballot number the proofs are bound to
+    if (!voterKeys.has(voter)) voterKeys.set(voter, await V.generateVoterKey());
+    const voterKey = voterKeys.get(voter);
+    let reserved;
+    try {
+      reserved = await callback('REGISTER_VOTER', { x01: voter, x02: voterKey.publicKeyHex });
+    } catch (error) {
+      reserved = { ok: false, message: error.message };
+    }
+    if (!reserved.ok) {
+      log('Rejected by the database', el('span', { class: 'bf-wire__note' }, reserved.message)).classList.add('is-rejected');
+      say(message, reserved.message, 'error');
+      refresh();
+      return;
+    }
+    const context = { electionId: reserved.election_id, ballotId: reserved.ballot_id };
+    log('Voter key registered',
+      el('code', { class: 'bf-hex' }, `public key = ${short(voterKey.publicKeyHex, 14, 8)}`),
+      el('span', { class: 'bf-wire__note' }, `ECDSA P-256, made in this tab. The private half cannot be exported. Ballot number ${reserved.ballot_id} of election ${reserved.election_id} is reserved for ${voter}.`));
+
+    say(message, 'Encrypting and proving in this browser…');
     await repaint();
 
     const started = performance.now();
-    const ballot = P.encryptBallot(publicKey, choice, candidates.length);
+    const proven = await V.proveChoice(publicKey, context, choice, candidates.length);
+    const ballot = proven.ciphertexts;
+    const parts = { ciphertexts: proven.ciphertexts, bitProofs: proven.bitProofs, sumProof: proven.sumProof };
+    const signature = await V.signBallot(voterKey.privateKey, publicKey, context, voter, parts);
     const encryptMs = performance.now() - started;
 
     const table = el('table', { class: 'bf-cipher' },
@@ -114,14 +147,20 @@ export async function mount(root) {
     log('Ballot encrypted here', table,
       el('span', { class: 'bf-wire__note' }, `${formatInt(Math.round(encryptMs))} ms. The Plaintext column exists on this screen only.`));
 
+    log('Proofs and signature made here',
+      el('code', { class: 'bf-hex' }, `3 bit proofs + 1 sum proof = ${formatInt(parts.bitProofs.join('').length + parts.sumProof.length)} hex characters`),
+      el('code', { class: 'bf-hex' }, `signature = ${short(signature, 14, 8)}`),
+      el('span', { class: 'bf-wire__note' }, `Each ciphertext holds 0 or 1, and together they hold 1. The proofs are valid for ballot ${context.ballotId} only, and they do not say which option holds the 1.`));
+
     log('Request sent',
-      el('code', { class: 'bf-hex' }, `x01 = ${voter}`),
+      el('code', { class: 'bf-hex' }, `x01 = ${voter}, x02 = ballot ${context.ballotId}`),
       el('code', { class: 'bf-hex' }, `f01 = 3 ciphertexts, ${formatInt(ballot.join('').length)} hex characters`),
+      el('code', { class: 'bf-hex' }, 'f02 = 3 bit proofs, x03 = sum proof, x04 = signature'),
       el('span', { class: 'bf-wire__note' }, 'Choice sent: none.'));
 
     let answer;
     try {
-      answer = await callback('CAST_BALLOT', { x01: voter, f01: ballot });
+      answer = await callback('CAST_BALLOT', { x01: voter, x02: String(context.ballotId), x03: parts.sumProof, x04: signature, f01: parts.ciphertexts, f02: parts.bitProofs });
     } catch (error) {
       answer = { ok: false, message: error.message };
     }
@@ -133,7 +172,7 @@ export async function mount(root) {
       return;
     }
 
-    log('Stored', el('span', { class: 'bf-wire__note' }, `Ballot ${answer.ballot_id}: three rows in BLIND_BALLOTS.`));
+    log('Verified and stored', el('span', { class: 'bf-wire__note' }, `Ballot ${answer.ballot_id}: the database checked the proofs and the signature, then stored three rows in BLIND_BALLOTS and one in BALLOT_SEALS.`));
     say(message, '');
 
     // ---- receipt

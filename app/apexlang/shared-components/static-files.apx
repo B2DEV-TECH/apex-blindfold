@@ -29,6 +29,11 @@ file "blindfold/paillier.js" (
     charSet: utf-8
 )
 
+file "blindfold/validity.js" (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
 file "blindfold/boot.js" (
     mimeType: text/javascript
     charSet: utf-8

@@ -1,0 +1,184 @@
+{
+  "generated": "2026-11-23T15:47:40.850Z",
+  "command": "node tests/run-all.mjs",
+  "mode": "full",
+  "seed": 20261123,
+  "duration_ms": 1154727,
+  "environment": {
+    "database": "Oracle AI Database 26ai Free Release 23.26.3.0.0 - Develop, Learn, and Run for Free Version 23.26.3.0.0",
+    "database_platform": "Microsoft Windows x86 64-bit",
+    "apex": "26.2.0",
+    "ords": "26.3.0.r2721811",
+    "database_jvm": "11.0.32",
+    "parameters": {
+      "compatible": "23.6.0",
+      "mle_prog_languages": "all"
+    },
+    "node": "v22.16.0",
+    "python": "Python 3.13.15",
+    "client_platform": "win32 x64"
+  },
+  "tally_engine": "java",
+  "steps": [
+    {
+      "name": "install: clean schema and APEX application",
+      "ok": true,
+      "ms": 22338
+    },
+    {
+      "name": "unit tests: Paillier library and election API",
+      "ok": true,
+      "ms": 2005
+    },
+    {
+      "name": "step 0: environment",
+      "ok": true,
+      "ms": 44774
+    },
+    {
+      "name": "H1: Correctness",
+      "ok": true,
+      "ms": 808395
+    },
+    {
+      "name": "H2: Blindness",
+      "ok": true,
+      "ms": 36388
+    },
+    {
+      "name": "H3: Indistinguishability",
+      "ok": true,
+      "ms": 22049
+    },
+    {
+      "name": "H4: Ballot stuffing",
+      "ok": true,
+      "ms": 19398
+    },
+    {
+      "name": "H5: Other limits",
+      "ok": true,
+      "ms": 57034
+    },
+    {
+      "name": "H6: Cost",
+      "ok": true,
+      "ms": 112281
+    },
+    {
+      "name": "screenshots",
+      "ok": true,
+      "ms": 30034
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H1",
+      "title": "Correctness",
+      "verdict": "CONFIRMED",
+      "statement": "The decrypted tally equals the true tally in 100/100 randomized elections (10 to 5000 voters, 82874 ballots), and JavaScript, Java and Python agree on every value compared.",
+      "checks": "9/9",
+      "mode": {
+        "quick": false,
+        "seed": 20261123
+      },
+      "evidence": "evidence/h1-correctness/result.json",
+      "files": [
+        "evidence/h1-correctness/elections.txt",
+        "evidence/h1-correctness/crosscheck.txt"
+      ]
+    },
+    {
+      "id": "H2",
+      "title": "Blindness",
+      "verdict": "CONFIRMED",
+      "statement": "Knowing the private key and the randomizer of all 27 ciphertexts, the test found none of them, whole or in part, in 21 sources: 231 HTTP requests and their responses, 4 tables, APEX session state (0 page items; 2 report paging positions), 4423 LEVEL9 debug messages, the activity and access logs, 172 SQL statements, captured binds, audit trail, alert log, and the storage of both tabs. Ballot requests differ only in the voter code and three ciphertexts. ORDS log files were not read.",
+      "checks": "14/14",
+      "mode": {
+        "quick": false,
+        "seed": 20261123
+      },
+      "evidence": "evidence/h2-blindness/result.json",
+      "files": [
+        "evidence/h2-blindness/scan-summary.txt",
+        "evidence/h2-blindness/tables.txt",
+        "evidence/h2-blindness/session-state.txt",
+        "evidence/h2-blindness/debug-trace.txt",
+        "evidence/h2-blindness/request-payloads.txt",
+        "evidence/h2-blindness/authority.har",
+        "evidence/h2-blindness/voter.har",
+        "evidence/h2-blindness/apex-logs.txt",
+        "evidence/h2-blindness/client-side.txt",
+        "evidence/h2-blindness/controls.txt"
+      ]
+    },
+    {
+      "id": "H3",
+      "title": "Indistinguishability",
+      "verdict": "CONFIRMED",
+      "statement": "All 6000 stored ciphertexts are distinct, and none of 13 distinguishers separates Enc(0) from Enc(1) on 4000 labelled ciphertexts (classifier accuracy 51.4%). Indistinguishability itself rests on the DCR assumption, which a test cannot prove.",
+      "checks": "7/7",
+      "mode": {
+        "quick": false,
+        "seed": 20261123
+      },
+      "evidence": "evidence/h3-indistinguishability/result.json",
+      "files": [
+        "evidence/h3-indistinguishability/distinct-ciphertexts.txt",
+        "evidence/h3-indistinguishability/distinguishers.txt"
+      ]
+    },
+    {
+      "id": "H4",
+      "title": "Ballot stuffing",
+      "verdict": "CONFIRMED",
+      "statement": "The tally accepted a ballot encrypting 1000 (A=4  B=3  C=2 became A=1004  B=3  C=2). A balanced ballot of [3, -2, 0] changed the result (A=7  B=1  C=2) while the totals still added up to the turnout.",
+      "checks": "7/7",
+      "mode": {
+        "quick": false,
+        "seed": 20261123
+      },
+      "evidence": "evidence/h4-ballot-stuffing/result.json",
+      "files": [
+        "evidence/h4-ballot-stuffing/01-stuffed-tally.png",
+        "evidence/h4-ballot-stuffing/02-balanced-stuffing-undetected.png",
+        "evidence/h4-ballot-stuffing/stuffing.txt"
+      ]
+    },
+    {
+      "id": "H5",
+      "title": "Other limits",
+      "verdict": "CONFIRMED",
+      "statement": "All three limits hold: a DBA with the public key moved 5 votes with two UPDATEs and the totals still matched the turnout; the key holder read 24/24 individual ballots; ordering by voted_at and ballot_id re-linked 24/24 voters arriving one at a time (59/200 exactly, 199/200 within 7 positions, when 8 sessions vote at once).",
+      "checks": "6/6",
+      "mode": {
+        "quick": false,
+        "seed": 20261123
+      },
+      "evidence": "evidence/h5-limits/result.json",
+      "files": [
+        "evidence/h5-limits/b-key-holder-reads-ballots.txt",
+        "evidence/h5-limits/c-relinking.txt",
+        "evidence/h5-limits/a-dba-adds-votes.txt",
+        "evidence/h5-limits/extra-key-substitution.txt",
+        "evidence/h5-limits/extra-key-loss.txt"
+      ]
+    },
+    {
+      "id": "H6",
+      "title": "Cost",
+      "verdict": "CONFIRMED",
+      "statement": "Measured: casting a ballot takes a median 289 ms in the browser; tallying 10000 voters takes 4.9 s against 1.074 ms for a plaintext COUNT (4584x); a ballot stores 3087 bytes against 5.",
+      "checks": "4/4",
+      "mode": {
+        "quick": false,
+        "seed": 20261123
+      },
+      "evidence": "evidence/h6-cost/result.json",
+      "files": [
+        "evidence/h6-cost/timings.json",
+        "evidence/h6-cost/summary.txt"
+      ]
+    }
+  ]
+}

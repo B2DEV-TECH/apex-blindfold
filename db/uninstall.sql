@@ -12,12 +12,22 @@ declare
     'drop package if exists bf_election',
     'drop function if exists bf_blind_tally',
     'drop function if exists bf_square_hex',
+    'drop function if exists bf_v2_bit_challenge',
+    'drop function if exists bf_v2_sum_challenge',
+    'drop function if exists bf_v2_bit_digest',
+    'drop function if exists bf_v2_sum_digest',
+    'drop function if exists bf_v2_verify_ballot',
+    'drop function if exists bf_v2_ballot_digest',
+    'drop function if exists bf_v2_verify_signature',
+    'drop function if exists bf_v2_check_public_key',
+    'drop table if exists ballot_seals purge',
     'drop table if exists blind_ballots purge',
     'drop table if exists voter_roll purge',
     'drop table if exists candidates purge',
     'drop table if exists election_key purge',
     'drop table if exists plain_ballots purge',
-    'drop sequence if exists blind_ballots_seq'
+    'drop sequence if exists blind_ballots_seq',
+    'drop sequence if exists election_seq'
   );
   v_java pls_integer;
 begin
@@ -33,6 +43,15 @@ begin
      and object_name = 'BlindfoldTally';
   if v_java > 0 then
     execute immediate 'drop java source "BlindfoldTally"';
+  end if;
+
+  select count(*)
+    into v_java
+    from user_objects
+   where object_type = 'JAVA SOURCE'
+     and object_name = 'BlindfoldValidity';
+  if v_java > 0 then
+    execute immediate 'drop java source "BlindfoldValidity"';
   end if;
 end;
 /

@@ -5,22 +5,32 @@
 //   node scripts/readme-sync.mjs --check   exit 1 if README.md is out of date
 //
 // A generated block is the text between <!-- name:start --> and <!-- name:end -->:
-//   verdicts      one row per hypothesis        evidence/summary.json
-//   attacks       what breaks the tally         H4 and H5 result.json
-//   live          the live session              evidence/live-session: challenge-summary.json, timeline.txt
-//   cost          time and storage              H6 result.json, timings.json
-//   environment   versions the lab ran on       evidence/summary.json, timings.json
+//   verdicts      Layer 1, one row per hypothesis   evidence/summary-layer1.json (run of tag v1-layer1)
+//   attacks       what breaks the Layer 1 tally     H4 and H5 result.json
+//   live          the live session of Layer 1       evidence/live-session: challenge-summary.json, timeline.txt
+//   cost          Layer 1 time and storage          H6 result.json, timings.json
+//   verdicts2     Layer 2, the gate and H7 to H11   evidence/summary.json
+//   stopped2      the Layer 1 attacks, again        H4, H5, H7 and H9 result.json
+//   limits2       what still breaks Layer 2         H10 result.json
+//   cost2         Layer 2 against Layer 1           H11 result.json (it carries the Layer 1 reference)
+//   environment   versions the lab ran on           evidence/summary.json, H11 timings.json
 // Everything outside the blocks is written by hand and holds no measurement.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT } from '../tests/lib/config.mjs';
 
 const read = (rel) => JSON.parse(readFileSync(join(ROOT, 'evidence', rel), 'utf8'));
-const summary = read('summary.json');
+const summary = read('summary-layer1.json');
+const summary2 = read('summary.json');
 const h4 = read('h4-ballot-stuffing/result.json').numbers;
 const h5 = read('h5-limits/result.json').numbers;
 const h6 = read('h6-cost/result.json').numbers;
 const timings = read('h6-cost/timings.json');
+const h7 = read('h7-soundness/result.json').numbers;
+const h9 = read('h9-integrity/result.json').numbers;
+const h10 = read('h10-what-still-breaks/result.json').numbers;
+const h11 = read('h11-cost/result.json').numbers;
+const timings2 = read('h11-cost/timings.json');
 
 const count = (value) => Number(value).toLocaleString('en-US');
 const sum = (totals) => totals.reduce((a, b) => a + b, 0);
@@ -44,7 +54,95 @@ function verdicts() {
     '',
     `One run from a clean schema: ${summary.generated.slice(0, 10)}, ${summary.mode} mode, seed ${summary.seed}, ${Math.round(summary.duration_ms / 60000)} minutes.`,
     'Each row is the sentence the test itself wrote into its `result.json`. The same table, with the',
+    'time of every step, is in [`evidence/summary-layer1.md`](evidence/summary-layer1.md).',
+  ];
+}
+
+// ---- Layer 2: verdicts
+function verdicts2() {
+  const g = summary2.gate;
+  const rows = summary2.hypotheses.map((h) => `| ${h.id} | ${h.title} | **${h.verdict}** | ${cell(h.statement)} | ${link(h.main.replace(/^evidence\//, ''))} |`);
+  return [
+    '| # | Hypothesis | Verdict | Observed | Evidence |',
+    '|---|---|---|---|---|',
+    `| ${g.id} | ${g.title} (gate) | **${g.verdict}** | ${cell(g.statement)} | ${link(g.evidence.replace(/^evidence\//, ''))} |`,
+    ...rows,
+    '',
+    `One run from a clean schema: ${summary2.generated.slice(0, 10)}, ${summary2.mode} mode, seed ${summary2.seed}, ${Math.round(summary2.duration_ms / 60000)} minutes.`,
+    'Each row is the sentence the test itself wrote into its `result.json`. The same table, with the',
     'time of every step, is in [`evidence/summary.md`](evidence/summary.md).',
+  ];
+}
+
+// ---- Layer 2: the attacks of Layer 1, run again
+function stopped2() {
+  const outcome = (weights) => h7.outcomes.find((o) => o.weights.join() === weights.join() && o.snippet !== 'ballot-stuffing.js');
+  const plain = h7.outcomes.find((o) => o.snippet === 'ballot-stuffing.js');
+  const stuffed = outcome([1000, 0, 0]);
+  const balanced = outcome([3, -2, 0]);
+  const said = (o) => (o.rejected ? `**Rejected** before anything was stored: "${o.answer}"` : `ACCEPTED: ${o.answer}`);
+  const rows = [
+    ['**Stuff a ballot**, the Layer 1 snippet as it was.', `${tally(h4.honest)} became **${tally(h4.naive_after)}**`, said(plain), link('h7-soundness/attempts.txt')],
+    ['**Stuff a ballot** `[1000, 0, 0]`, with proofs forged as well as the attacker can.', `${tally(h4.honest)} became **${tally(h4.naive_after)}**`, said(stuffed), link('h7-soundness/attempts.txt')],
+    ['**Stuff it quietly** `[3, -2, 0]`, with forged proofs.', `${tally(h4.honest)} became **${tally(h4.balanced_after)}**`, said(balanced), link('h7-soundness/attempts.txt')],
+    ['**Move votes** with `UPDATE` on the stored ciphertexts.', `${tally(h5.tally_honest)} became **${tally(h5.tally_forged)}**`, `**Refused**, for the owner (${h9.refused_owner} of ${h9.statements} statements) and for an account with the DBA role (${h9.refused_dba} of ${h9.statements}): ORA-05715. An ordinary copy of the table accepted the same statements.`, link('h9-integrity/statements.txt')],
+    ['**Insert forged ballots** directly into the tables, as a DBA.', 'Not tried: in Layer 1 an UPDATE was enough', `Stored, ${h9.dba_inserts_stored} of ${h9.dba_inserts}: a blockchain table accepts INSERT. **Counted: none.** The tally counted ${h9.tally_counted} ballots and rejected ${h9.tally_rejected}, each with the reason.`, link('h9-integrity/statements.txt')],
+  ];
+  return [
+    '| Attack | Layer 1 | Layer 2 | Evidence |',
+    '|---|---|---|---|',
+    ...rows.map((row) => `| ${row.map(cell).join(' | ')} |`),
+    '',
+    `H7 pasted ${h7.attempts} dishonest ballots in the browser console and the database rejected ${h7.attempts_rejected}. It also rejected ${h7.replays_rejected} of ${h7.replays} replayed proofs and ${h7.damaged_rejected} of ${h7.damaged} valid ballots with one digit changed.`,
+  ];
+}
+
+// ---- Layer 2: what still breaks
+function limits2() {
+  const file = (a) => (a.id === 6 ? 'h10-what-still-breaks/01-server-shipped-code-reads-the-choice.png' : 'h10-what-still-breaks/limits.txt');
+  const rows = h10.attacks.map((a) => [
+    `**${a.name}.**`,
+    a.who,
+    `${a.worked ? '**Worked.**' : '**Did not work.**'} ${a.detail}`,
+    a.noticed ? 'Yes: the tally lists the ballots it did not count, with the reason.' : 'No.',
+    link(file(a)),
+  ]);
+  return [
+    '| Attack | Who can do it | What happened in the lab | Does the application notice? | Evidence |',
+    '|---|---|---|---|---|',
+    ...rows.map((row) => `| ${row.map(cell).join(' | ')} |`),
+  ];
+}
+
+// ---- Layer 2: cost against Layer 1
+function cost2() {
+  const ms = (value) => `${value >= 100 ? count(Math.round(value)) : value >= 10 ? value.toFixed(1) : value} ms`;
+  const time = (value) => (value >= 60000 ? `${(value / 60000).toFixed(1)} min` : value >= 1000 ? `${(value / 1000).toFixed(1)} s` : ms(value));
+  const ratio = (a, b) => (b ? `${(a / b).toFixed(1)}x` : '');
+  const l1 = h11.layer1;
+  const sizes = h11.hex_sizes;
+  const rows = [
+    ['Encrypt one ballot, in the voter browser', ms(l1.encrypt_ballot_ms), `${ms(h11.encrypt_and_prove_ms.median)}, with the proofs`, ratio(h11.encrypt_and_prove_ms.median, l1.encrypt_ballot_ms)],
+    ['Cast one ballot, from the click to the receipt', ms(l1.cast_ballot_ui_ms), ms(h11.cast_ballot_ui_ms.median), ratio(h11.cast_ballot_ui_ms.median, l1.cast_ballot_ui_ms)],
+    ['Request body of one ballot', `${count(l1.request_bytes)} bytes`, `${count(h11.request_bytes)} bytes, plus ${count(h11.register_request_bytes)} to register the voter key`, ratio(h11.request_bytes, l1.request_bytes)],
+    ['Verify one ballot in the database, on arrival', 'nothing to verify', `${ms(h11.verify_proofs_ms.median)} for the proofs, ${ms(h11.verify_signature_ms.median)} for the signature`, ''],
+    ...h11.tally.map((t) => {
+      const before = l1.tally.find((x) => x.voters === t.voters);
+      return [`Tally of ${count(t.voters)} voters`, before ? time(before.ms) : '', `**${time(t.ms)}**`, before ? `${count(Math.round(t.ms / before.ms))}x` : ''];
+    }),
+    ['Stored per ballot (column values)', `${count(Math.round(l1.tally.at(-1).bytes_per_ballot))} bytes`, `${count(Math.round(h11.tally.at(-1).bytes_per_ballot))} bytes`, ratio(h11.tally.at(-1).bytes_per_ballot, l1.tally.at(-1).bytes_per_ballot)],
+  ];
+  const machine = timings2.machine;
+  return [
+    '| What | Layer 1 | Layer 2 | Ratio |',
+    '|---|---:|---:|---:|',
+    ...rows.map((row) => `| ${row.map(cell).join(' | ')} |`),
+    '',
+    `- One ballot carries ${count(sizes.ciphertexts)} hexadecimal characters of ciphertexts, ${count(sizes.bitProofs)} of bit proofs, ${count(sizes.sumProof)} of sum proof and 128 of signature, for a ${h11.key_bits}-bit key.`,
+    `- The tally verifies the chain of both tables, then every proof and every signature again, then multiplies. ${h11.tally.map((t) => `${count(t.voters)} voters: ${t.runs === 1 ? 'one run' : `median of ${t.runs} runs`}`).join('; ')}. The Layer 1 times are medians of warm runs.`,
+    `- The ${count(h11.build.ballots)} ballots of the largest tally were proven in ${h11.build.threads} Node worker threads with the library of the application, and inserted by the owner of the tables. The tally verified every one of them, and decrypted to the true result.`,
+    `- Layer 1 numbers come from the run of tag v1-layer1 on the same machine: ${machine.cpu.replace(/\((R|TM)\)/g, '').replace(/\s+/g, ' ')}, ${machine.logical_cores} logical cores, ${timings2.browser.browser}.`,
+    `- Raw measurements: ${link('h11-cost/timings.json')}. Summary: ${link('h11-cost/summary.txt')}.`,
   ];
 }
 
@@ -144,7 +242,7 @@ function cost() {
 
 // ---- environment
 function environment() {
-  const env = summary.environment;
+  const env = summary2.environment ?? summary.environment;
   return [
     '| Component | Version the lab ran on |',
     '|---|---|',
@@ -154,7 +252,7 @@ function environment() {
     `| ORDS | ${env.ords.split('.r')[0]} |`,
     `| Node.js | ${env.node.replace(/^v/, '')} |`,
     `| Python (cross-check only) | ${env.python.replace(/^Python /, '')} |`,
-    `| Browser | ${timings.browser.browser}, driven by Playwright |`,
+    `| Browser | ${timings2.browser.browser}, driven by Playwright |`,
   ];
 }
 
@@ -212,7 +310,7 @@ function live() {
   ];
 }
 
-const BLOCKS = { verdicts, attacks, live, cost, environment };
+const BLOCKS = { verdicts, attacks, live, cost, verdicts2, stopped2, limits2, cost2, environment };
 
 const file = join(ROOT, 'README.md');
 const readme = readFileSync(file, 'utf8');
@@ -231,8 +329,8 @@ if (process.argv.includes('--check')) {
     console.error('README.md does not match /evidence. Run: node scripts/readme-sync.mjs');
     process.exit(1);
   }
-  console.log(`README.md matches /evidence (run of ${summary.generated}).`);
+  console.log(`README.md matches /evidence (Layer 1 run of ${summary.generated}, Layer 2 run of ${summary2.generated}).`);
 } else {
   writeFileSync(file, updated);
-  console.log(`README.md: ${Object.keys(BLOCKS).join(', ')} rewritten from the run of ${summary.generated}.`);
+  console.log(`README.md: ${Object.keys(BLOCKS).join(', ')} rewritten (Layer 1 run of ${summary.generated}, Layer 2 run of ${summary2.generated}).`);
 }

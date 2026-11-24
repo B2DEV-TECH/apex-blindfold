@@ -1,0 +1,155 @@
+{
+  "id": "H11",
+  "hypothesis": "Cost: proof size, proving time in the browser, verification time per ballot and the tally of 10,000 voters, against Layer 1",
+  "verdict": "CONFIRMED",
+  "statement": "Measured: proofs add 3808 hexadecimal characters to a ballot; encrypting and proving takes a median 283 ms in the browser and casting 1032 ms from the click to the receipt (Layer 1: 289 ms); the database verifies one ballot in 641 ms; the tally of 10000 voters takes 104.7 min against 4.9 s in Layer 1.",
+  "numbers": {
+    "key_bits": 2048,
+    "hex_sizes": {
+      "ciphertexts": 3072,
+      "bitProofs": 3264,
+      "sumProof": 544
+    },
+    "request_bytes": 7250,
+    "register_request_bytes": 385,
+    "encrypt_only_ms": {
+      "n": 20,
+      "min": 80.8,
+      "median": 81.6,
+      "mean": 81.655,
+      "max": 83
+    },
+    "encrypt_and_prove_ms": {
+      "n": 20,
+      "min": 281.5,
+      "median": 283.35,
+      "mean": 283.58,
+      "max": 287.1
+    },
+    "voter_keygen_ms": {
+      "n": 20,
+      "min": 0,
+      "median": 0.1,
+      "mean": 0.115,
+      "max": 0.2
+    },
+    "sign_ms": {
+      "n": 20,
+      "min": 0.2,
+      "median": 0.3,
+      "mean": 0.265,
+      "max": 0.3
+    },
+    "cast_ballot_ui_ms": {
+      "n": 20,
+      "min": 1020.3,
+      "median": 1031.85,
+      "mean": 1096.695,
+      "max": 1545.9
+    },
+    "verify_proofs_ms": {
+      "n": 20,
+      "min": 628.304,
+      "median": 635.266,
+      "mean": 634.658,
+      "max": 638.566
+    },
+    "verify_signature_ms": {
+      "n": 20,
+      "min": 5.236,
+      "median": 5.62,
+      "mean": 5.944,
+      "max": 9.365
+    },
+    "cast_ballot_db_ms": {
+      "n": 20,
+      "min": 631.229,
+      "median": 637.736,
+      "mean": 637.599,
+      "max": 645.184
+    },
+    "tally": [
+      {
+        "voters": 100,
+        "ms": 62763.943,
+        "runs": 3,
+        "bytes_per_ballot": 7040,
+        "correct": true
+      },
+      {
+        "voters": 1000,
+        "ms": 626293.347,
+        "runs": 1,
+        "bytes_per_ballot": 7043.564,
+        "correct": true
+      },
+      {
+        "voters": 10000,
+        "ms": 6282621.627,
+        "runs": 1,
+        "bytes_per_ballot": 7043.921,
+        "correct": true
+      }
+    ],
+    "build": {
+      "ballots": 10000,
+      "threads": 7,
+      "ms": 2397786.617
+    },
+    "layer1": {
+      "request_bytes": 3284,
+      "encrypt_ballot_ms": 224.3,
+      "cast_ballot_ui_ms": 289.35,
+      "tally": [
+        {
+          "voters": 100,
+          "ms": 61.321,
+          "bytes_per_ballot": 3084
+        },
+        {
+          "voters": 1000,
+          "ms": 503.767,
+          "bytes_per_ballot": 3086.673
+        },
+        {
+          "voters": 10000,
+          "ms": 4923.718,
+          "bytes_per_ballot": 3086.94
+        }
+      ]
+    }
+  },
+  "mode": {
+    "quick": false,
+    "seed": 20261123
+  },
+  "checks": [
+    {
+      "name": "casting a ballot was measured in a real browser",
+      "pass": true,
+      "detail": "20 ballots, median 1032 ms"
+    },
+    {
+      "name": "proving was measured in the browser, with the library of the application",
+      "pass": true,
+      "detail": "median 283 ms per ballot"
+    },
+    {
+      "name": "verification at arrival was measured in the database",
+      "pass": true,
+      "detail": "proofs 635 ms, signature 6 ms"
+    },
+    {
+      "name": "the tally of 10000 voters verified and counted every ballot, and decrypted to the true result",
+      "pass": true,
+      "detail": "100: 100 counted, 0 rejected, correct; 1000: 1000 counted, 0 rejected, correct; 10000: 10000 counted, 0 rejected, correct"
+    }
+  ],
+  "notes": [],
+  "evidence": [
+    "h11-cost/timings.json",
+    "h11-cost/summary.txt"
+  ],
+  "started": "2026-11-24T15:05:04.200Z",
+  "finished": "2026-11-24T17:44:56.277Z"
+}

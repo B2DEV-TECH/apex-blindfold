@@ -2,8 +2,9 @@
  * APEX Blindfold: helpers shared by the three pages.
  */
 import * as P from './paillier.js';
+import * as V from './validity.js';
 
-export { P };
+export { P, V };
 
 /** Calls an APEX Ajax Callback process and resolves with its JSON answer. */
 export function callback(name, data = {}) {
