@@ -1,4 +1,4 @@
-// Live session of Layer 2, shot 40: replace the verifier, harmlessly.
+// Live session of Layer 2, shot 42: replace the verifier, harmlessly.
 //
 //   node tests/live/replace-verifier.mjs
 //

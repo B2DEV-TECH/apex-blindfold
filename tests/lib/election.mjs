@@ -83,6 +83,14 @@ export async function castChoices(conn, publicKey, choices, { firstVoter = 0 } =
   return ids;
 }
 
+// Layer 1 cast ballots without proofs through castBallots. The scripts of H1 to H6 still import it
+// on main, where they stop at their first line and say that they run on tag v1-layer1
+// (tests/lib/layer1.mjs). This stub only lets them load: a missing export would stop them before
+// they could say so.
+export function castBallots() {
+  throw new Error('castBallots is Layer 1 and runs on tag v1-layer1. On main, use castChoices or castBallot.');
+}
+
 // The homomorphic tally as the database computes it: encrypted totals.
 export async function encryptedTally(conn) {
   const result = await conn.execute('select bf_election.encrypted_tally as tally from dual');

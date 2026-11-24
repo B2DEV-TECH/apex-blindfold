@@ -9,7 +9,7 @@
 -- The ballot numbers below assume six honest ballots, 1 to 6, in a freshly opened election: the
 -- current election is the one with the highest number in ELECTION_KEY.
 
--- Shot 32. Re-link voters to ballots by the hidden insert time of the blockchain rows, without
+-- Shot 34. Re-link voters to ballots by the hidden insert time of the blockchain rows, without
 -- reading BALLOT_SEALS. The last column is what the seal says, to compare. Read-only.
 select r.voter_id as paired_voter, b.ballot_id, b.created,
        (select s.voter_id from blindfold.ballot_seals s
@@ -25,19 +25,19 @@ select r.voter_id as paired_voter, b.ballot_id, b.created,
     on b.position = r.position
  order by b.ballot_id;
 
--- Shot 33. Move a vote: the same statement as in part A, with the election.
+-- Shot 35. Move a vote: the same statement as in part A, with the election.
 update blindfold.blind_ballots
    set candidate_id = case candidate_id when 1 then 2 when 2 then 1 end
  where election_id = (select max(election_id) from blindfold.election_key)
    and ballot_id = 1
    and candidate_id in (1, 2);
 
--- Shot 34. Delete a ballot.
+-- Shot 36. Delete a ballot.
 delete from blindfold.blind_ballots
  where election_id = (select max(election_id) from blindfold.election_key)
    and ballot_id = 2;
 
--- Shot 35. Copy a stored ballot: ballot 3 again, as ballot 900. First the ciphertexts and their
+-- Shot 37. Copy a stored ballot: ballot 3 again, as ballot 900. First the ciphertexts and their
 -- proofs, then the seal with the voter code and the signature.
 insert into blindfold.blind_ballots (election_id, ballot_id, candidate_id, vote_enc, bit_proof)
 select election_id, 900, candidate_id, vote_enc, bit_proof
@@ -51,7 +51,7 @@ select election_id, 900, voter_id, sum_proof, signature
    and ballot_id = 3;
 commit;
 
--- Shot 37. Take over a voter code that registered a key in another browser and did not vote.
+-- Shot 39. Take over a voter code that registered a key in another browser and did not vote.
 update blindfold.voter_roll
    set public_key = null,
        ballot_id = null,
@@ -60,7 +60,7 @@ update blindfold.voter_roll
    and voted_at is null;
 commit;
 
--- Shot 38. Drop both ballot tables, rebuild them and copy back every ballot but ballot 1.
+-- Shot 40. Drop both ballot tables, rebuild them and copy back every ballot but ballot 1.
 create table blindfold.bf_copy_ballots as
 select election_id, ballot_id, candidate_id, vote_enc, bit_proof
   from blindfold.blind_ballots
@@ -105,7 +105,7 @@ commit;
 drop table blindfold.bf_copy_ballots purge;
 drop table blindfold.bf_copy_seals purge;
 
--- Shot 39. Disable the primary key and drop the foreign key, then store the three rows of
+-- Shot 41. Disable the primary key and drop the foreign key, then store the three rows of
 -- ballot 4 a second time.
 alter table blindfold.blind_ballots disable constraint blind_ballots_pk;
 alter table blindfold.blind_ballots drop constraint blind_ballots_candidate_fk;

@@ -41,6 +41,10 @@ import { OPTIONS, voterCode, countChoices, seededRandom } from './lib/election.m
 import { LeakScanner, privateKeySecrets, selfTest } from './lib/leaks.mjs';
 import { writeText, writeJson, header } from './lib/evidence.mjs';
 import { parseArgs, Report, isMain, main } from './lib/harness.mjs';
+import { runsOnTagOnly } from './lib/layer1.mjs';
+
+// Layer 1 only: on main this script stops here and says where it runs (tests/lib/layer1.mjs).
+if (isMain(import.meta.url)) runsOnTagOnly('H2', 'tests/h2-blindness.mjs');
 
 const DIR = 'h2-blindness';
 const REGISTERED = 12;

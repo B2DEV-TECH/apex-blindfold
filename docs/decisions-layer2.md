@@ -106,11 +106,40 @@ he runs the lab himself; a prediction given after a result is known is labelled 
 | 11a | Commit the Layer 2 work before the session, so that it runs on a known version | **Yes**, with his identity, no push. **No.** | **Yes** | No reason given. His answer: "Sim." |
 | 11b | A second working copy on tag `v1-layer1` for part A, `../apex-blindfold-v1` (git worktree) | **Yes.** **No**: part A switches this copy to the tag and back. | **Yes** | No reason given. His answer: "Sim." |
 
-## Open: choices the assistant made while running to the end
+## After the run, 24 November 2026
+
+Asked one at a time, in a question dialog, after he read the results of the run. His answers are the
+options he picked.
+
+| # | Question | Options | Chosen | His reason |
+|---|---|---|---|---|
+| 12 | The scripts of H1 to H6 are still on `main`, where they no longer run: ballots need proofs and the tables are blockchain tables | **Keep them with a notice**: each one stops at its first line and says that it runs on tag `v1-layer1`, and how. **Delete them from `main`**: they stay on the tag only. **Leave them as they are**: run on `main`, they fail with a database or API error. | **Keep them with a notice** | No reason given. His answer: "Manter com aviso". |
+| 13 | The three images at the top of the README (the vote receipt, What the database sees, the decrypted tally) show the screens of Layer 1 | **Redo them on Layer 2**, with a new script into a folder of their own. **Keep them and label them** as Layer 1. **Leave them as they are.** | **Leave them as they are** | No reason given. His answer: "Deixar como está". |
+| 14 | Two attacks were left out of the live session: the key holder reading single ballots (it needs a new function in the application) and a voter replaying a ballot under another ballot number (it needs one more console snippet) | **Only the replay, with a snippet**: two new shots, no change to the application; the key holder stays out. **Both out.** **Both, with a change to the application**, designed as a separate decision. | **Only the replay, with a snippet** | No reason given. His answer: "Só o replay, por snippet". |
+| 15 | The choices R1 to R10 below, which the assistant made while running to the end | Confirm each one as it is, or leave it unchecked to be asked about on its own. They were asked in three groups: R1, R2, R3 and R5; R4, R6 and R8; R9 and R10. | **All confirmed as they are.** R7 is replaced by decision 14. | No reason given. He checked every box. |
+
+What was done after them:
+
+- **12.** `tests/lib/layer1.mjs` prints where the script runs and exits with status 1; each of the six
+  scripts calls it right after its imports, before anything touches the database. Four of the six
+  import `castBallots`, which `main` no longer has, and a missing import stops a module before its
+  first line runs. So `tests/lib/election.mjs` keeps a function of that name that only throws. Run on
+  `main`, all six print the notice and exit with 1.
+- **14.** `tests/snippets/replay-ballot.js` (Layer 1) and `tests/snippets/replay-ballot-layer2.js`
+  build one honest ballot, cast it for a first voter code, then cast the same ballot again for a
+  second one. In the Layer 2 version the second voter code registers a key of its own, gets a ballot
+  number of its own and signs the copy correctly: only the proofs are copied. Both were run once on
+  the real application, the Layer 1 one after installing the tag. Layer 1 stored both, ballots 1 and
+  2. Layer 2 accepted the first and rejected the copy: *invalid proof: option 1: the challenges do
+  not add up to the hash*, and stored nothing for it. The runbook has two new shots, 07 and 28, and
+  every shot after them moved: 43 shots.
+
+## Choices the assistant made while running to the end
 
 With "run everything to the end", the assistant went on where a choice had to be made, picked the
-option it had recommended, and lists each one here. **None of them is his decision yet.** Each can be
-reversed.
+option it had recommended, and lists each one here. None of them was his decision when it was made.
+On 24 November he confirmed R1 to R6 and R8 to R10 as they are (decision 15); R7 is replaced by
+decision 14.
 
 | # | Question | Options | Applied for now | Why the assistant picked it |
 |---|---|---|---|---|
@@ -120,7 +149,7 @@ reversed.
 | R4 | The two H10 limits about replaced code: the JavaScript shipped by the server, and the verifier | **A.** Harmless replacements: the substituted `vote.js` only shows the choice; the replaced verifier keeps the same checks and adds a marker. **B.** Replacements that change votes. | **A** | They show that the replaced code runs, and where. The lab does not build code that changes votes. The brief asks for "CONFIRMED = attack works": the verdict rests on the code running, and the evidence says so. |
 | R5 | H10 changes the structure of the schema (drop and rebuild, keys disabled, verifier replaced) | **A.** H10 reinstalls the lab schema at its end. **B.** H10 leaves it changed. | **A** | H11 and any later run need the installed schema. |
 | R6 | The screenshot step of Layer 1 (`tests/screenshots.mjs`) | **A.** Left out of the Layer 2 run. **B.** Kept. | **A** | It writes into `evidence/app` and `evidence/h2-blindness`, which are Layer 1 evidence and the source of the README images. H7 and H10 take their own screenshots. |
-| R7 | The live session | 41 shots, every attack on `v1-layer1` and on Layer 2. Not by hand: the key holder opening single ballots (it needs a new function in the application), and a voter replaying a proof under another number (it needs one more snippet). | as listed | Both need something that is not in the application today; adding it is a design change. |
+| R7 | The live session | 41 shots, every attack on `v1-layer1` and on Layer 2. Not by hand: the key holder opening single ballots (it needs a new function in the application), and a voter replaying a proof under another number (it needs one more snippet). | as listed; **replaced by decision 14**: 43 shots, the replay by a voter included | Both need something that is not in the application today; adding it is a design change. |
 | R9 | What the tally does with a stored ballot that fails its second verification | **A.** Leaves it out, counts the others, and lists it with the reason; the Tally page shows the list in red. **B.** Refuses to count the election at all. A broken chain stops the tally in both. | **A** | One bad row inserted by a DBA would otherwise stop every count, which is an attack of its own. With A, H9 and H10 can show what was left out and why. |
-| R10 | A voter whose tab registered a key and was closed before the ballot was accepted | **A.** The code is used up: it takes one key, once, and the key lived only in that tab. **B.** A way to register again, which a DBA could also use. | **A**, nothing built | It follows from 5 = A and 6 = A. Shot 36 of the live session shows it, and H10 shows that a DBA can clear the key anyway. |
+| R10 | A voter whose tab registered a key and was closed before the ballot was accepted | **A.** The code is used up: it takes one key, once, and the key lived only in that tab. **B.** A way to register again, which a DBA could also use. | **A**, nothing built | It follows from 5 = A and 6 = A. Shot 38 of the live session (36 before decision 14) shows it, and H10 shows that a DBA can clear the key anyway. |
 | R8 | The record of the Layer 2 live session | **A.** A new recorder for Layer 2, `tests/live/snapshot-layer2.mjs`, into `evidence/live-session-layer2/state`; part A uses the recorder of the tag, in its own working copy. **B.** Change `tests/live/snapshot.mjs` to read both layers. | **A**, written and tested on 24 November on a small election (6 changes, each recorded with the right sentence; the test output was removed) | The recorder of Layer 1 stays the one that produced the record of the first session. |

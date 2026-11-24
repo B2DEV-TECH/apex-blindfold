@@ -335,7 +335,9 @@ one marker added. They prove that the replaced code runs, not what it could be m
 
 The session in front of Geraldo, every attack by his hand on tag `v1-layer1` and again on Layer 2,
 follows [`tests/live/RUNBOOK-layer2.md`](tests/live/RUNBOOK-layer2.md). Its recordings go to
-`evidence/live-session-layer2`, apart from the automated evidence.
+`evidence/live-session-layer2`, apart from the automated evidence. One attack is not in it: the key
+holder reading single ballots, which by hand would need a new function in the application
+([decision 14](docs/decisions-layer2.md)). H10 measures it.
 
 ## Live session
 

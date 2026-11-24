@@ -19,6 +19,10 @@ import { openElection, castBallots, seededRandom } from './lib/election.mjs';
 import { chiSquareTwoSample, meanDifference, kolmogorovSmirnov, normalP, wilson } from './lib/stats.mjs';
 import { writeText, header } from './lib/evidence.mjs';
 import { parseArgs, Report, isMain, main } from './lib/harness.mjs';
+import { runsOnTagOnly } from './lib/layer1.mjs';
+
+// Layer 1 only: on main this script stops here and says where it runs (tests/lib/layer1.mjs).
+if (isMain(import.meta.url)) runsOnTagOnly('H3', 'tests/h3-indistinguishability.mjs');
 
 const DIR = 'h3-indistinguishability';
 const FAMILY_ALPHA = 0.01; // family-wise error rate for the whole battery

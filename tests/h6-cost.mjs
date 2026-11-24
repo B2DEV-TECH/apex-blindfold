@@ -17,6 +17,10 @@ import { appUrl, watch, openElectionInBrowser, tallyInBrowser } from './lib/app.
 import { OPTIONS, openElection, castBallots, encryptedTally, decryptTally, countChoices, seededRandom, voterCode } from './lib/election.mjs';
 import { writeText, writeJson, header, stats } from './lib/evidence.mjs';
 import { parseArgs, Report, isMain, main } from './lib/harness.mjs';
+import { runsOnTagOnly } from './lib/layer1.mjs';
+
+// Layer 1 only: on main this script stops here and says where it runs (tests/lib/layer1.mjs).
+if (isMain(import.meta.url)) runsOnTagOnly('H6', 'tests/h6-cost.mjs');
 
 const DIR = 'h6-cost';
 const now = () => Number(process.hrtime.bigint()) / 1e6;

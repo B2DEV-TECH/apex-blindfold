@@ -27,6 +27,10 @@ import { LETTERS, watch, openElectionInBrowser, tallyInBrowser } from './lib/app
 import { launchBrowser } from './lib/browser.mjs';
 import { writeText, header } from './lib/evidence.mjs';
 import { parseArgs, Report, isMain, main } from './lib/harness.mjs';
+import { runsOnTagOnly } from './lib/layer1.mjs';
+
+// Layer 1 only: on main this script stops here and says where it runs (tests/lib/layer1.mjs).
+if (isMain(import.meta.url)) runsOnTagOnly('H5', 'tests/h5-limits.mjs');
 
 const DIR = 'h5-limits';
 const fmt = (totals) => totals.map((v, i) => `${LETTERS[i]}=${v}`).join('  ');

@@ -18,6 +18,10 @@ import { OPTIONS, openElection, castBallots, encryptedTally, decryptTally, count
 import { pythonRef, pythonVersion } from './lib/python.mjs';
 import { writeText, header } from './lib/evidence.mjs';
 import { parseArgs, Report, isMain, main } from './lib/harness.mjs';
+import { runsOnTagOnly } from './lib/layer1.mjs';
+
+// Layer 1 only: on main this script stops here and says where it runs (tests/lib/layer1.mjs).
+if (isMain(import.meta.url)) runsOnTagOnly('H1', 'tests/h1-correctness.mjs');
 
 const DIR = 'h1-correctness';
 const hex = (value) => value.toString(16);

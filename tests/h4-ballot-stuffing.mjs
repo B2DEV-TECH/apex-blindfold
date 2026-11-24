@@ -23,6 +23,10 @@ import { appUrl, watch, openElectionInBrowser, tallyInBrowser, stuffingSnippet, 
 import { castBallots, countChoices } from './lib/election.mjs';
 import { writeText, header, evidencePath } from './lib/evidence.mjs';
 import { parseArgs, Report, isMain, main } from './lib/harness.mjs';
+import { runsOnTagOnly } from './lib/layer1.mjs';
+
+// Layer 1 only: on main this script stops here and says where it runs (tests/lib/layer1.mjs).
+if (isMain(import.meta.url)) runsOnTagOnly('H4', 'tests/h4-ballot-stuffing.mjs');
 
 const DIR = 'h4-ballot-stuffing';
 const HONEST = [0, 0, 0, 0, 1, 1, 1, 2, 2]; // nine honest voters: 4 for A, 3 for B, 2 for C
