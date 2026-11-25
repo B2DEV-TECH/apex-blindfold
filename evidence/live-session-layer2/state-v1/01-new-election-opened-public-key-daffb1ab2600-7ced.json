@@ -1,0 +1,192 @@
+{
+  "number": 1,
+  "taken": "2026-11-25T10:21:49.130Z",
+  "what": "new election opened: public key daffb1ab2600…7cedd7, 12 voters registered",
+  "election_key": [
+    "daffb1ab26005e1c48bb568ea729120e67ac090164ab7e3d42a0774aff4ed03d503b10ec4f134608e04af3425d751684b5a3305b9e0bc013d44ba208480b18694ffa32721efef359c2919b9356b2d5d0907a3568c3c76de1c1599e6d5391e0b24f9396bf138f2c43517513d786c7c972bd87a51018bfcbccfeb936d6066f3becc807adaab25ebf8aaf2d7556e47b9ec3c69ab4becb56dc61691b6fcec3654e5d52836d09f231eba5350f4e88276828906fb7b807166857b38d4daf76196d69725cf33a5262bfc2c7eb9170373054992c7737deb7afc24b921ca5df77fef07ab4eb4b6bc583d897460ec952b3612538c8493508f852b74ed03796dd78627cedd7"
+  ],
+  "voter_roll": [
+    {
+      "VOTER_ID": "VOTER-0001",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0002",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0003",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0004",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0005",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0006",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0007",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0008",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0009",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0010",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0011",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0012",
+      "VOTED_AT": null
+    }
+  ],
+  "blind_ballots": [],
+  "apex_page_items": [],
+  "apex_activity": [
+    {
+      "AT": "2026-11-25T10:19:38.294Z",
+      "PAGE": 1,
+      "KIND": 2,
+      "REQUEST": null,
+      "SECONDS": 0.554,
+      "SESSION": "session-1",
+      "CLIENT": "this-pc",
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-25T10:19:38.987Z",
+      "PAGE": 2,
+      "KIND": 2,
+      "REQUEST": null,
+      "SECONDS": 0.21,
+      "SESSION": "session-2",
+      "CLIENT": "this-pc",
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-25T10:19:39.275Z",
+      "PAGE": 3,
+      "KIND": 2,
+      "REQUEST": null,
+      "SECONDS": 0.017,
+      "SESSION": "session-3",
+      "CLIENT": "this-pc",
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-25T10:20:16.924Z",
+      "PAGE": 3,
+      "KIND": 2,
+      "REQUEST": null,
+      "SECONDS": 0.016,
+      "SESSION": "session-4",
+      "CLIENT": "this-pc",
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-25T10:20:18.312Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.049,
+      "SESSION": "session-4",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-25T10:20:33.395Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.012,
+      "SESSION": "session-4",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-25T10:20:48.401Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.007,
+      "SESSION": "session-4",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-25T10:21:03.381Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.006,
+      "SESSION": "session-4",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-25T10:21:18.387Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.009,
+      "SESSION": "session-4",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-25T10:21:33.439Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.012,
+      "SESSION": "session-4",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-25T10:21:48.473Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "OPEN_ELECTION",
+      "SECONDS": 0.106,
+      "SESSION": "session-4",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-25T10:21:48.505Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.012,
+      "SESSION": "session-4",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-25T10:21:48.591Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.01,
+      "SESSION": "session-4",
+      "CLIENT": null,
+      "ERROR": null
+    }
+  ]
+}

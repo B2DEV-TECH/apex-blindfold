@@ -134,6 +134,18 @@ What was done after them:
   not add up to the hash*, and stored nothing for it. The runbook has two new shots, 07 and 28, and
   every shot after them moved: 43 shots.
 
+## During the live session, 25 November 2026
+
+Some were asked in a question dialog; others he decided on his own, and the assistant recorded what
+he did and said. His words are quoted as he wrote them.
+
+| # | Question | Options | Chosen | His reason |
+|---|---|---|---|---|
+| 16 | The first recording came from OBS as `.mkv`. The runbook names `.mp4` files, and the Layer 1 recordings are `.mp4` | **`.mp4` from now on**: OBS remuxes each recording to `.mp4` when it stops (container only, no re-encoding), shot 01 remuxed by hand and the SHA-256 of its `.mkv` kept. **Keep `.mkv` for every shot**: each file copied unchanged, under the name of the runbook, with `.mkv`. | **Keep `.mkv` for every shot** | No reason given. His answer: "Manter .mkv em tudo". |
+| 17 | Shot 02 did not cast the six ballots of the runbook: ballots 2 and 5 were A, not B, and `VOTER-0006` did not vote. Not asked: he said so when the assistant pointed it out | none offered | **His own choices**, for every ballot and every snippet setting. The record shows what he did; each expected result is computed from his receipts and from the answers on screen, not from the runbook | "eu votei como eu quis nao segui o que voce passou", then "o lab precisa ser fiel". |
+| 18 | In shot 02 the status bar showed the address of a page for about a second; the runbook asks for full screen and no address. The assistant proposed to keep the shot with a note, or to record shots 01 and 02 again | **Keep shot 02 with a note.** **Record 01 and 02 again.** | **Shot 02 kept** (he asked for no retake). From shot 03 on he records the whole browser window, address bar included | "gravei com a url aparecendo pra ser honesto". |
+| 19 | He asked to push what exists so far. The repository is public, and the first unpushed commit holds the article draft, which Layer 1 never put on GitHub. The assistant asked about the draft first | **Take the draft out** of the two local commits, then push. **Push with the draft.** | **Neither for now**: commit locally while the session runs, push when it ends; the draft is decided then | "pode ir subindo pro git o que ja tivermos porque é bom que mostra que o lab demorou e mostra o timeline", "o conteudo pro ace fica mais fiel e completo", then, on the draft: "ok vamos esperar tyerminar só salva ai pra gente mostrar que o lab nao foi rapido". |
+
 ## Choices the assistant made while running to the end
 
 With "run everything to the end", the assistant went on where a choice had to be made, picked the
