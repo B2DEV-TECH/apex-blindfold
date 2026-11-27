@@ -492,11 +492,14 @@ own script, [`tests/live/RUNBOOK-layer2.md`](tests/live/RUNBOOK-layer2.md).
 - **No evaluation of any real election system.** The election is fictional, and nothing here
   describes, tests or judges a system used in a real election.
 
-## Article
+## Articles
 
-[A Tally the Database Cannot Read: Homomorphic Voting in Oracle APEX](https://b2dev.tech/blog/apex-blindfold-a-tally-the-database-cannot-read),
-published on b2dev.tech on 23 November 2026, is the write-up of Layer 1. The write-up of Layer 2 is
-a draft, not published.
+- [A Tally the Database Cannot Read: Homomorphic Voting in Oracle APEX](https://b2dev.tech/blog/apex-blindfold-a-tally-the-database-cannot-read),
+  published on b2dev.tech on 23 November 2026, is the write-up of Layer 1.
+- [A Ballot That Proves Itself, a Page That Can Betray It: Zero-Knowledge Proofs in Oracle APEX](https://b2dev.tech/blog/apex-blindfold-a-ballot-that-proves-itself),
+  published on b2dev.tech on 27 November 2026, is the write-up of Layer 2 and of part A of its live
+  session ([`evidence/live-session-layer2`](evidence/live-session-layer2)). Part B of the live
+  session, the same attacks against Layer 2, will follow in a third article.
 
 ## Repository layout
 

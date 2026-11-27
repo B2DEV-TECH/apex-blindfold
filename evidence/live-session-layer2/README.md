@@ -92,6 +92,11 @@ database change in snapshots 38 to 42 happened during the recording of its shot.
   is not what the snippet sends. The shot is kept, since the attack and its answer are what the
   runbook asks for. The codes of the next shots moved: 05 used `0008`, 06 used `0009`, 07 used `0010`
   and `0007`, 08 used `0012`.
+- **Shot 04 shows a local file path for about four seconds**, from 0:33.5 to about 0:38: the tab
+  with the snippet file is in front, and its address bar shows where the repository lives on his
+  machine, including the operating-system account. `npm run scan` cannot see inside a video. A scan
+  of the address bar of every recording here, two frames per second, found no other case. He chose
+  to leave the recording unchanged (decision 31).
 - **Shot 17 is labelled *no change* by the recorder.** The recorder of the tag compares ballot
   numbers, and a duplicate adds rows without adding a number. The snapshot itself is right:
   snapshot 41 shows 21 rows, with six for ballot 4. The first run had the same label (snapshot 33
