@@ -1,0 +1,40 @@
+{
+  "about": "Findings of scripts/prepush-scan.mjs that a person reviewed and accepted. Each entry holds for one file with exactly this SHA-256 and one kind of finding; if the file changes, the scanner reports it again. The values themselves are not written here, for the same reason the scanner never prints them.",
+  "reviewed": [
+    {
+      "file": "evidence/live-session-layer2/08-v1-code-reads-the-choice.mkv",
+      "sha256": "1d250a16f95ef6c710981a39de8d3281396059b0a0c2429d0c13665ff48334af",
+      "kind": "an e-mail address",
+      "reason": "Random bytes of the compressed video that happen to match the e-mail pattern (8 characters, no real domain), twice. Not an address.",
+      "reviewed": "2026-11-27, Geraldo, with the assistant"
+    },
+    {
+      "file": "evidence/live-session-layer2/19-v1-tally-after-dba-attacks.mkv",
+      "sha256": "50313fa5e97b95ed6c9ef240212bfb7078b24c9feea76e3a07ab1cc2c11f40a7",
+      "kind": "an e-mail address",
+      "reason": "Random bytes of the compressed video that happen to match the e-mail pattern (7 characters, no real domain). Not an address.",
+      "reviewed": "2026-11-27, Geraldo, with the assistant"
+    },
+    {
+      "file": "evidence/live-session-layer2/attempts/run-1/02-v1-six-ballots.mkv",
+      "sha256": "a08b90ae9445ecb8d9f77cf5bdebe46fdaa133d8e2a4627eba2d32d80670b22d",
+      "kind": "an e-mail address",
+      "reason": "Random bytes of the compressed video that happen to match the e-mail pattern (7 characters, no real domain). Not an address.",
+      "reviewed": "2026-11-27, Geraldo, with the assistant"
+    },
+    {
+      "file": "evidence/live-session-layer2/attempts/run-1/attempts/a2-attempt-1-stale-vote-tab/11-v1-six-ballots-again.mkv",
+      "sha256": "8d1ec4acdfd56e0f49c55b1a866352e85ccce31b3d54402f01d0b086b013f909",
+      "kind": "an e-mail address",
+      "reason": "Random bytes of the compressed video that happen to match the e-mail pattern (7 characters, no real domain). Not an address.",
+      "reviewed": "2026-11-27, Geraldo, with the assistant"
+    },
+    {
+      "file": "evidence/live-session-layer2/attempts/run-1/attempts/a2-attempt-1-stale-vote-tab/14-v1-move-a-vote.mkv",
+      "sha256": "4568ec2c0884107757d863636f384da48006b61059a10dd09ab68228ff2c1ecc",
+      "kind": "an e-mail address",
+      "reason": "Random bytes of the compressed video that happen to match the e-mail pattern (7 characters, no real domain). Not an address.",
+      "reviewed": "2026-11-27, Geraldo, with the assistant"
+    }
+  ]
+}

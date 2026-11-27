@@ -1,0 +1,24 @@
+# Run 2 notes (27/11)
+- 01 attempt 1 (08:04 local) valid, key c114c5a3; 02 attempt 1 (08:06) cast 12 ballots, all codes used -> reinstall, A1 restarted (snapshot 14).
+- 01 (08:12) key c3addd91…c57360d, sha af77715ba445.
+- 02 (08:13) sha 660faf52f09f: ballot 1 A (0001), 2 C (0002), 3 B (0003), 4 A (0004), 5 C (0005), 6 C (0006). Honest A=2 B=1 C=3.
+- 03 (08:16) sha 5d76fd823bba: A=2 B=1 C=3, 6 votes from 6 voters. OK.
+- 04 (08:18) sha 1bdb85fd399b: ballot 7 [1000,0,0] accepted, BUT cast as VOTER-0011 (file opened in browser, not edited; snippet default kept). Form field showed VOTER-0007 (typed, irrelevant). File was deleted from Videos then restored by him from Recycle Bin before copy (same size 9292939). Codes left: 0007 0008 0009 0010 0012. Plan: 05=0008, 06=0009, 07 FIRST=0010 SECOND=0007, 08=0012. DevTools in Responsive device mode (484x855).
+- 05 (08:23) sha cdca769f7012: VOTER-0008 [3,-2,0] -> ballot 8 accepted. Repo snippet file unchanged (still 0011/[1000,0,0]).
+- 06 (08:24) sha 8adcbff108ad: VOTER-0009 [1,1,0] -> ballot 9 accepted.
+- 07 (08:26) sha 3ce2d42eb823: FIRST VOTER-0010 [0,1,0] -> ballot 10; SECOND VOTER-0007 copy -> ballot 11 (SECOND changed from runbook 0011, used in 04).
+- 08 (08:28) sha 1d250a16f95e: F5, read-the-choice pasted, VOTER-0012 option A, red bar 'A / File-Level Import with APEXlang', ballot 12. Device mode turned off. Expected 09: A=2+1000+3+1+1=1007, B=1-2+1+1+1=2, C=3; 1012 votes from 12 voters.
+- 09 (08:30) sha e5f86c5d4cef: A=1,007 B=2 C=3, '1,012 votes from 12 voters: these totals cannot come from honest ballots. Some ciphertext did not encrypt 0 or 1, and the tally accepted it.' = expected. A1 CLOSED.
+- 10 (08:34) sha 88274ef4c3a6: confirm 'Opening a new election erases the 12 ballots that are stored. Continue?' visible at ~11.8s; new key e6090e60…85379 (snapshot 28). A2 open.
+- 11 (08:35) sha 25c2ffe8b453: key e6090e60 on every receipt. ballot 1 A (0001), 2 A (0002), 3 C (0003), 4 B (0004), 5 A (0005), 6 C (0006). Honest A=3 B=1 C=2. Expected 19 before shot 18: A=1 B=3 C=3 (14: b1 A->B; 15: -b2 A; 16: +b3 C as 900; 17: +b4 B dup) +1 for the option of shot 18; 8 votes from 7 voters.
+- 12 (08:37) sha (see SHA256SUMS): A=3 B=1 C=2, 6 votes from 6 voters = expected.
+- 13 (08:39) sha 7980cc843ced: PL/SQL Developer SYSTEM@FREEPDB1, 6 rows VOTER-0001..0006 -> ballots 1..6, 0.026 s.
+- 14 attempt 1 (08:40) sha ffaa892f44e0: video shows Command Window update '2 rows updated' + commit, BUT an identical update had already been committed off camera at 11:40:41Z (snapshot 35, SQL Window per window list). The on-camera update (snapshot 36, 11:40:59Z) swapped ballot 1 BACK: snapshot 36 == snapshot 34 for ballot 1 (A again).
+- 14 (08:42) sha 3cb6fe7ec1a4: Command Window, ONE update (snapshot 38, 11:42:36Z): ballot 1 cand1=7f9ee5c3 (Enc0), cand2=c8d25cdc (Enc1) -> counts for B. Commit 08:42:34 local.
+- 15 (08:43) sha bc8ac41c4120: '3 rows deleted' + commit 08:43:51; snapshot 39 ballot 2 removed (only change).
+- 16 (08:44) sha af49a4629ee6: '3 rows inserted' + commit 08:44:40; snapshot 40 ballot 900 stored (+3 rows).
+- 17 (08:46) sha eff26db9f087: 'Table altered', '3 rows inserted', commit 08:46:42; recorder label 'no change' (known v1 recorder limit) but snapshot 41: 21 rows, 6 ballots, ballot 4 has 6 rows.
+- 18 (08:48) sha 8819940200d8: select (SQL Window) lists VOTER-0007..0012; Vote VOTER-0007 option B -> ballot 7 (key e6090e60), snapshot 42. Expected 19: A=1 B=4 C=3, 8 votes from 7 voters.
+- 19 (08:50) sha 50313fa5e97b: A=1 B=4 C=3, '8 votes from 7 voters: these totals cannot come from honest ballots. Some ciphertext did not encrypt 0 or 1, and the tally accepted it.' = expected. Note: second sentence is misleading here (every ciphertext was 0/1; cause = copy + duplicate rows). PART A DONE. Recorder v1 stopped after snapshot 43; state copied to state-v1 (90 files).
+- 20 (08:53) sha 2a93c0076f25: Layer 2 installed 08:52 local (main 4a7f967, clean code); recorder B snapshot 00. 14 voters, key b7727db1…0b59a63c71af (snapshot 01 'election 1 opened').
+- 21 (08:54) sha fc23d40350ad, 74.6 s: B1 ballots 1 A (0001), 2 B (0002), 3 A (0003), 4 B (0004), 5 C (0005), 6 C (0006); every receipt shows key registered, proofs+signature, 'Verified and stored'. Honest B1: A=2 B=2 C=2. He zoomed the page (110%) and in the end bigger; window title bar orange (OBS/Edge focus), harmless.

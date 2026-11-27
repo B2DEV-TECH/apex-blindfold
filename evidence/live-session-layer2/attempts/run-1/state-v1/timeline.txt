@@ -1,0 +1,41 @@
+# Live session: what changed in the database, and when
+# time (UTC)                snapshot  change
+2026-11-25T10:18:44.014Z  00        watch started
+2026-11-25T10:21:49.130Z  01        new election opened: public key daffb1ab2600…7cedd7, 12 voters registered
+2026-11-25T10:59:06.679Z  02        ballot 1 stored (+3 rows); voters marked as voted: 0 -> 1 of 12
+2026-11-25T10:59:13.119Z  03        ballot 2 stored (+3 rows); voters marked as voted: 1 -> 2 of 12
+2026-11-25T10:59:25.587Z  04        ballot 3 stored (+3 rows); voters marked as voted: 2 -> 3 of 12
+2026-11-25T10:59:36.039Z  05        ballot 4 stored (+3 rows); voters marked as voted: 3 -> 4 of 12
+2026-11-25T10:59:54.555Z  06        ballot 5 stored (+3 rows); voters marked as voted: 4 -> 5 of 12
+2026-11-25T11:09:27.311Z  07        ballot 6 stored (+3 rows); voters marked as voted: 5 -> 6 of 12
+2026-11-25T11:11:16.179Z  08        ballot 7 stored (+3 rows); voters marked as voted: 6 -> 7 of 12
+2026-11-25T11:12:32.867Z  09        ballot 8 stored (+3 rows); voters marked as voted: 7 -> 8 of 12
+2026-11-25T11:15:01.935Z  10        ballot 9, 10 stored (+6 rows); voters marked as voted: 8 -> 10 of 12
+2026-11-25T11:17:00.835Z  11        ballot 11 stored (+3 rows); voters marked as voted: 10 -> 11 of 12
+2026-11-25T11:20:58.371Z  12        session paused after shot 09, election A1 closed
+2026-11-26T10:43:29.892Z  13        watch started
+2026-11-26T16:43:46.170Z  14        watch started
+2026-11-26T23:07:14.991Z  15        watch started
+2026-11-26T23:09:31.982Z  16        new election opened: public key b5da3e6b3455…b32c71, 12 voters registered
+2026-11-26T23:09:52.474Z  17        new election opened: public key d0870cea9785…c056a7, 12 voters registered
+2026-11-26T23:11:05.186Z  18        ballot 1 stored (+3 rows); voters marked as voted: 0 -> 1 of 12
+2026-11-26T23:11:13.629Z  19        ballot 2 stored (+3 rows); voters marked as voted: 1 -> 2 of 12
+2026-11-26T23:11:28.106Z  20        ballot 3 stored (+3 rows); voters marked as voted: 2 -> 3 of 12
+2026-11-26T23:11:32.546Z  21        ballot 4 stored (+3 rows); voters marked as voted: 3 -> 4 of 12
+2026-11-26T23:11:36.976Z  22        ballot 5 stored (+3 rows); voters marked as voted: 4 -> 5 of 12
+2026-11-26T23:11:43.426Z  23        ballot 6 stored (+3 rows); voters marked as voted: 5 -> 6 of 12
+2026-11-26T23:11:53.884Z  24        ballot 7 stored (+3 rows); voters marked as voted: 6 -> 7 of 12
+2026-11-26T23:11:56.308Z  25        ballot 8 stored (+3 rows); voters marked as voted: 7 -> 8 of 12
+2026-11-26T23:12:00.747Z  26        ballot 9 stored (+3 rows); voters marked as voted: 8 -> 9 of 12
+2026-11-26T23:12:03.170Z  27        ballot 10 stored (+3 rows); voters marked as voted: 9 -> 10 of 12
+2026-11-26T23:12:05.592Z  28        ballot 11 stored (+3 rows); voters marked as voted: 10 -> 11 of 12
+2026-11-26T23:12:08.012Z  29        ballot 12 stored (+3 rows); voters marked as voted: 11 -> 12 of 12
+2026-11-26T23:15:19.179Z  30        2 stored ciphertext(s) rewritten in place: ballot 1 option 1, ballot 1 option 2
+2026-11-26T23:15:55.720Z  31        ballot 2 removed
+2026-11-26T23:16:34.312Z  32        ballot 900 stored (+3 rows)
+2026-11-26T23:17:26.968Z  33        no change in the election tables
+2026-11-26T23:25:09.902Z  34        A2 attempt 1 ended: shot 11 ballots were encrypted with the A1 key (stale Vote tab); A2 recorded again from shot 10
+2026-11-26T23:27:13.755Z  35        new election opened: public key cf947d11104c…253c6d, 12 voters registered
+2026-11-26T23:31:01.071Z  36        session paused after shot 10 (A2 attempt 2); primary key of BLIND_BALLOTS enabled again off camera
+2026-11-27T10:39:58.153Z  37        watch started
+2026-11-27T10:51:14.694Z  38        run 1 ended: the Tally tab of shot 10 was closed overnight, the private key of election cf947d11 is lost; session restarted from shot 01

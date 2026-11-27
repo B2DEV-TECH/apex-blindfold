@@ -1,0 +1,412 @@
+{
+  "number": 1,
+  "taken": "2026-11-27T11:04:52.201Z",
+  "what": "new election opened: public key c114c5a3c734…8cfe57, 12 voters registered",
+  "election_key": [
+    "c114c5a3c73420d8c66d232c523eec99af8f9aab519d319cc3aad495089ad68009f1a9f6553869671c2338463e69a84eefd7dbd653a8b61ebcc389a337e9df3665fbcb067b65356cf2bf7b70a787c83c00d468bf47194a42572bc9945af7db7d128f262a24333457698ace1bb55dad1e7cfa7098fd0cfed8b17b5e2da826c5fba62e1a0f43ec6e17a37d66b53eb4f39f401f0579fe9acbf831eb0943a4ef453209e13e2c03f4e5ec6c9ec728a85e63b42583fe79ff6419cb6a0f944c1423740afb6e4fb37579d87a81831a9c99f29422d7d3a857b02109a9fced738cf43030cd3b04d783d96de96e824c588f94d4fd3d838a7b9b97a90c8468c23e4cb88cfe57"
+  ],
+  "voter_roll": [
+    {
+      "VOTER_ID": "VOTER-0001",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0002",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0003",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0004",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0005",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0006",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0007",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0008",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0009",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0010",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0011",
+      "VOTED_AT": null
+    },
+    {
+      "VOTER_ID": "VOTER-0012",
+      "VOTED_AT": null
+    }
+  ],
+  "blind_ballots": [],
+  "apex_page_items": [],
+  "apex_activity": [
+    {
+      "AT": "2026-11-27T10:57:41.039Z",
+      "PAGE": 3,
+      "KIND": 2,
+      "REQUEST": null,
+      "SECONDS": 0.491,
+      "SESSION": "session-1",
+      "CLIENT": "this-pc",
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T10:57:42.555Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.053,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T10:57:46.293Z",
+      "PAGE": 1,
+      "KIND": 2,
+      "REQUEST": null,
+      "SECONDS": 0.022,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T10:57:46.565Z",
+      "PAGE": 1,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.017,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T10:57:49.567Z",
+      "PAGE": null,
+      "KIND": 2,
+      "REQUEST": null,
+      "SECONDS": 0.023,
+      "SESSION": "session-2",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T10:57:57.643Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.01,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T10:58:12.634Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.007,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T10:58:27.628Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.009,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T10:58:42.734Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.017,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T10:58:58.081Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.017,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T10:59:12.744Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.012,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T10:59:27.673Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.012,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T10:59:42.633Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.008,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T10:59:57.644Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.01,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:00:12.717Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.016,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:00:27.942Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.018,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:00:42.653Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.008,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:00:57.660Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.009,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:01:12.716Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.008,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:01:27.696Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.014,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:01:42.701Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.012,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:01:57.631Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.009,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:02:12.630Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.01,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:02:27.638Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.008,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:02:42.700Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.012,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:02:57.717Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.011,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:03:12.629Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.008,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:03:27.685Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.009,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:03:42.634Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.006,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:03:57.679Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.012,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:04:13.149Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.011,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:04:27.628Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.015,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:04:42.628Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.008,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:04:51.479Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "OPEN_ELECTION",
+      "SECONDS": 0.085,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    },
+    {
+      "AT": "2026-11-27T11:04:51.581Z",
+      "PAGE": 3,
+      "KIND": 3,
+      "REQUEST": "ELECTION_INFO",
+      "SECONDS": 0.011,
+      "SESSION": "session-1",
+      "CLIENT": null,
+      "ERROR": null
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+# Live session: database state 23
+# generated: 2026-11-27T11:19:33.576Z
+# ballot 7 stored (+3 rows); voters marked as voted: 6 -> 7 of 12
+# read as the account with the DBA role; nothing is written to the database
+# complete values: 23-ballot-7-stored-3-rows-voters-marked-as-voted-6-.json
+
+ELECTION_KEY: 1 row
+  n = c3addd910a331694f852893c81d59ea5…75bd1c57360d   (512 hexadecimal characters, 2048 bits; sha256 fce24193053b31ee)
+
+VOTER_ROLL: 12 registered, 7 voted
+
+  VOTER_ID    VOTED_AT
+  ----------  ------------------------
+  VOTER-0001  2026-11-27T11:14:06.395Z
+  VOTER-0002  2026-11-27T11:14:17.069Z
+  VOTER-0003  2026-11-27T11:14:28.302Z
+  VOTER-0004  2026-11-27T11:14:37.481Z
+  VOTER-0005  2026-11-27T11:14:44.606Z
+  VOTER-0006  2026-11-27T11:14:50.991Z
+  VOTER-0007
+  VOTER-0008
+  VOTER-0009
+  VOTER-0010
+  VOTER-0011  2026-11-27T11:19:31.459Z
+  VOTER-0012
+
+  12 rows selected
+
+BLIND_BALLOTS: 21 rows, 7 ballots
+
+  BALLOT_ID  CANDIDATE_ID  VOTE_ENC                                               CHARS
+  ---------  ------------  -----------------------------------------------------  -----
+  1          1             7631ff38fa132ed9677a58a07399b0330f398b89…3ea059a7fc68  1024
+  1          2             5a70a149a0838170db3d310a6bce4e8434aa4e2f…418da02c1589  1024
+  1          3             4f945b9fbbc1974f6111e3dfd64b053edbb71343…70b3ff8fd6cf  1024
+  2          1             86693718a58e19b3d56838f9c630ad9c46cdaefa…5bb4bd6c53e4  1024
+  2          2             94c783fe061f3fe8ccbc98792f47b74a7efcb44c…93a54df472ca  1024
+  2          3             549d4e1a25140294af40c981b4ae7e3c976f108a…3c2663f9fb0e  1024
+  3          1             4f91470157b445695699426b9e08a078145d0270…24c475393358  1024
+  3          2             8f31995f9574e9d765161426db71ed41a44d8437…76b890070552  1024
+  3          3             4eb33ea06e5aa9e3b6c200d9fb0f071c51d03594…cea63b155509  1024
+  4          1             957c0bfc2a48343f27538775c5ca96b47b23bd58…0de29f71cade  1024
+  4          2             6f31a3b54156580f546d2a9521012f2c82ed16ef…4e5635394b9c  1024
+  4          3             89b5dd9dbd89e96b5f25cb32435eefaaf2a2ec26…c668614ca711  1024
+  5          1             5efa2e58c4cdfb51d8a4545d41888cf605f05987…004ac1f23402  1024
+  5          2             8629bc575cdd67782b850e96b9646ddafeb579df…894bb948818b  1024
+  5          3             72fbc5ed9c94882b8c98aee24a75298fcd71a0a5…d4cb097e5c83  1024
+  6          1             4178184e51ea58e94ce18831ab68b58ae16b4f3b…b52279a12934  1024
+  6          2             1cc261f1d0943274ad922838206b1c4b7fa72b97…4064bc904faa  1024
+  6          3             1c977312585d54165aa724a2d8013a022db11ee0…265579a76c08  1024
+  7          1             724737aa27c7f06949dae41530d1161f8eb31fba…6b0fd3968449  1024
+  7          2             7756fe6e95308dc7c0784a3b3478e115bafec485…66fbf3dc8a36  1024
+  7          3             34d59f1517fa631a9c074286032c9c5d58e9629f…ef0dff9c1926  1024
+
+  21 rows selected
+
+APEX session state of the application (APEX_260200.WWV_FLOW_DATA): 0 page or application items with a value,
+0 report paging positions
+
+APEX activity log of the application since the session started (2026-11-27T10:55:07.299Z): 120 requests
+
+  AT                        PAGE  KIND  REQUEST          SECONDS  SESSION    CLIENT   ERROR
+  ------------------------  ----  ----  ---------------  -------  ---------  -------  ------------------------------------------------
+  2026-11-27T11:08:03.881Z  1     3     CAST_BALLOT      0.018    session-1
+  2026-11-27T11:08:07.846Z  1     3     CAST_BALLOT      0.019    session-1
+  2026-11-27T11:08:11.956Z  1     3     CAST_BALLOT      0.019    session-1
+  2026-11-27T11:08:22.097Z  3     3     ELECTION_INFO    0.006    session-1
+  2026-11-27T11:09:22.164Z  3     3     ELECTION_INFO    0.012    session-1
+  2026-11-27T11:09:35.209Z  3     3     ELECTION_INFO    0.013    session-1
+  2026-11-27T11:09:40.941Z  3     2                      0.033    session-1
+  2026-11-27T11:09:41.079Z  3     3     ELECTION_INFO    0.014    session-1
+  2026-11-27T11:09:48.452Z  3     2                      0.032    session-1
+  2026-11-27T11:09:48.670Z  3     3     ELECTION_INFO    0.024    session-1
+  2026-11-27T11:09:49.068Z  3     2                      0.043    session-1
+  2026-11-27T11:09:49.356Z  3     3     ELECTION_INFO    0.018    session-1
+  2026-11-27T11:10:04.399Z  3     3     ELECTION_INFO    0.127    session-2           Your session has ended.
+
+  <a href="f?p=2620:1">S…
+  2026-11-27T11:10:19.392Z  3     3     ELECTION_INFO    0.01     session-2           Your session has ended.
+
+  <a href="f?p=2620:1">S…
+  2026-11-27T11:10:34.437Z  3     3     ELECTION_INFO    0.009    session-2           Your session has ended.
+
+  <a href="f?p=2620:1">S…
+  2026-11-27T11:10:49.439Z  3     3     ELECTION_INFO    0.01     session-2           Your session has ended.
+
+  <a href="f?p=2620:1">S…
+  2026-11-27T11:11:04.389Z  3     3     ELECTION_INFO    0.007    session-2           Your session has ended.
+
+  <a href="f?p=2620:1">S…
+  2026-11-27T11:11:19.394Z  3     3     ELECTION_INFO    0.007    session-2           Your session has ended.
+
+  <a href="f?p=2620:1">S…
+  2026-11-27T11:11:34.396Z  3     3     ELECTION_INFO    0.005    session-2           Your session has ended.
+
+  <a href="f?p=2620:1">S…
+  2026-11-27T11:11:49.431Z  3     3     ELECTION_INFO    0.009    session-2           Your session has ended.
+
+  <a href="f?p=2620:1">S…
+  2026-11-27T11:12:05.154Z  3     3     ELECTION_INFO    0.009    session-2           Your session has ended.
+
+  <a href="f?p=2620:1">S…
+  2026-11-27T11:12:19.390Z  3     3     ELECTION_INFO    0.007    session-2           Your session has ended.
+
+  <a href="f?p=2620:1">S…
+  2026-11-27T11:12:22.655Z  3     2                      0.039    session-3  this-pc
+  2026-11-27T11:12:23.019Z  3     3     ELECTION_INFO    0.009    session-3
+  2026-11-27T11:12:35.509Z  3     3     OPEN_ELECTION    0.034    session-3
+  2026-11-27T11:12:35.558Z  3     3     ELECTION_INFO    0.01     session-3
+  2026-11-27T11:12:38.040Z  3     3     ELECTION_INFO    0.007    session-3
+  2026-11-27T11:12:53.047Z  3     3     ELECTION_INFO    0.007    session-3
+  2026-11-27T11:13:08.049Z  3     3     ELECTION_INFO    0.007    session-3
+  2026-11-27T11:13:23.060Z  3     3     ELECTION_INFO    0.012    session-3
+  2026-11-27T11:13:38.098Z  3     3     ELECTION_INFO    0.012    session-3
+  2026-11-27T11:13:38.931Z  1     2                      0.023    session-3
+  2026-11-27T11:13:39.083Z  1     3     ELECTION_INFO    0.012    session-3
+  2026-11-27T11:13:53.144Z  3     3     ELECTION_INFO    0.01     session-3
+  2026-11-27T11:14:06.371Z  1     3     CAST_BALLOT      0.03     session-3
+  2026-11-27T11:14:08.106Z  3     3     ELECTION_INFO    0.008    session-3
+  2026-11-27T11:14:17.051Z  1     3     CAST_BALLOT      0.019    session-3
+  2026-11-27T11:14:23.107Z  3     3     ELECTION_INFO    0.007    session-3
+  2026-11-27T11:14:28.284Z  1     3     CAST_BALLOT      0.02     session-3
+  2026-11-27T11:14:37.463Z  1     3     CAST_BALLOT      0.019    session-3
+  2026-11-27T11:14:38.149Z  3     3     ELECTION_INFO    0.01     session-3
+  2026-11-27T11:14:44.587Z  1     3     CAST_BALLOT      0.021    session-3
+  2026-11-27T11:14:50.971Z  1     3     CAST_BALLOT      0.021    session-3
+  2026-11-27T11:15:22.167Z  3     3     ELECTION_INFO    0.011    session-3
+  2026-11-27T11:16:22.153Z  3     3     ELECTION_INFO    0.011    session-3
+  2026-11-27T11:16:40.084Z  3     3     ELECTION_INFO    0.012    session-3
+  2026-11-27T11:16:53.053Z  3     3     ELECTION_INFO    0.007    session-3
+  2026-11-27T11:16:57.906Z  3     3     ENCRYPTED_TALLY  0.347    session-3
+  2026-11-27T11:16:58.271Z  3     3     ELECTION_INFO    0.008    session-3
+  2026-11-27T11:17:08.040Z  3     3     ELECTION_INFO    0.006    session-3
+  2026-11-27T11:17:23.050Z  3     3     ELECTION_INFO    0.008    session-3
+  2026-11-27T11:17:38.101Z  3     3     ELECTION_INFO    0.015    session-3
+  2026-11-27T11:17:53.089Z  3     3     ELECTION_INFO    0.012    session-3
+  2026-11-27T11:18:08.049Z  3     3     ELECTION_INFO    0.006    session-3
+  2026-11-27T11:18:23.100Z  3     3     ELECTION_INFO    0.007    session-3
+  2026-11-27T11:18:38.095Z  3     3     ELECTION_INFO    0.007    session-3
+  2026-11-27T11:18:53.140Z  3     3     ELECTION_INFO    0.011    session-3
+  2026-11-27T11:19:08.142Z  3     3     ELECTION_INFO    0.011    session-3
+  2026-11-27T11:19:31.183Z  1     3     ELECTION_INFO    0.009    session-3
+  2026-11-27T11:19:31.439Z  1     3     CAST_BALLOT      0.029    session-3
+
+  60 rows selected
+
+  (the last 60 of 120 requests)
+PAGE, KIND and REQUEST are the STEP_ID, PAGE_VIEW_TYPE and REQUEST_VALUE columns of the log. CLIENT is the logged address,
+renamed: this-pc is the machine that runs the database, device-2 and so on are other machines. APEX logged an address on
+2 of the 120 requests; the session column ties the others to one of them.

@@ -1,0 +1,106 @@
+# Live session: database state 36
+# generated: 2026-11-26T23:31:01.089Z
+# session paused after shot 10 (A2 attempt 2); primary key of BLIND_BALLOTS enabled again off camera
+# read as the account with the DBA role; nothing is written to the database
+# complete values: 36-session-paused-after-shot-10-a2-attempt-2-primar.json
+
+ELECTION_KEY: 1 row
+  n = cf947d11104cb8587badba1edf0def79…5a0876253c6d   (512 hexadecimal characters, 2048 bits; sha256 4f68a4fdc2d9e8a2)
+
+VOTER_ROLL: 12 registered, 0 voted
+
+  VOTER_ID    VOTED_AT
+  ----------  --------
+  VOTER-0001
+  VOTER-0002
+  VOTER-0003
+  VOTER-0004
+  VOTER-0005
+  VOTER-0006
+  VOTER-0007
+  VOTER-0008
+  VOTER-0009
+  VOTER-0010
+  VOTER-0011
+  VOTER-0012
+
+  12 rows selected
+
+BLIND_BALLOTS: 0 rows, 0 ballots
+
+  no rows selected
+
+APEX session state of the application (APEX_260200.WWV_FLOW_DATA): 0 page or application items with a value,
+4 report paging positions
+
+APEX activity log of the application since the session started (2026-11-25T10:18:44.014Z): 375 requests
+
+  AT                        PAGE  KIND  REQUEST        SECONDS  SESSION     CLIENT   ERROR
+  ------------------------  ----  ----  -------------  -------  ----------  -------  -----
+  2026-11-26T23:21:43.313Z  3     3     ELECTION_INFO  0.01     session-11
+  2026-11-26T23:21:58.353Z  3     3     ELECTION_INFO  0.012    session-11
+  2026-11-26T23:22:13.319Z  3     3     ELECTION_INFO  0.008    session-11
+  2026-11-26T23:22:28.374Z  3     3     ELECTION_INFO  0.017    session-11
+  2026-11-26T23:22:43.322Z  3     3     ELECTION_INFO  0.007    session-11
+  2026-11-26T23:22:58.323Z  3     3     ELECTION_INFO  0.006    session-11
+  2026-11-26T23:23:13.357Z  3     3     ELECTION_INFO  0.011    session-11
+  2026-11-26T23:23:28.312Z  3     3     ELECTION_INFO  0.007    session-11
+  2026-11-26T23:23:43.354Z  3     3     ELECTION_INFO  0.012    session-11
+  2026-11-26T23:23:58.317Z  3     3     ELECTION_INFO  0.006    session-11
+  2026-11-26T23:24:13.313Z  3     3     ELECTION_INFO  0.008    session-11
+  2026-11-26T23:26:26.618Z  1     2                    0.038    session-12  this-pc
+  2026-11-26T23:26:26.886Z  1     3     ELECTION_INFO  0.011    session-12
+  2026-11-26T23:26:27.963Z  1     2                    0.022    session-12
+  2026-11-26T23:26:28.464Z  1     2                    0.017    session-12
+  2026-11-26T23:26:28.706Z  1     3     ELECTION_INFO  0.01     session-12
+  2026-11-26T23:26:28.868Z  1     2                    0.018    session-12
+  2026-11-26T23:26:29.052Z  1     2                    0.018    session-12
+  2026-11-26T23:26:29.200Z  1     3     ELECTION_INFO  0.009    session-12
+  2026-11-26T23:26:29.226Z  1     2                    0.016    session-12
+  2026-11-26T23:26:29.358Z  1     3     ELECTION_INFO  0.007    session-12
+  2026-11-26T23:26:29.414Z  1     2                    0.015    session-12
+  2026-11-26T23:26:29.536Z  1     3     ELECTION_INFO  0.009    session-12
+  2026-11-26T23:26:29.576Z  1     2                    0.015    session-12
+  2026-11-26T23:26:29.713Z  1     3     ELECTION_INFO  0.007    session-12
+  2026-11-26T23:26:29.742Z  1     2                    0.015    session-12
+  2026-11-26T23:26:29.882Z  1     3     ELECTION_INFO  0.008    session-12
+  2026-11-26T23:26:29.913Z  1     2                    0.016    session-12
+  2026-11-26T23:26:30.033Z  1     3     ELECTION_INFO  0.008    session-12
+  2026-11-26T23:26:30.075Z  1     2                    0.019    session-12
+  2026-11-26T23:26:30.207Z  1     3     ELECTION_INFO  0.009    session-12
+  2026-11-26T23:26:32.334Z        2                    0.008    session-7
+  2026-11-26T23:26:36.703Z  3     2                    0.017    session-12
+  2026-11-26T23:26:36.793Z  3     3     ELECTION_INFO  0.008    session-12
+  2026-11-26T23:26:38.327Z        2                    0.005    session-7
+  2026-11-26T23:26:39.845Z  3     2                    0.015    session-12
+  2026-11-26T23:26:39.973Z  3     3     ELECTION_INFO  0.008    session-12
+  2026-11-26T23:26:46.075Z  3     2                    0.018    session-12
+  2026-11-26T23:26:46.164Z  3     3     ELECTION_INFO  0.008    session-12
+  2026-11-26T23:26:48.115Z        2                    0.005    session-7
+  2026-11-26T23:26:49.042Z  3     2                    0.015    session-12
+  2026-11-26T23:26:49.179Z  3     3     ELECTION_INFO  0.008    session-12
+  2026-11-26T23:27:04.201Z  3     3     ELECTION_INFO  0.007    session-12
+  2026-11-26T23:27:12.060Z  3     3     OPEN_ELECTION  0.042    session-12
+  2026-11-26T23:27:12.113Z  3     3     ELECTION_INFO  0.007    session-12
+  2026-11-26T23:27:19.202Z  3     3     ELECTION_INFO  0.007    session-12
+  2026-11-26T23:27:34.261Z  3     3     ELECTION_INFO  0.012    session-12
+  2026-11-26T23:27:49.250Z  3     3     ELECTION_INFO  0.011    session-12
+  2026-11-26T23:28:04.209Z  3     3     ELECTION_INFO  0.007    session-12
+  2026-11-26T23:28:19.207Z  3     3     ELECTION_INFO  0.008    session-12
+  2026-11-26T23:28:34.205Z  3     3     ELECTION_INFO  0.007    session-12
+  2026-11-26T23:28:49.261Z  3     3     ELECTION_INFO  0.012    session-12
+  2026-11-26T23:29:04.242Z  3     3     ELECTION_INFO  0.012    session-12
+  2026-11-26T23:29:19.204Z  3     3     ELECTION_INFO  0.009    session-12
+  2026-11-26T23:29:34.204Z  3     3     ELECTION_INFO  0.006    session-12
+  2026-11-26T23:29:49.209Z  3     3     ELECTION_INFO  0.008    session-12
+  2026-11-26T23:30:04.243Z  3     3     ELECTION_INFO  0.013    session-12
+  2026-11-26T23:30:19.249Z  3     3     ELECTION_INFO  0.012    session-12
+  2026-11-26T23:30:34.204Z  3     3     ELECTION_INFO  0.009    session-12
+  2026-11-26T23:30:49.204Z  3     3     ELECTION_INFO  0.008    session-12
+
+  60 rows selected
+
+  (the last 60 of 375 requests)
+PAGE, KIND and REQUEST are the STEP_ID, PAGE_VIEW_TYPE and REQUEST_VALUE columns of the log. CLIENT is the logged address,
+renamed: this-pc is the machine that runs the database, device-2 and so on are other machines. APEX logged an address on
+11 of the 375 requests; the session column ties the others to one of them.

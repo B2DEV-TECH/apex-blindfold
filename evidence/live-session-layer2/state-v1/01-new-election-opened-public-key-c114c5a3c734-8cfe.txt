@@ -1,0 +1,81 @@
+# Live session: database state 01
+# generated: 2026-11-27T11:04:52.207Z
+# new election opened: public key c114c5a3c734…8cfe57, 12 voters registered
+# read as the account with the DBA role; nothing is written to the database
+# complete values: 01-new-election-opened-public-key-c114c5a3c734-8cfe.json
+
+ELECTION_KEY: 1 row
+  n = c114c5a3c73420d8c66d232c523eec99…3e4cb88cfe57   (512 hexadecimal characters, 2048 bits; sha256 4788d78dc6f7a703)
+
+VOTER_ROLL: 12 registered, 0 voted
+
+  VOTER_ID    VOTED_AT
+  ----------  --------
+  VOTER-0001
+  VOTER-0002
+  VOTER-0003
+  VOTER-0004
+  VOTER-0005
+  VOTER-0006
+  VOTER-0007
+  VOTER-0008
+  VOTER-0009
+  VOTER-0010
+  VOTER-0011
+  VOTER-0012
+
+  12 rows selected
+
+BLIND_BALLOTS: 0 rows, 0 ballots
+
+  no rows selected
+
+APEX session state of the application (APEX_260200.WWV_FLOW_DATA): 0 page or application items with a value,
+0 report paging positions
+
+APEX activity log of the application since the session started (2026-11-27T10:55:07.299Z): 35 requests
+
+  AT                        PAGE  KIND  REQUEST        SECONDS  SESSION    CLIENT   ERROR
+  ------------------------  ----  ----  -------------  -------  ---------  -------  -----
+  2026-11-27T10:57:41.039Z  3     2                    0.491    session-1  this-pc
+  2026-11-27T10:57:42.555Z  3     3     ELECTION_INFO  0.053    session-1
+  2026-11-27T10:57:46.293Z  1     2                    0.022    session-1
+  2026-11-27T10:57:46.565Z  1     3     ELECTION_INFO  0.017    session-1
+  2026-11-27T10:57:49.567Z        2                    0.023    session-2
+  2026-11-27T10:57:57.643Z  3     3     ELECTION_INFO  0.01     session-1
+  2026-11-27T10:58:12.634Z  3     3     ELECTION_INFO  0.007    session-1
+  2026-11-27T10:58:27.628Z  3     3     ELECTION_INFO  0.009    session-1
+  2026-11-27T10:58:42.734Z  3     3     ELECTION_INFO  0.017    session-1
+  2026-11-27T10:58:58.081Z  3     3     ELECTION_INFO  0.017    session-1
+  2026-11-27T10:59:12.744Z  3     3     ELECTION_INFO  0.012    session-1
+  2026-11-27T10:59:27.673Z  3     3     ELECTION_INFO  0.012    session-1
+  2026-11-27T10:59:42.633Z  3     3     ELECTION_INFO  0.008    session-1
+  2026-11-27T10:59:57.644Z  3     3     ELECTION_INFO  0.01     session-1
+  2026-11-27T11:00:12.717Z  3     3     ELECTION_INFO  0.016    session-1
+  2026-11-27T11:00:27.942Z  3     3     ELECTION_INFO  0.018    session-1
+  2026-11-27T11:00:42.653Z  3     3     ELECTION_INFO  0.008    session-1
+  2026-11-27T11:00:57.660Z  3     3     ELECTION_INFO  0.009    session-1
+  2026-11-27T11:01:12.716Z  3     3     ELECTION_INFO  0.008    session-1
+  2026-11-27T11:01:27.696Z  3     3     ELECTION_INFO  0.014    session-1
+  2026-11-27T11:01:42.701Z  3     3     ELECTION_INFO  0.012    session-1
+  2026-11-27T11:01:57.631Z  3     3     ELECTION_INFO  0.009    session-1
+  2026-11-27T11:02:12.630Z  3     3     ELECTION_INFO  0.01     session-1
+  2026-11-27T11:02:27.638Z  3     3     ELECTION_INFO  0.008    session-1
+  2026-11-27T11:02:42.700Z  3     3     ELECTION_INFO  0.012    session-1
+  2026-11-27T11:02:57.717Z  3     3     ELECTION_INFO  0.011    session-1
+  2026-11-27T11:03:12.629Z  3     3     ELECTION_INFO  0.008    session-1
+  2026-11-27T11:03:27.685Z  3     3     ELECTION_INFO  0.009    session-1
+  2026-11-27T11:03:42.634Z  3     3     ELECTION_INFO  0.006    session-1
+  2026-11-27T11:03:57.679Z  3     3     ELECTION_INFO  0.012    session-1
+  2026-11-27T11:04:13.149Z  3     3     ELECTION_INFO  0.011    session-1
+  2026-11-27T11:04:27.628Z  3     3     ELECTION_INFO  0.015    session-1
+  2026-11-27T11:04:42.628Z  3     3     ELECTION_INFO  0.008    session-1
+  2026-11-27T11:04:51.479Z  3     3     OPEN_ELECTION  0.085    session-1
+  2026-11-27T11:04:51.581Z  3     3     ELECTION_INFO  0.011    session-1
+
+  35 rows selected
+
+
+PAGE, KIND and REQUEST are the STEP_ID, PAGE_VIEW_TYPE and REQUEST_VALUE columns of the log. CLIENT is the logged address,
+renamed: this-pc is the machine that runs the database, device-2 and so on are other machines. APEX logged an address on
+1 of the 35 requests; the session column ties the others to one of them.

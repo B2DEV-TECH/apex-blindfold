@@ -1,15 +1,46 @@
 # Live session: what changed in the database, and when
 # time (UTC)                snapshot  change
-2026-11-25T10:18:44.014Z  00        watch started
-2026-11-25T10:21:49.130Z  01        new election opened: public key daffb1ab2600…7cedd7, 12 voters registered
-2026-11-25T10:59:06.679Z  02        ballot 1 stored (+3 rows); voters marked as voted: 0 -> 1 of 12
-2026-11-25T10:59:13.119Z  03        ballot 2 stored (+3 rows); voters marked as voted: 1 -> 2 of 12
-2026-11-25T10:59:25.587Z  04        ballot 3 stored (+3 rows); voters marked as voted: 2 -> 3 of 12
-2026-11-25T10:59:36.039Z  05        ballot 4 stored (+3 rows); voters marked as voted: 3 -> 4 of 12
-2026-11-25T10:59:54.555Z  06        ballot 5 stored (+3 rows); voters marked as voted: 4 -> 5 of 12
-2026-11-25T11:09:27.311Z  07        ballot 6 stored (+3 rows); voters marked as voted: 5 -> 6 of 12
-2026-11-25T11:11:16.179Z  08        ballot 7 stored (+3 rows); voters marked as voted: 6 -> 7 of 12
-2026-11-25T11:12:32.867Z  09        ballot 8 stored (+3 rows); voters marked as voted: 7 -> 8 of 12
-2026-11-25T11:15:01.935Z  10        ballot 9, 10 stored (+6 rows); voters marked as voted: 8 -> 10 of 12
-2026-11-25T11:17:00.835Z  11        ballot 11 stored (+3 rows); voters marked as voted: 10 -> 11 of 12
-2026-11-25T11:20:58.371Z  12        session paused after shot 09, election A1 closed
+2026-11-27T10:55:07.299Z  00        watch started
+2026-11-27T11:04:52.201Z  01        new election opened: public key c114c5a3c734…8cfe57, 12 voters registered
+2026-11-27T11:07:05.113Z  02        ballot 1 stored (+3 rows); voters marked as voted: 0 -> 1 of 12
+2026-11-27T11:07:13.547Z  03        ballot 2 stored (+3 rows); voters marked as voted: 1 -> 2 of 12
+2026-11-27T11:07:30.023Z  04        ballot 3 stored (+3 rows); voters marked as voted: 2 -> 3 of 12
+2026-11-27T11:07:36.456Z  05        ballot 4 stored (+3 rows); voters marked as voted: 3 -> 4 of 12
+2026-11-27T11:07:42.883Z  06        ballot 5 stored (+3 rows); voters marked as voted: 4 -> 5 of 12
+2026-11-27T11:07:47.311Z  07        ballot 6 stored (+3 rows); voters marked as voted: 5 -> 6 of 12
+2026-11-27T11:07:51.734Z  08        ballot 7 stored (+3 rows); voters marked as voted: 6 -> 7 of 12
+2026-11-27T11:07:56.166Z  09        ballot 8 stored (+3 rows); voters marked as voted: 7 -> 8 of 12
+2026-11-27T11:08:00.594Z  10        ballot 9 stored (+3 rows); voters marked as voted: 8 -> 9 of 12
+2026-11-27T11:08:05.029Z  11        ballot 10 stored (+3 rows); voters marked as voted: 9 -> 10 of 12
+2026-11-27T11:08:09.454Z  12        ballot 11 stored (+3 rows); voters marked as voted: 10 -> 11 of 12
+2026-11-27T11:08:13.889Z  13        ballot 12 stored (+3 rows); voters marked as voted: 11 -> 12 of 12
+2026-11-27T11:09:31.095Z  14        shot 02 attempt 1 used all 12 voter codes (12 ballots, runbook asks 6); A1 restarted from shot 01 after a reinstall off camera
+2026-11-27T11:10:04.017Z  15        watch started
+2026-11-27T11:12:37.035Z  16        new election opened: public key c3addd910a33…57360d, 12 voters registered
+2026-11-27T11:14:07.790Z  17        ballot 1 stored (+3 rows); voters marked as voted: 0 -> 1 of 12
+2026-11-27T11:14:18.242Z  18        ballot 2 stored (+3 rows); voters marked as voted: 1 -> 2 of 12
+2026-11-27T11:14:30.710Z  19        ballot 3 stored (+3 rows); voters marked as voted: 2 -> 3 of 12
+2026-11-27T11:14:39.169Z  20        ballot 4 stored (+3 rows); voters marked as voted: 3 -> 4 of 12
+2026-11-27T11:14:45.602Z  21        ballot 5 stored (+3 rows); voters marked as voted: 4 -> 5 of 12
+2026-11-27T11:14:52.044Z  22        ballot 6 stored (+3 rows); voters marked as voted: 5 -> 6 of 12
+2026-11-27T11:19:33.572Z  23        ballot 7 stored (+3 rows); voters marked as voted: 6 -> 7 of 12
+2026-11-27T11:23:22.850Z  24        ballot 8 stored (+3 rows); voters marked as voted: 7 -> 8 of 12
+2026-11-27T11:24:53.637Z  25        ballot 9 stored (+3 rows); voters marked as voted: 8 -> 9 of 12
+2026-11-27T11:26:56.531Z  26        ballot 10, 11 stored (+6 rows); voters marked as voted: 9 -> 11 of 12
+2026-11-27T11:29:51.696Z  27        ballot 12 stored (+3 rows); voters marked as voted: 11 -> 12 of 12
+2026-11-27T11:34:31.230Z  28        new election opened: public key e6090e60fc4e…485379, 12 voters registered
+2026-11-27T11:36:08.033Z  29        ballot 1 stored (+3 rows); voters marked as voted: 0 -> 1 of 12
+2026-11-27T11:36:12.454Z  30        ballot 2 stored (+3 rows); voters marked as voted: 1 -> 2 of 12
+2026-11-27T11:36:18.871Z  31        ballot 3 stored (+3 rows); voters marked as voted: 2 -> 3 of 12
+2026-11-27T11:36:21.293Z  32        ballot 4 stored (+3 rows); voters marked as voted: 3 -> 4 of 12
+2026-11-27T11:36:23.716Z  33        ballot 5 stored (+3 rows); voters marked as voted: 4 -> 5 of 12
+2026-11-27T11:36:26.137Z  34        ballot 6 stored (+3 rows); voters marked as voted: 5 -> 6 of 12
+2026-11-27T11:40:41.484Z  35        2 stored ciphertext(s) rewritten in place: ballot 1 option 1, ballot 1 option 2
+2026-11-27T11:40:59.956Z  36        2 stored ciphertext(s) rewritten in place: ballot 1 option 1, ballot 1 option 2
+2026-11-27T11:42:12.534Z  37        shot 14 attempt 1: the update ran twice (11:40:41Z off camera, 11:40:59Z on camera), so ballot 1 was swapped back; shot 14 recorded again
+2026-11-27T11:42:36.718Z  38        2 stored ciphertext(s) rewritten in place: ballot 1 option 1, ballot 1 option 2
+2026-11-27T11:43:53.368Z  39        ballot 2 removed
+2026-11-27T11:44:41.968Z  40        ballot 900 stored (+3 rows)
+2026-11-27T11:46:44.906Z  41        no change in the election tables
+2026-11-27T11:49:13.923Z  42        ballot 7 stored (+3 rows); voters marked as voted: 6 -> 7 of 12
+2026-11-27T11:51:37.421Z  43        part A finished after shot 19 (run 2): A=1 B=4 C=3, 8 votes from 7 voters

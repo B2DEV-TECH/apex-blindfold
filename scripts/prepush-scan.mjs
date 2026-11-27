@@ -9,8 +9,14 @@
 // The words it looks for are read at run time from the local configuration and
 // from the database. None of them is written in this file or in its output:
 // a finding names the file, the line and the kind of thing, not the value.
+//
+// A finding that a person reviewed and accepted is listed in
+// scripts/prepush-scan-reviewed.json: one file, its exact SHA-256, one kind of
+// finding. It is then counted as reviewed, not reported. If the file changes,
+// its hash changes and the finding is reported again.
 import { execFileSync } from 'node:child_process';
-import { readFileSync, statSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import os from 'node:os';
 import { loadConfig, secretsOf, ROOT } from '../tests/lib/config.mjs';
@@ -67,6 +73,11 @@ const allowed = [/@(example\.(com|org|net)|[a-z0-9.-]+\.(invalid|example|test)|u
 // ---- every file git would publish
 const files = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '-z'], { cwd: ROOT, encoding: 'utf8' }).split('\0').filter(Boolean);
 const findings = [];
+// Findings reviewed by hand: see the comment at the top of this file.
+const reviewedPath = join(ROOT, 'scripts', 'prepush-scan-reviewed.json');
+const reviewed = existsSync(reviewedPath) ? JSON.parse(readFileSync(reviewedPath, 'utf8')).reviewed : [];
+const reviewedUsed = new Set();
+let reviewedCount = 0;
 const forbiddenNames = /(^|\/)(\.env(\..*)?|.*\.env|db\.json|oracle\.json|tnsnames\.ora|sqlnet\.ora|[ce]wallet\..*|.*\.(sso|p12|jks|pem|key|pfx))$/i;
 let bytes = 0;
 for (const file of files) {
@@ -78,12 +89,22 @@ for (const file of files) {
   // Text is searched line by line. Binary files are searched as Latin-1, which finds any ASCII text inside them.
   const binary = buffer.subarray(0, 8000).includes(0);
   const lines = buffer.toString(binary ? 'latin1' : 'utf8').split('\n');
+  // The reviewed entries that hold for this file: same path and same content.
+  const forFile = reviewed.filter((entry) => entry.file === file);
+  const sha256 = forFile.length > 0 ? createHash('sha256').update(buffer).digest('hex') : null;
+  const accepted = forFile.filter((entry) => entry.sha256 === sha256);
   lines.forEach((line, index) => {
     for (const { kind, pattern } of [...needles, ...patterns]) {
       // Every match of the line is looked at, so that an allowed address cannot hide another one.
       const everywhere = new RegExp(pattern.source, pattern.flags.includes('g') ? pattern.flags : `${pattern.flags}g`);
       for (const match of line.matchAll(everywhere)) {
         if (kind === 'an e-mail address' && allowed.some((ok) => ok.test(match[0]))) continue;
+        const entry = accepted.find((candidate) => candidate.kind === kind);
+        if (entry) {
+          reviewedUsed.add(entry);
+          reviewedCount += 1;
+          break;
+        }
         findings.push({ file, line: binary ? 0 : index + 1, kind });
         break;
       }
@@ -92,6 +113,13 @@ for (const file of files) {
 }
 
 console.log(`Scanned ${files.length} files, ${(bytes / 1e6).toFixed(1)} MB, for ${needles.length} local values (${tenants} of them other workspaces or schemas) and ${patterns.length} patterns.`);
+if (reviewedCount > 0) {
+  console.log(`${reviewedCount} finding(s) in ${reviewedUsed.size} file(s) reviewed by hand and accepted: see scripts/prepush-scan-reviewed.json.`);
+}
+// An entry that no longer matches its file is stale: the file changed or is gone, so the review no longer holds.
+for (const entry of reviewed.filter((candidate) => !reviewedUsed.has(candidate))) {
+  console.log(`  reviewed entry not used, the file changed or is gone: ${entry.file}`);
+}
 if (findings.length === 0) {
   console.log('Nothing found.');
 } else {
